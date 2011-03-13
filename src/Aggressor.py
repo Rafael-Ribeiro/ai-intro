@@ -7,10 +7,10 @@
 import breve
 import math
 
-from LightSource import LightSource
-from LightSensor import LightSensor
-from ProximitySensor import ProximitySensor
-from BraitenbergActivator import BraitenbergActivator
+from custom.light.source import LightSource
+from custom.light.sensor import LightSensor
+from custom.proximity.sensor import ProximitySensor
+from lib.Activator import BraitenbergActivator
 
 class AggressorController(breve.BraitenbergControl):
 	def __init__(self):
