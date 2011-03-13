@@ -160,8 +160,8 @@ class Sphere( breve.Shape ):
 
 		return self
 
-	def distance(self, point):
-		return (self.getLocation() - point).length() - self.radius
+	def distance(self, location, point):
+		return (location - point).length() - self.radius
 
 
 breve.Sphere = Sphere
@@ -184,8 +184,8 @@ class Cube( breve.Shape ):
 		return self
 
 	# TODO: OBB-Sphere colision distance
-	def distance(self, point):
-		return (self.getLocation() - point).length() - self.radius
+	def distance(self, location, point):
+		return (location - point).length() - self.radius
 
 
 breve.Cube = Cube
