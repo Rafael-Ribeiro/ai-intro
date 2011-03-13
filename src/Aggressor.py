@@ -16,25 +16,14 @@ class AggressorController(breve.BraitenbergControl):
 	def __init__(self):
 		breve.BraitenbergControl.__init__(self)
 
-		self.leftSensor = None
-		self.leftWheel = None
-		self.n = 0
-		self.rightSensor = None
-		self.rightWheel = None
-		self.vehicle = None
-
-		AggressorController.init(self)
-
-	def init(self):
 		for i in range(10):
 			light = breve.createInstances(breve.LightSource, 1, 1.0, breve.vector(0,1,0))
 			light.move(breve.vector((20 * breve.breveInternalFunctionFinder.sin(self, ((i * 6.280000) / 10))), 1, (20 * breve.breveInternalFunctionFinder.cos(self, ((i * 6.280000) / 10)))))
 
-		
 		self.block = breve.createInstances(breve.Mobile, 1)
 		self.blockShape = breve.createInstances(breve.Cube, 1).initWith(breve.vector(1,1,1))
-		self.block.setShape = self.blockShape
-		self.block.move(breve.vector(0, 2, -18))
+		self.block.setShape(self.blockShape)
+		self.block.move(breve.vector(0, 2, 20))
 
 		self.vehicle = breve.createInstances(breve.BraitenbergVehicle, 1, breve.vector(4, 0.7, 3))
 		self.watch(self.vehicle)

@@ -15,5 +15,5 @@ class BraitenbergActivator(object):
 			self.sensors[sensor.getName()] = 1
 
 	def activate(self, value, sensor):
-		self.sensors[sensor.getName()] = min(max(value, 0.00001), 0.999999) # avoid division by zero errors
+		self.sensors[sensor.getName()] = value
 		self.wheel.activate(self.activationFunction(**self.sensors))
