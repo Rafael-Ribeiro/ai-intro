@@ -28,7 +28,7 @@ class AggressorController(breve.BraitenbergControl):
 			light = breve.createInstances(breve.BraitenbergLight, 1, 1.0, breve.vector(0,1,0))
 			light.move(breve.vector((20 * breve.breveInternalFunctionFinder.sin(self, ((i * 6.280000) / 10))), 1, (20 * breve.breveInternalFunctionFinder.cos(self, ((i * 6.280000) / 10)))))
 
-		self.vehicle = breve.createInstances(breve.BraitenbergVehicle, 1, breve.vector(4, 0.7, 3), breve.vector(0, 0.900000, 0))
+		self.vehicle = breve.createInstances(breve.BraitenbergVehicle, 1, breve.vector(4, 0.7, 3), breve.vector(0, 0.9, 20))
 		self.watch(self.vehicle)
 
 		#self.vehicle.move(breve.vector(0, 2, 18))

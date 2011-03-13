@@ -210,19 +210,12 @@ breve.PolygonDisk = PolygonDisk
 class PolygonCone( breve.Shape ):
 	'''This class is used to create a polygon-cone shape.  This is a shape with a polygon base which tapers off to a point.  A pyramid is an example of a polygon-cone with 4 sides.  As the number of sides increases, the base becomes more circular and the resulting shape will more closely resemble a true cone.'''
 
-	def __init__( self ):
+	def __init__( self, sideCount, theHeight, theRadius = 1.000000):
 		breve.Shape.__init__( self )
-
-	def initWith( self, sideCount, theHeight, theRadius = 1.000000 ):
-		'''Initializes the polygon-cone. <p> The distance from the center of the n-gon faces to the vertices  is theRadius.  sides has a maximum value of 99.  Higher values will cause the polygon-cone not to be initialized. <p> The height, or depth of the extrusion, is theHeight.'''
 
 		self.shapePointer = breve.breveInternalFunctionFinder.newNGonCone( self, sideCount, theRadius, theHeight, self.density )
 		if ( not self.shapePointer ):
 			raise Exception( '''Could not create PolygonCone: invalid arguments''' )
-
-
-		return self
-
 
 breve.PolygonCone = PolygonCone
 class MeshShape( breve.Shape ):
