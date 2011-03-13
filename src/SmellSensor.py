@@ -7,34 +7,32 @@ import math
 class SmellSensor(breve.BraitenbergSensor):
 	'''A BraitenbergSensor is used in conjunction with OBJECT(BraitenbergVehicle) to build Braitenberg vehicles.  This class is typically not instantiated manually, since OBJECT(BraitenbergVehicle) creates one for you when you add a sensor to the vehicle. <p> <b>NOTE: this class is included as part of the file "Braitenberg.tz".</b>'''
 
-	def __init__(self):
-		breve.BraitenbergSensor.__init__(self)
+	def __init__(self, name, type, bias = 5.0): #type is an (r,g,b) vector (to identify the smell)
+		breve.BraitenbergSensor.__init__(self,name)
 
-		self.bias = 0
-		self.direction = breve.vector()
-		self.sensorAngle = 0
+		self.type = type
+		self.setColor(type)
 
-	def init(self, name, angle, bias = 5.0):
-		breve.BraitenbergSensor.init(self, name)
-		
 		self.bias = bias
-		self.direction = breve.vector(0, 1, 0)
-		self.sensorAngle = angle #1.600000
+
+		self.shape = breve.createInstances(breve.PolygonCone, 1, 5, 0.4, 0.5)
+		self.setShape(self.shape)
+
 
 	def iterate(self):
 		total = 0
 
-		transDir = self.getRotation() * self.direction
 		for i in breve.allInstances("SmellSource"):
+			if i.getType() != self.type:
+				continue
+
 			toSmell = i.getLocation() - self.getLocation()
-			angle = breve.breveInternalFunctionFinder.angle(self, toSmell, transDir)
 
-			if (angle < self.sensorAngle):
-				distance = breve.length(toSmell)
+			distance = toSmell.length()
 
-				 # sound intensity is inversely proportional to d**2
-				strength = i.getIntensity()/(1.0 + (distance*distance)/self.bias)
-				total += strength
+			 # smell intensity is inversely proportional to d**2
+			strength = i.getIntensity()/(1.0 + (distance*distance)/self.bias)
+			total += strength
 	
 		total = min(total, 1.0)
 		self.activators.activate(total, self)

@@ -1,14 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import breve
+
 class SmellSource(breve.Mobile):
 
-	def __init__(self):
+	def __init__(self, intensity, type): #type is an (r,g,b) vector (to identify the smell)
 		breve.Mobile.__init__(self)
-		SmellSource.init(self)
 
-	def init(self):
+		self.intensity = intensity
+		self.type = type
+
 		self.setShape(breve.createInstances(breve.Sphere,1).initWith(0.300000))
-		self.setColor(breve.vector(1,0,0))
+		self.setColor(type)
+
+	def getIntensity(self):
+		return self.intensity
+
+	def getType(self):
+		return self.type
 
 breve.SmellSource = SmellSource

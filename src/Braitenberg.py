@@ -61,8 +61,8 @@ class BraitenbergVehicle(breve.MultiBody):
 		joint = breve.createInstances(breve.RevoluteJoint, 1)
 		joint.setRelativeRotation(normal, rotation)
 
-		joint.link(breve.vector(1, 0, 0), location, breve.vector(0, 0, 0), sensor, self.bodyLink)
-		joint.setDoubleSpring(300, 0.010000, -0.010000)
+		joint.link(direction, location, breve.vector(0, 0, 0), sensor, self.bodyLink)
+		joint.setDoubleSpring(300, 0.01, -0.01)
 
 		self.addDependency(joint)
 		self.addDependency(sensor)
