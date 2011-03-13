@@ -14,4 +14,4 @@ class BraitenbergActivator(object):
 
 	def activate(self, value, sensor):
 		self.sensors[sensor.getName()] = value
-		self.wheel.activate(self.activationFunction(self.sensors))
+		self.wheel.activate(self.activationFunction(**self.sensors))
