@@ -201,7 +201,6 @@ class BraitenbergSensor(breve.Link):
 
 	def link(self, activator):
 		self.activators.append(activator)
-		activator.add(self)
 
 	def getName(self):
 		return self.name

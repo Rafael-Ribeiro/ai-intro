@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import breve
+import math
 
 class LightSensor(breve.BraitenbergSensor):
 	'''A BraitenbergSensor is used in conjunction with OBJECT(BraitenbergVehicle) to build Braitenberg vehicles.  This class is typically not instantiated manually, since OBJECT(BraitenbergVehicle) creates one for you when you add a sensor to the vehicle. <p> <b>NOTE: this class is included as part of the file "Braitenberg.tz".</b>'''
@@ -9,12 +10,14 @@ class LightSensor(breve.BraitenbergSensor):
 	def __init__( self ):
 		breve.BraitenbergSensor.__init__( self )
 
+		self.bias = 0
 		self.direction = breve.vector()
 		self.sensorAngle = 0
 
-	def init( self, name, angle):
+	def init( self, name, angle, bias = 5.0):
 		breve.BraitenbergSensor.init(self, name)
-
+		
+		self.bias = bias
 		self.direction = breve.vector(0, 1, 0)
 		self.sensorAngle = angle #1.600000
 
@@ -22,18 +25,18 @@ class LightSensor(breve.BraitenbergSensor):
 		total = 0
 
 		transDir = self.getRotation() * self.direction
-		for i in breve.allInstances("BraitenbergLights"):
+		for i in breve.allInstances("BraitenbergLight"):
 			toLight = i.getLocation() - self.getLocation()
 			angle = breve.breveInternalFunctionFinder.angle( self, toLight, transDir )
 
 			if ( angle < self.sensorAngle ):
 				distance = breve.length(toLight)
-				strength = i.getIntensity()/(1.0 + (distance*distance))
 
+				 # light intensity is inversely proporsional to d**2
+				strength = i.getIntensity()/(1.0 + (distance*distance)/self.bias)
 				total += strength
 	
 		total = min(total, 1.0)
-		print "Total: %d" % (total,)
 		self.activators.activate(total, self)
 
 breve.LightSensor = LightSensor
