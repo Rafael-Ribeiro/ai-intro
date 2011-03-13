@@ -39,7 +39,6 @@ class BraitenbergVehicle(breve.MultiBody):
 		self.sensors = breve.objectList()
 		self.wheelShape = None
 		self.wheels = breve.objectList()
-		BraitenbergVehicle.init(self)
 
 	def addSensor(self, sensor, location, direction):
 		'''Adds a sensor at location on the vehicle.  This method returns the sensor which is created, a OBJECT(BraitenbergSensor).  You'll use the returned object to connect it to the vehicle's wheels.'''
@@ -64,26 +63,23 @@ class BraitenbergVehicle(breve.MultiBody):
 
 		return sensor
 
-	def addWheel(self, location):
-		'''Adds a wheel at location on the vehicle.  This method returns the wheel which is created, a OBJECT(BraitenbergWheel).  You'll use the returned object to connect it to the vehicle's sensors.'''
-
+	def addWheel(self, wheel, location, axis = breve.vector(0,0,1)):
 		joint = None
-		wheel = None
 
-		wheel = breve.createInstances(breve.BraitenbergWheel, 1)
-		wheel.setShape(self.wheelShape)
 		joint = breve.createInstances(breve.RevoluteJoint, 1)
-		joint.setRelativeRotation(breve.vector(1, 0, 0), 1.570800)
-		joint.link(breve.vector(0, 0, 1), location, breve.vector(0, 0, 0), wheel, self.bodyLink)
+		joint.setRelativeRotation(breve.vector(1, 0, 0), 1.570800) # irrelevant
+		joint.link(axis, location, breve.vector(0, 0, 0), wheel, self.bodyLink)
+
 		wheel.setET(0.800000)
 		wheel.setJoint(joint)
+
 		joint.setStrengthLimit((joint.getStrengthHardLimit() / 2))
 		wheel.setColor(breve.vector(0.600000, 0.600000, 0.600000))
 		wheel.setMu(100000)
+
 		self.addDependency(joint)
 		self.addDependency(wheel)
 		self.wheels.append(wheel)
-		return wheel
 
 	def destroy(self):
 		breve.deleteInstances(self.sensorShape)
@@ -94,47 +90,20 @@ class BraitenbergVehicle(breve.MultiBody):
 	def getDensity(self):
 		return 1.000000
 
-	def getWheelRadius(self):
-		return 0.600000
-
-	def getWheelWidth(self):
-		return 0.100000
-
-	def init(self):
+	def init(self, size, pos):
 		self.bodyShape = breve.createInstances(breve.Cube, 1)
-		self.bodyShape.initWith(breve.vector(4.000000, 0.750000, 3.000000))
-		self.wheelShape = breve.createInstances(breve.Shape, 1)
-		self.wheelShape.initWithPolygonDisk(40, self.getWheelWidth(), self.getWheelRadius())
-		self.sensorShape = breve.createInstances(breve.Shape, 1)
-		self.sensorShape.initWithPolygonCone(10, 0.500000, 0.200000)
+		self.bodyShape.initWith(size)
+
 		self.bodyShape.setDensity(self.getDensity())
 		self.bodyLink = breve.createInstances(breve.Link, 1)
 		self.bodyLink.setShape(self.bodyShape)
 		self.bodyLink.setMu(-1.000000)
 		self.bodyLink.setET(0.800000)
+
 		self.setRoot(self.bodyLink)
-		self.move(breve.vector(0, 0.900000, 0))
+		self.move(pos)
 		self.setTextureScale(1.500000)
 
-
-breve.BraitenbergVehicle = BraitenbergVehicle
-class BraitenbergHeavyVehicle(breve.BraitenbergVehicle):
-	'''A heavy duty version of OBJECT(BraitenbergVehicle), this vehicle is heavier and harder to control, but more stable at higher  speeds.'''
-
-	def __init__(self):
-		breve.BraitenbergVehicle.__init__(self)
-
-	def getDensity(self):
-		return 20.000000
-
-	def getWheelRadius(self):
-		return 0.800000
-
-	def getWheelWidth(self):
-		return 0.400000
-
-
-breve.BraitenbergHeavyVehicle = BraitenbergHeavyVehicle
 class BraitenbergLight(breve.Mobile):
 	'''A BraitenbergLight is used in conjunction with OBJECT(BraitenbergControl) and OBJECT(BraitenbergVehicle).  It is what the OBJECT(BraitenbergSensor) objects on the BraitenbergVehicle detect. <p> There are no special behaviors associated with the lights--they're  basically just plain OBJECT(Mobile) objects.'''
 
@@ -165,17 +134,29 @@ class BraitenbergWheel(breve.Link):
 
 		self.joint = None
 		self.velocity = 0
+		self.radius = 0
+		self.width = 0
 
-		BraitenbergWheel.init(self)
+		self.shape = breve.createInstances(breve.Shape, 1)
 
-	def init(self):
-		pass
+	def init(self, radius, width):
+		self.radius = radius
+		self.width = width
+
+		self.shape.initWithPolygonCone(40, radius, width)
+		self.setShape(self.shape)
 
 	def activate(self, n):
 		self.velocity = min(n, BraitenbergWheel.MAX_VELOCITY)
 
 	def postIterate(self):
 		self.joint.setJointVelocity(self.velocity)
+
+	def getRadius(self):
+		return self.radius
+
+	def getWidth(self):
+		return self.width
 
 	def setJoint(self, j):
 		self.joint = j
@@ -209,7 +190,6 @@ breve.BraitenbergSensor = BraitenbergSensor
 # Add our newly created classes to the breve namespace
 
 breve.BraitenbergVehicles = BraitenbergVehicle
-breve.BraitenbergHeavyVehicles = BraitenbergHeavyVehicle
 breve.BraitenbergLights = BraitenbergLight
 breve.BraitenbergWheels = BraitenbergWheel
 breve.BraitenbergSensors = BraitenbergSensor

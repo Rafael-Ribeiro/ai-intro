@@ -11,28 +11,35 @@ class LightSensor(breve.BraitenbergSensor):
 		breve.BraitenbergSensor.__init__( self )
 
 		self.bias = 0
+		self.color = breve.vector()
 		self.direction = breve.vector()
 		self.sensorAngle = 0
 
-	def init( self, name, angle, bias = 5.0):
+	def init( self, name, angle, color, bias = 5.0):
 		breve.BraitenbergSensor.init(self, name)
 		
 		self.bias = bias
+		self.color = color
+		self.setColor(color)
+	
 		self.direction = breve.vector(0, 1, 0)
-		self.sensorAngle = angle #1.600000
+		self.sensorAngle = angle
 
 	def iterate(self):
 		total = 0
 
 		transDir = self.getRotation() * self.direction
 		for i in breve.allInstances("BraitenbergLight"):
+			if i.getColor() != self.color:
+				continue
+
 			toLight = i.getLocation() - self.getLocation()
 			angle = breve.breveInternalFunctionFinder.angle( self, toLight, transDir )
 
 			if ( angle < self.sensorAngle ):
 				distance = breve.length(toLight)
 
-				 # light intensity is inversely proporsional to d**2
+				 # light intensity is inversely proportional to d**2 (area of sphere surface with radius d)
 				strength = i.getIntensity()/(1.0 + (distance*distance)/self.bias)
 				total += strength
 	
