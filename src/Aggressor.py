@@ -45,5 +45,3 @@ breve.AggressorController = AggressorController
 # Create an instance of our controller object to initialize the simulation
 
 AggressorController()
-
-
