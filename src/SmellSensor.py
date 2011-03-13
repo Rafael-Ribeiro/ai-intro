@@ -3,13 +3,15 @@
 
 import breve
 
+#TODO: Everything (the code is a template)
+
 class SmellSensor(breve.BraitenbergSensor):
 	def __init__( self ):
 		breve.BraitenbergSensor.__init__(self)
 
 	def iterate( self ):
 		i = None
-		lights = 0
+		smellSources = 0
 		angle = 0
 		strength = 0
 		total = 0
@@ -17,7 +19,7 @@ class SmellSensor(breve.BraitenbergSensor):
 		toLight = breve.vector()
 
 		transDir = ( self.getRotation() * self.direction )
-		for i in breve.allInstances( "Shape" ):
+		for i in breve.allInstances( "SmellSource" ):
 			toLight = ( i.getLocation() - self.getLocation() )
 			angle = breve.breveInternalFunctionFinder.angle( self, toLight, transDir )
 			if ( angle < self.sensorAngle ):
@@ -39,7 +41,6 @@ class SmellSensor(breve.BraitenbergSensor):
 		if ( lights != 0 ):
 			total = ( total / lights )
 
-		total = ( ( 50 * total ) * self.bias )
 		self.wheels.activate( total )
 
 breve.SmellSensor = SmellSensor
