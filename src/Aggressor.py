@@ -52,10 +52,10 @@ class AggressorController(breve.BraitenbergControl):
 
 		self.vehicle.addSensor(self.rightSensor, breve.vector(2.000000, 0.400000, 1.500000), breve.vector(1,0,0))
 		self.vehicle.addSensor(self.leftSensor, breve.vector(2.000000, 0.400000, -1.500000), breve.vector(1,0,0))
-		self.vehicle.addSensor(self.middleSensor, breve.vector(2.0, 0.4, 0), breve.vector(1, 0, 0))
+		self.vehicle.addSensor(self.middleSensor, breve.vector(2.2, 0.4, 0), breve.vector(1, 0, 0))
 
-		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.rightSensor, self.middleSensor], lambda rightSensor, middleSensor: rightSensor*10-middleSensor*11 + 1)
-		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftSensor, self.middleSensor], lambda leftSensor, middleSensor: leftSensor*10-middleSensor*11 + 1)
+		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.rightSensor, self.middleSensor], lambda rightSensor, middleSensor: rightSensor*10-(1/middleSensor)*11 + 1)
+		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftSensor, self.middleSensor], lambda leftSensor, middleSensor: leftSensor*10-(1/middleSensor)*11 + 1)
 
 breve.AggressorController = AggressorController
 

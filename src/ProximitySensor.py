@@ -19,13 +19,15 @@ class ProximitySensor(breve.BraitenbergSensor):
 
 		transDir = self.getRotation() * self.direction
 
-		for i in breve.allInstances("Real"):
-			i = i.getCollisionShape()
-			toLight = i.getLocation() - self.getLocation()
-			angle = breve.breveInternalFunctionFinder.angle( self, toShape, transDir )
+		for obj in breve.allInstances("Real"):
+			i = obj.getCollisionShape()
+			toLight = obj.getLocation() - self.getLocation()
+			angle = breve.breveInternalFunctionFinder.angle(self, toShape, transDir )
 
-			if ( angle < self.sensorAngle ):
+			if (angle < self.sensorAngle):
 				proximity = min(proximity, i.distance(self.getLocation()))
+
+		print proximity
 
 		self.activators.activate(proximity, self)
 

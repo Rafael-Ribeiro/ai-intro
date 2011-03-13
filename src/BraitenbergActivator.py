@@ -12,8 +12,8 @@ class BraitenbergActivator(object):
 
 		for sensor in sensors:
 			sensor.link(self)
-			self.sensors[sensor.getName()] = 0
+			self.sensors[sensor.getName()] = 1
 
 	def activate(self, value, sensor):
-		self.sensors[sensor.getName()] = value
+		self.sensors[sensor.getName()] = min(max(value, 0.00001), 0.999999) # avoid division by zero errors
 		self.wheel.activate(self.activationFunction(**self.sensors))

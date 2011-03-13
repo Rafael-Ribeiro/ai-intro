@@ -32,7 +32,7 @@ class LightSensor(breve.BraitenbergSensor):
 			angle = breve.breveInternalFunctionFinder.angle( self, toLight, transDir )
 
 			if ( angle < self.sensorAngle ):
-				distance = toLight.lenght()
+				distance = toLight.length()
 
 				 # light intensity is inversely proportional to d**2 (area of sphere surface with radius d)
 				strength = i.getIntensity()/(1.0 + (distance*distance)/self.bias)
