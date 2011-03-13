@@ -7,7 +7,8 @@
 import breve
 import math
 
-from LightSensor import LightSensor 
+from LightSource import LightSource
+from LightSensor import LightSensor
 from ProximitySensor import ProximitySensor
 from BraitenbergActivator import BraitenbergActivator
 
@@ -26,7 +27,7 @@ class AggressorController(breve.BraitenbergControl):
 
 	def init(self):
 		for i in range(10):
-			light = breve.createInstances(breve.BraitenbergLight, 1, 1.0, breve.vector(0,1,0))
+			light = breve.createInstances(breve.LightSource, 1, 1.0, breve.vector(0,1,0))
 			light.move(breve.vector((20 * breve.breveInternalFunctionFinder.sin(self, ((i * 6.280000) / 10))), 1, (20 * breve.breveInternalFunctionFinder.cos(self, ((i * 6.280000) / 10)))))
 
 		

@@ -24,7 +24,7 @@ class LightSensor(breve.BraitenbergSensor):
 		total = 0
 
 		transDir = self.getRotation() * self.direction
-		for i in breve.allInstances("BraitenbergLight"):
+		for i in breve.allInstances("LightSource"):
 			if i.getColor() != self.color:
 				continue
 
