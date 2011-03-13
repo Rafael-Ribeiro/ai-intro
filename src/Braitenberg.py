@@ -96,8 +96,8 @@ class BraitenbergVehicle( breve.MultiBody ):
 		return 0.100000
 
 	def init( self ):
-		self.bodyShape = breve.createInstances( breve.Shape, 1 )
-		self.bodyShape.initWithCube( breve.vector( 4.000000, 0.750000, 3.000000 ) )
+		self.bodyShape = breve.createInstances( breve.Cube, 1 )
+		self.bodyShape.initWith( breve.vector( 4.000000, 0.750000, 3.000000 ) )
 		self.wheelShape = breve.createInstances( breve.Shape, 1 )
 		self.wheelShape.initWithPolygonDisk( 40, self.getWheelWidth(), self.getWheelRadius() )
 		self.sensorShape = breve.createInstances( breve.Shape, 1 )
@@ -146,67 +146,53 @@ breve.BraitenbergLight = BraitenbergLight
 class BraitenbergWheel( breve.Link ):
 	'''A BraitenbergWheel is used in conjunction with OBJECT(BraitenbergVehicle) to build Braitenberg vehicles.  This class is typically not instantiated manually, since OBJECT(BraitenbergVehicle) creates one for you when you add a wheel to the vehicle. <p> <b>NOTE: this class is included as part of the file "Braitenberg.tz".</b>'''
 
+	MAX_VELOCITY = 30
+
 	def __init__( self ):
 		breve.Link.__init__( self )
+
 		self.joint = None
-		self.naturalVelocity = 0
-		self.newVelocity = 0
-		self.oldVelocity = 0
+		self.velocity = 0
+
 		BraitenbergWheel.init( self )
 
 	def activate( self, n ):
-		'''Used internally.'''
-
-		self.newVelocity = ( self.newVelocity + n )
+		self.velocity = n
 
 	def init( self ):
-		self.naturalVelocity = 0
-		self.newVelocity = 0
+		pass
 
 	def postIterate( self ):
-		if ( self.newVelocity > 30 ):
-			self.newVelocity = 30
-
-		if ( self.newVelocity == 0 ):
-			self.joint.setJointVelocity( self.oldVelocity )
-			self.oldVelocity = ( self.oldVelocity * 0.950000 )
-
-		else:
-			self.joint.setJointVelocity( self.newVelocity )
-			self.oldVelocity = self.newVelocity
-
-
-		self.newVelocity = self.naturalVelocity
+		self.joint.setJointVelocity(min(self.velocity, BraitenberWheel.MAX_VELOCITY))
 
 	def setJoint( self, j ):
 		'''Used internally.'''
 
 		self.joint = j
 
-	def setNaturalVelocity( self, n ):
-		'''Sets the "natural" velocity of this wheel.  The natural velocity is the speed at which the wheel turns in the absence of sensor input.  '''
-
-		self.naturalVelocity = n
-
-
 breve.BraitenbergWheel = BraitenbergWheel
 class BraitenbergSensor( breve.Link ):
 	'''A BraitenbergSensor is used in conjunction with OBJECT(BraitenbergVehicle) to build Braitenberg vehicles.  This class is typically not instantiated manually, since OBJECT(BraitenbergVehicle) creates one for you when you add a sensor to the vehicle. <p> <b>NOTE: this class is included as part of the file "Braitenberg.tz".</b>'''
 
+	MAX_VALUE = 10
+	
 	def __init__( self ):
 		breve.Link.__init__( self )
-		self.activationMethod = ''
-		self.activationObject = None
-		self.bias = 0
+
+		self.name = ""
 		self.direction = breve.vector()
 		self.sensorAngle = 0
-		self.wheels = breve.objectList()
+		self.activators = breve.objectList()
+
 		BraitenbergSensor.init( self )
 
-	def init( self ):
-		self.bias = 1.000000
+	def init( self, name):
+		self.name = name
 		self.direction = breve.vector( 0, 1, 0 )
 		self.sensorAngle = 1.600000
+
+	def getName(self):
+		return self.name
 
 	def iterate( self ):
 		i = None
@@ -221,43 +207,20 @@ class BraitenbergSensor( breve.Link ):
 		for i in breve.allInstances( "BraitenbergLights" ):
 			toLight = ( i.getLocation() - self.getLocation() )
 			angle = breve.breveInternalFunctionFinder.angle( self, toLight, transDir )
+
 			if ( angle < self.sensorAngle ):
 				strength = breve.length( ( self.getLocation() - i.getLocation() ) )
 				strength = ( 1.000000 / ( strength * strength ) )
-				if ( self.activationMethod and self.activationObject ):
-					strength = self.activationObject.callMethod( self.activationMethod, [ strength ] )
 
+				total += strength
+	
+		total = min(total, BraitenbergSensor.MAX_VALUE)
+		self.activators.activate(total, self)
 
-				if ( strength > 10 ):
-					strength = 10
+	def link( self, activator):
+		'''Associates this sensor with activator activator.'''
 
-				total = ( total + strength )
-				lights = ( lights + 1 )
-
-
-
-
-		if ( lights != 0 ):
-			total = ( total / lights )
-
-		total = ( ( 50 * total ) * self.bias )
-		self.wheels.activate( total )
-
-	def link( self, w ):
-		'''Associates this sensor with wheel w.'''
-
-		self.wheels.append( w )
-
-	def setActivationMethod( self, m, o ):
-		'''This method specifies an activation method for the sensor.  An activation method is a method which takes as input the strength read by the sensor, and as output returns the strength of the  signal which will travel on to the motor. <p> Your activation function should be defined as: <pre> + to <i>activation-function-name</i> with-sensor-strength s (float): </pre> <p> The default activation method is linear, but more complex vehicles may require non-linear activation functions. '''
-
-		self.activationMethod = m
-		self.activationObject = o
-
-	def setBias( self, d ):
-		'''Sets the "bias" of this sensor.  The default bias is 1, meaning that the sensor has a positive influence on associated wheels with strength 1.  You can change this to any magnitude, positive or negative.'''
-
-		self.bias = d
+		self.activators.append( activator )
 
 	def setSensorAngle( self, n ):
 		'''Sets the angle in which this sensor can detect light.  The default value of 1.5 means that the sensor can see most of everything in front of it.  Setting the value to be any higher leads to general wackiness, so I don't suggest it.'''
