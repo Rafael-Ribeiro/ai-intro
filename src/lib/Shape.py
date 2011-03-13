@@ -4,12 +4,8 @@
 # original steve-language source code.  Please see the original
 # file for more detailed comments and documentation.
 
-#import sys
-#sys.path.append('/usr/share/pyshared/')
-#sys.path.append('/usr/share/pyshared/numpy')
 
-import numpy # TODO: python version 2.4.3, doesnt have numpy in the path
-			 # can't use 2.6s because 2.4 doesnt have "multiarray"
+import time
 import breve
 import math
 
@@ -180,7 +176,7 @@ class Cube( breve.Shape ):
 		self.size = breve.vector()
 
 	def initWith( self, size ):
-		self.half = size
+		self.half = size/2.0
 		'''Initializes the cube to a rectangular solid with size cubeSize. '''
 
 		#self.radius = math.sqrt(math.sqrt(size.x*size.x + size.y*size.y)**2 + size.z*size.z)
@@ -191,30 +187,64 @@ class Cube( breve.Shape ):
 		
 		return self
 
-	def distance(self, obj, point):
-		r = obj.getRotationMatrix()
-		l = obj.getLocation()
+	def distance(self, obj, Po):
+		Fr = obj.getRotationMatrix()
+		Fo = obj.getLocation()
 
-		mat = numpy.matrix(
-			[[r[0][0], r[0][1], r[0][2], l[0]],
-			 [r[1][0], r[1][1], r[1][2], l[1]],
-			 [r[2][0], r[2][1], r[2][2], l[2]],
-			 [0      , 0      , 0      , 1   ]])
+		# put Fr in a Matrix2D (breve.matrix doesnt support multiplications :s)
+		FrM = breve.Matrix2D()
+		FrM.initWith(3,3)
+		for i in range(3):
+			for j in range(3):
+				FrM.setValue(Fr[i*3+j], i, j)
 
-		v = numpy.matrix([[point.x], [point.y], [point.z], [1]])
+		# Fo is the center coordinates in global frame, calculate the global center coordinates in the local frame		
+		delta = breve.Matrix2D()
+		delta.initWith(3,1)
+		for i in range(3):
+			delta.setValue(-Fo[i], i, 0)
 
-		p = mat*v
+		T = breve.Matrix2D()
+		T.initWith(3,1)
+
+		delta.transform(FrM, T)
+		
+		# We now have 	Fr = Destination's versors in function of Originals
+		#				T = Origin point in function of destination versors
+		Trans = breve.Matrix2D()
+		Trans.initWith(4,4)
+		for i in range(3):
+			for j in range(3):
+				Trans.setValue(FrM.getValue(i, j), i, j)
+			Trans.setValue(T.getValue(i,0),  i, 3)
+		Trans.setValue(0.0, 3, 0)
+		Trans.setValue(0.0, 3, 1)
+		Trans.setValue(0.0, 3, 2)
+		Trans.setValue(1.0, 3, 3)
+
+		# Put point into a matrix
+		PoM = breve.Matrix2D()
+		PoM.initWith(4,1)
+		for i in range(3):
+			PoM.setValue(Po[i], i, 0)
+		PoM.setValue(1.0, 3, 0)
+
+		# Resulting vector
+		p = breve.Matrix2D()
+		p.initWith(4,1)
+				
+		PoM.transform(Trans, p)
+
 		d = 0.0
 		for i in range(3):
-			if p[i] < -self.half[i]:
-				d += (-self.half[i]-p[i])**2
+			if p.getValue(i,0) < -self.half[i]:
+				d += (-self.half[i]-p.getValue(i,0))**2
 
-			elif p[i] > self.half[i]:
-				d += (p[i]-self.half[i])**2
+			elif p.getValue(i,0) > self.half[i]:
+				d += (p.getValue(i,0)-self.half[i])**2
 
+		#print "distance:", math.sqrt(d)
 		return math.sqrt(d)
-		#return (location - point).length() - self.radius
-
 
 breve.Cube = Cube
 class PolygonDisk( breve.Shape ):
