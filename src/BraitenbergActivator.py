@@ -3,7 +3,7 @@
 
 #import breve
 
-class BraitenbergActivator:
+class BraitenbergActivator(object):
 	def __init__(self, wheel, fn):
 		self.wheel = wheel
 		self.activationFunction = fn

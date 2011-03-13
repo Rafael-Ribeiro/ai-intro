@@ -7,18 +7,18 @@ class LightSensor(breve.BraitenbergSensor):
 	'''A BraitenbergSensor is used in conjunction with OBJECT(BraitenbergVehicle) to build Braitenberg vehicles.  This class is typically not instantiated manually, since OBJECT(BraitenbergVehicle) creates one for you when you add a sensor to the vehicle. <p> <b>NOTE: this class is included as part of the file "Braitenberg.tz".</b>'''
 
 	def __init__( self ):
-		breve.Link.__init__( self )
+		breve.BraitenbergSensor.__init__( self )
 
 		self.direction = breve.vector()
 		self.sensorAngle = 0
 
-	def init( self, name, direction, angle):
+	def init( self, name, angle):
 		breve.BraitenbergSensor.init(self, name)
 
-		self.direction = direction #breve.vector( 0, 1, 0 )
+		self.direction = breve.vector(0, 1, 0)
 		self.sensorAngle = angle #1.600000
 
-	def iterate( self ):
+	def iterate(self):
 		total = 0
 
 		transDir = self.getRotation() * self.direction

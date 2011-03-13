@@ -3,8 +3,8 @@
 # original steve-language source code.  Please see the original
 # file for more detailed comments and documentation.
 
-
 import breve
+import math
 
 class BraitenbergControl(breve.PhysicalControl):
 	'''This class is used for building simple Braitenberg vehicle  simulations.  To create a Braitenberg vehicle simulation,  subclass BraitenbergControl and use the init method to  create OBJECT(BraitenbergLight) and  OBJECT(BraitenbergVehicle) objects.'''
@@ -41,22 +41,27 @@ class BraitenbergVehicle(breve.MultiBody):
 		self.wheels = breve.objectList()
 		BraitenbergVehicle.init(self)
 
-	def addSensor(self, location):
+	def addSensor(self, sensor, location, direction):
 		'''Adds a sensor at location on the vehicle.  This method returns the sensor which is created, a OBJECT(BraitenbergSensor).  You'll use the returned object to connect it to the vehicle's wheels.'''
 
 		joint = None
-		sensor = None
 
-		sensor = breve.createInstances(breve.BraitenbergSensor, 1)
+		# perpendicular to direction and (0,1,0)
+		direction = direction/direction.length()
+		normal = breve.vector(-direction.z, 0, direction.x)
+		rotation = math.acos(direction.y)
+
 		sensor.setShape(self.sensorShape)
 		joint = breve.createInstances(breve.RevoluteJoint, 1)
-		joint.setRelativeRotation(breve.vector(0, 0, 1), -1.570000)
+		joint.setRelativeRotation(normal, rotation)
+
 		joint.link(breve.vector(1, 0, 0), location, breve.vector(0, 0, 0), sensor, self.bodyLink)
 		joint.setDoubleSpring(300, 0.010000, -0.010000)
+
 		self.addDependency(joint)
 		self.addDependency(sensor)
-		sensor.setColor(breve.vector(0, 0, 0))
 		self.sensors.append(sensor)
+
 		return sensor
 
 	def addWheel(self, location):
@@ -145,6 +150,9 @@ class BraitenbergLight(breve.Mobile):
 
 		self.setShape(breve.createInstances(breve.Shape, 1).initWithSphere(0.300000))
 		self.setColor(color)
+	
+	def getIntensity(self):
+		return self.intensity
 
 breve.BraitenbergLight = BraitenbergLight
 class BraitenbergWheel(breve.Link):
