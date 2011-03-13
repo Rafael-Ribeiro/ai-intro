@@ -4,11 +4,8 @@
 import breve
 
 class ProximitySensor(breve.BraitenbergSensor):
-	def __init__( self ):
-		breve.BraitenbergSensor.__init__(self)
-
-	def init(self, name):
-		breve.BraitenbergSensor.init(self, name)
+	def __init__(self, name):
+		breve.BraitenbergSensor.__init__(self, name)
 
 	def iterate( self ):
 		i = None
@@ -21,7 +18,7 @@ class ProximitySensor(breve.BraitenbergSensor):
 		toLight = breve.vector()
 
 		transDir = ( self.getRotation() * self.direction )
-		for i in breve.allInstances( "Shape" ):
+		for i in breve.allInstances("Shape"):
 			toLight = i.getLocation() - self.getLocation()
 			angle = breve.breveInternalFunctionFinder.angle( self, toShape, transDir )
 

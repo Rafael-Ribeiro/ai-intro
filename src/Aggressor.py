@@ -25,30 +25,22 @@ class AggressorController(breve.BraitenbergControl):
 
 	def init(self):
 		for i in range(10):
-			light = breve.createInstances(breve.BraitenbergLight, 1)
+			light = breve.createInstances(breve.BraitenbergLight, 1, 1.0, breve.vector(0,1,0))
 			light.move(breve.vector((20 * breve.breveInternalFunctionFinder.sin(self, ((i * 6.280000) / 10))), 1, (20 * breve.breveInternalFunctionFinder.cos(self, ((i * 6.280000) / 10)))))
-			light.init(1.0, breve.vector(0,1,0))
 
-		self.vehicle = breve.createInstances(breve.BraitenbergVehicle, 1)
-		self.vehicle.init(breve.vector(4, 0.7, 3), breve.vector(0, 0.900000, 0))
+		self.vehicle = breve.createInstances(breve.BraitenbergVehicle, 1, breve.vector(4, 0.7, 3), breve.vector(0, 0.900000, 0))
 		self.watch(self.vehicle)
 
 		#self.vehicle.move(breve.vector(0, 2, 18))
 
-		self.leftWheel = breve.createInstances(breve.BraitenbergWheel, 1)
-		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1)
-	
-		self.leftWheel.init(0.6, 0.1)
-		self.rightWheel.init(0.6, 0.1)
+		self.leftWheel = breve.createInstances(breve.BraitenbergWheel, 1, 0.6, 0.1)
+		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 0.6, 0.1)
 	
 		self.vehicle.addWheel(self.leftWheel, breve.vector(-0.500000, 0, -1.500000))
 		self.vehicle.addWheel(self.rightWheel, breve.vector(-0.500000, 0, 1.500000))
 
-		self.rightSensor = breve.createInstances(LightSensor, 1)
-		self.rightSensor.init('rightSensor', math.pi/4, breve.vector(0,1,0))
-
-		self.leftSensor = breve.createInstances(LightSensor, 1)
-		self.leftSensor.init('leftSensor', math.pi/4, breve.vector(0,1,0))
+		self.rightSensor = breve.createInstances(LightSensor, 1, 'rightSensor', math.pi/4, breve.vector(0,1,0))
+		self.leftSensor = breve.createInstances(LightSensor, 1, 'leftSensor', math.pi/4, breve.vector(0,1,0))
 
 		self.rightSensor = self.vehicle.addSensor(self.rightSensor, breve.vector(2.000000, 0.400000, 1.500000), breve.vector(1,0,0))
 		self.leftSensor = self.vehicle.addSensor(self.leftSensor, breve.vector(2.000000, 0.400000, -1.500000), breve.vector(1,0,0))
