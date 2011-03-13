@@ -160,18 +160,16 @@ class BraitenbergWheel(breve.Link):
 
 		BraitenbergWheel.init(self)
 
-	def activate(self, n):
-		self.velocity = min(n, BraitenbergWheel.MAX_VELOCITY)
-
 	def init(self):
 		pass
+
+	def activate(self, n):
+		self.velocity = min(n, BraitenbergWheel.MAX_VELOCITY)
 
 	def postIterate(self):
 		self.joint.setJointVelocity(self.velocity)
 
 	def setJoint(self, j):
-		'''Used internally.'''
-
 		self.joint = j
 
 breve.BraitenbergWheel = BraitenbergWheel
