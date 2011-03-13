@@ -1,8 +1,15 @@
+#!/usr/bin/python
 
 # Note: this file was automatically converted to Python from the
 # original steve-language source code.  Please see the original
 # file for more detailed comments and documentation.
 
+#import sys
+#sys.path.append('/usr/share/pyshared/')
+#sys.path.append('/usr/share/pyshared/numpy')
+
+import numpy # TODO: python version 2.4.3, doesnt have numpy in the path
+			 # can't use 2.6s because 2.4 doesnt have "multiarray"
 import breve
 import math
 
@@ -160,8 +167,8 @@ class Sphere( breve.Shape ):
 
 		return self
 
-	def distance(self, location, point):
-		return (location - point).length() - self.radius
+	def distance(self, obj, point):
+		return (obj.location - point).length() - self.radius
 
 
 breve.Sphere = Sphere
@@ -170,22 +177,43 @@ class Cube( breve.Shape ):
 
 	def __init__( self ):
 		breve.Shape.__init__( self )
-		self.radius = 0
+		self.size = breve.vector()
 
-	def initWith( self, cubeSize ):
+	def initWith( self, size ):
+		self.half = size
 		'''Initializes the cube to a rectangular solid with size cubeSize. '''
 
-		self.radius = math.sqrt(math.sqrt(cubeSize.x*cubeSize.x + cubeSize.y*cubeSize.y)**2 + cubeSize.z*cubeSize.z)
+		#self.radius = math.sqrt(math.sqrt(size.x*size.x + size.y*size.y)**2 + size.z*size.z)
 
-		self.shapePointer = breve.breveInternalFunctionFinder.newCube( self, cubeSize, self.density )
+		self.shapePointer = breve.breveInternalFunctionFinder.newCube( self, size, self.density )
 		if ( not self.shapePointer ):
 			raise Exception( '''Could not create Cube: invalid arguments''' )
 		
 		return self
 
-	# TODO: OBB-Sphere colision distance
-	def distance(self, location, point):
-		return (location - point).length() - self.radius
+	def distance(self, obj, point):
+		r = obj.getRotationMatrix()
+		l = obj.getLocation()
+
+		mat = numpy.matrix(
+			[[r[0][0], r[0][1], r[0][2], l[0]],
+			 [r[1][0], r[1][1], r[1][2], l[1]],
+			 [r[2][0], r[2][1], r[2][2], l[2]],
+			 [0      , 0      , 0      , 1   ]])
+
+		v = numpy.matrix([[point.x], [point.y], [point.z], [1]])
+
+		p = mat*v
+		d = 0.0
+		for i in range(3):
+			if p[i] < -self.half[i]:
+				d += (-self.half[i]-p[i])**2
+
+			elif p[i] > self.half[i]:
+				d += (p[i]-self.half[i])**2
+
+		return math.sqrt(d)
+		#return (location - point).length() - self.radius
 
 
 breve.Cube = Cube

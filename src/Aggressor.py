@@ -23,7 +23,7 @@ class AggressorController(breve.BraitenbergControl):
 		self.block = breve.createInstances(breve.Mobile, 1)
 		self.blockShape = breve.createInstances(breve.Cube, 1).initWith(breve.vector(1,1,1))
 		self.block.setShape(self.blockShape)
-		self.block.move(breve.vector(0, 2, 20))
+		self.block.move(breve.vector(18, 2, 0))
 
 		self.vehicle = breve.createInstances(breve.BraitenbergVehicle, 1, breve.vector(4, 0.7, 3))
 		self.watch(self.vehicle)
