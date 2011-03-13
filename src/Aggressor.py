@@ -8,6 +8,7 @@ import breve
 import math
 
 from LightSensor import LightSensor 
+from ProximitySensor import ProximitySensor
 from BraitenbergActivator import BraitenbergActivator
 
 class AggressorController(breve.BraitenbergControl):
@@ -28,10 +29,16 @@ class AggressorController(breve.BraitenbergControl):
 			light = breve.createInstances(breve.BraitenbergLight, 1, 1.0, breve.vector(0,1,0))
 			light.move(breve.vector((20 * breve.breveInternalFunctionFinder.sin(self, ((i * 6.280000) / 10))), 1, (20 * breve.breveInternalFunctionFinder.cos(self, ((i * 6.280000) / 10)))))
 
-		self.vehicle = breve.createInstances(breve.BraitenbergVehicle, 1, breve.vector(4, 0.7, 3), breve.vector(0, 0.9, 20))
+		
+		self.block = breve.createInstances(breve.Mobile, 1)
+		self.blockShape = breve.createInstances(breve.Cube, 1).initWith(breve.vector(1,1,1))
+		self.block.setShape = self.blockShape
+		self.block.move(breve.vector(0, 2, -18))
+
+		self.vehicle = breve.createInstances(breve.BraitenbergVehicle, 1, breve.vector(4, 0.7, 3))
 		self.watch(self.vehicle)
 
-		#self.vehicle.move(breve.vector(0, 2, 18))
+		self.vehicle.move(breve.vector(0, 2, 18))
 
 		self.leftWheel = breve.createInstances(breve.BraitenbergWheel, 1, 0.6, 0.1)
 		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 0.6, 0.1)
@@ -41,12 +48,14 @@ class AggressorController(breve.BraitenbergControl):
 
 		self.rightSensor = breve.createInstances(LightSensor, 1, 'rightSensor', math.pi/4, breve.vector(0,1,0))
 		self.leftSensor = breve.createInstances(LightSensor, 1, 'leftSensor', math.pi/4, breve.vector(0,1,0))
+		self.middleSensor = breve.createInstances(ProximitySensor, 1, 'middleSensor', math.pi/4)
 
-		self.rightSensor = self.vehicle.addSensor(self.rightSensor, breve.vector(2.000000, 0.400000, 1.500000), breve.vector(1,0,0))
-		self.leftSensor = self.vehicle.addSensor(self.leftSensor, breve.vector(2.000000, 0.400000, -1.500000), breve.vector(1,0,0))
+		self.vehicle.addSensor(self.rightSensor, breve.vector(2.000000, 0.400000, 1.500000), breve.vector(1,0,0))
+		self.vehicle.addSensor(self.leftSensor, breve.vector(2.000000, 0.400000, -1.500000), breve.vector(1,0,0))
+		self.vehicle.addSensor(self.middleSensor, breve.vector(2.0, 0.4, 0), breve.vector(1, 0, 0))
 
-		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.rightSensor], lambda rightSensor: rightSensor*10+1)
-		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftSensor], lambda leftSensor: leftSensor*10+1)
+		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.rightSensor, self.middleSensor], lambda rightSensor, middleSensor: rightSensor*10-middleSensor*11 + 1)
+		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftSensor, self.middleSensor], lambda leftSensor, middleSensor: leftSensor*10-middleSensor*11 + 1)
 
 breve.AggressorController = AggressorController
 

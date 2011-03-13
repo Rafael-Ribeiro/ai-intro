@@ -31,7 +31,7 @@ breve.BraitenbergControl = BraitenbergControl
 class BraitenbergVehicle(breve.MultiBody):
 	'''This object is used in conjunction with OBJECT(BraitenbergControl) to create simple Braitenberg vehicles.'''
 
-	def __init__(self, size, pos):
+	def __init__(self, size):
 		breve.MultiBody.__init__(self)
 		self.sensors = breve.objectList()
 		self.wheels = breve.objectList()
@@ -46,7 +46,6 @@ class BraitenbergVehicle(breve.MultiBody):
 		self.bodyLink.setET(0.800000)
 
 		self.setRoot(self.bodyLink)
-		self.move(pos)
 		self.setTextureScale(1.500000)
 
 	def addSensor(self, sensor, location, direction):
@@ -68,8 +67,6 @@ class BraitenbergVehicle(breve.MultiBody):
 		self.addDependency(joint)
 		self.addDependency(sensor)
 		self.sensors.append(sensor)
-
-		return sensor
 
 	def addWheel(self, wheel, location, axis = breve.vector(0,0,1)):
 		joint = None
@@ -105,8 +102,6 @@ class BraitenbergLight(breve.Mobile):
 		breve.Mobile.__init__(self)
 
 		self.intensity = intensity
-		self.color = color # vector(r,g,b)
-
 		self.setShape(breve.createInstances(breve.Shape, 1).initWithSphere(0.300000))
 		self.setColor(color)
 	

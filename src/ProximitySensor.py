@@ -4,27 +4,28 @@
 import breve
 
 class ProximitySensor(breve.BraitenbergSensor):
-	def __init__(self, name):
+	def __init__(self, name, angle):
 		breve.BraitenbergSensor.__init__(self, name)
 
-	def iterate( self ):
-		i = None
-		lights = 0
-		angle = 0
-		strength = 0
-		
-		proximity = float("infinity")
-		transDir = breve.vector()
-		toLight = breve.vector()
+		self.direction = breve.vector(0, 1, 0)
+		self.sensorAngle = angle
 
-		transDir = ( self.getRotation() * self.direction )
-		for i in breve.allInstances("Shape"):
+		self.shape = breve.createInstances(breve.PolygonCone, 1, 10, 0.2, 0.2)
+		self.setColor(breve.vector(0,0,0))
+		self.setShape(self.shape)
+
+	def iterate( self ):
+		proximity = float("infinity")
+
+		transDir = self.getRotation() * self.direction
+
+		for i in breve.allInstances("Real"):
+			i = i.getCollisionShape()
 			toLight = i.getLocation() - self.getLocation()
 			angle = breve.breveInternalFunctionFinder.angle( self, toShape, transDir )
 
 			if ( angle < self.sensorAngle ):
-				proximity = min(proximity, distance(self.getLocation()))
+				proximity = min(proximity, i.distance(self.getLocation()))
 
 		self.activators.activate(proximity, self)
 
-breve.ProximitySensor = ProximitySensor
