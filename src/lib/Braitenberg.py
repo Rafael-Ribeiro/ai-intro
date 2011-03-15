@@ -54,9 +54,9 @@ class BraitenbergVehicle(breve.MultiBody):
 		joint = None
 
 		# perpendicular to direction and (0,1,0)
-		direction = direction/direction.length()
-		normal = breve.vector(-direction.z, 0, direction.x)
-		rotation = math.acos(direction.y)
+		direction = direction/direction.length() #normalization
+		normal = breve.vector(-direction.z, 0, direction.x) #cross product
+		rotation = math.acos(direction.y) #angle between vectors (using dot product definition)
 
 		joint = breve.createInstances(breve.RevoluteJoint, 1)
 		joint.setRelativeRotation(normal, rotation)
