@@ -28,10 +28,10 @@ class SmellSensor(breve.BraitenbergSensor):
 
 			toSmell = i.getLocation() - self.getLocation()
 
-			distance = toSmell.length()
+			distance = toSmell.length()/self.bias
 
 			 # smell intensity is inversely proportional to d**2
-			strength = i.getIntensity()/(1.0 + (distance*distance)/self.bias)
+			strength = i.getIntensity()/(1.0 + (distance*distance))
 			total += strength
 	
 		total = min(total, 1.0)

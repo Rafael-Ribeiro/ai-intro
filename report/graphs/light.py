@@ -8,6 +8,7 @@ y = arange(-100, 100, 0.5)
 
 X,Y = meshgrid(x,y)
 
+# BIAS = distance from source where Intensity @ Sensor = 0.5*Intensity @ Source 
 BIAS = 50
 DIST = sqrt(X*X + Y*Y)/BIAS
 ANGLE = angle(X + Y*1j)
