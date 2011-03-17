@@ -121,8 +121,6 @@ class Shape( breve.Abstract ):
 		if self.shapePointer:
 			breve.breveInternalFunctionFinder.shapeSetMass( self, self.shapePointer, newMass )
 
-
-
 breve.Shape = Shape
 class CustomShape( breve.Shape ):
 	'''A CustomShape is a subclass of (Shape) which allows the user to  construct an arbitrary convex shape by specifying the faces of  the shape. <P> The shapes must conform to the following rules: <li>The point (0, 0, 0) must be on <b>inside</b> (not outside or  on the surface of) the shape. <li>The shape must be convex. <li>The shape must be solid and sealed by the faces. </ul> <p> If any of these conditions are not met, you will get errors  and/or unexpected results.'''
@@ -164,7 +162,7 @@ class Sphere( breve.Shape ):
 		return self
 
 	def distance(self, obj, point):
-		return (obj.location - point).length() - self.radius
+		return (obj.getLocation() - point).length() - self.radius
 
 
 breve.Sphere = Sphere
@@ -262,7 +260,6 @@ class PolygonDisk( breve.Shape ):
 
 
 		return self
-
 
 breve.PolygonDisk = PolygonDisk
 class PolygonCone( breve.Shape ):

@@ -10,7 +10,7 @@ class LightSource(breve.Mobile):
 		breve.Mobile.__init__(self)
 
 		self.intensity = intensity
-		self.setShape(breve.createInstances(breve.Shape, 1).initWithSphere(0.300000))
+		self.setShape(breve.createInstances(breve.Sphere, 1).initWithSphere(0.300000))
 		self.setColor(color)
 	
 	def getIntensity(self):

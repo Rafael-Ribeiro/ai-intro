@@ -31,7 +31,7 @@ breve.BraitenbergControl = BraitenbergControl
 class BraitenbergVehicle(breve.MultiBody):
 	'''This object is used in conjunction with OBJECT(BraitenbergControl) to create simple Braitenberg vehicles.'''
 
-	def __init__(self, size):
+	def __init__(self, size = breve.vector(7,1,4)):
 		breve.MultiBody.__init__(self)
 		self.sensors = breve.objectList()
 		self.wheels = breve.objectList()
@@ -54,7 +54,7 @@ class BraitenbergVehicle(breve.MultiBody):
 		joint = None
 
 		# perpendicular to direction and (0,1,0)
-		direction = direction/direction.length()
+		direction = direction.normalize()
 		normal = breve.vector(-direction.z, 0, direction.x)
 		rotation = math.acos(direction.y)
 
@@ -72,7 +72,7 @@ class BraitenbergVehicle(breve.MultiBody):
 		joint = None
 
 		joint = breve.createInstances(breve.RevoluteJoint, 1)
-		joint.setRelativeRotation(breve.vector(1, 0, 0), 1.570800) # irrelevant
+		joint.setRelativeRotation(breve.vector(-axis.z, 0, axis.x), 1.570800) # irrelevant
 		joint.link(axis, location, breve.vector(0, 0, 0), wheel, self.bodyLink)
 
 		wheel.setET(0.800000)

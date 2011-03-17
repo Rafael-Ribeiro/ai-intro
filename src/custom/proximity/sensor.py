@@ -4,7 +4,7 @@
 import breve
 
 class ProximitySensor(breve.BraitenbergSensor):
-	def __init__(self, name, angle):
+	def __init__(self, name, angle, classes):
 		breve.BraitenbergSensor.__init__(self, name)
 
 		self.direction = breve.vector(0, 1, 0)
@@ -14,18 +14,22 @@ class ProximitySensor(breve.BraitenbergSensor):
 		self.setColor(breve.vector(0,0,0))
 		self.setShape(self.shape)
 
+		self.classes = classes
+
 	def iterate( self ):
 		proximity = float("infinity")
 
 		transDir = self.getRotation() * self.direction
 
-		for obj in breve.allInstances("Mobile"):
-			i = obj.getCollisionShape()
-			toShape = obj.getLocation() - self.getLocation()
-			angle = breve.breveInternalFunctionFinder.angle(self, toShape, transDir )
+		for c in breve.instanceDict.keys():
+			if c in self.classes:
+				for obj in breve.instanceDict[c]:
+					i = obj.getCollisionShape()
+					toShape = obj.getLocation() - self.getLocation()
+					angle = breve.breveInternalFunctionFinder.angle(self, toShape, transDir)
 
-			if (angle < self.sensorAngle):
-				proximity = min(proximity, i.distance(obj, self.getLocation()))
+					if (angle < self.sensorAngle):
+						proximity = min(proximity, i.distance(obj, self.getLocation()))
 
 		proximity = max(0.0001, proximity) # avoid division by zero errors
 		self.activators.activate(proximity, self)
