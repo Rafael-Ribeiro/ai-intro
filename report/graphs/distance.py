@@ -8,10 +8,9 @@ y = arange(-100, 100, 0.5)
 
 X,Y = meshgrid(x,y)
 
-BIAS = 50
 DIST = sqrt(X*X + Y*Y)
 ANGLE = angle(X + Y*1j)
-Z = 0.5*((1+cos(ANGLE))/(DIST/BIAS+1))
+Z = (abs(ANGLE) < (math.pi/4.0))*DIST
 
 fig = figure()
 pcolor(X,Y,Z)
