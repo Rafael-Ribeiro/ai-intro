@@ -35,7 +35,7 @@ class LightSensor(breve.BraitenbergSensor):
 				distance = toLight.length()/self.bias
 
 				 # light intensity is inversely proportional to d**2 (area of sphere surface with radius d)
-				strength = i.getIntensity()/(1.0 + (distance*distance))
+				strength = i.getIntensity()/(1.0 + (distance*distance))*math.cos((math.pi/self.sensorAngle)/2*angle)
 				total += strength
 	
 		total = min(total, 1.0)

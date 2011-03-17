@@ -7,12 +7,16 @@ from custom.proximity.sensor import ProximitySensor
 from lib.Activator import BraitenbergActivator
 
 DEFAULT_SPEED = 2.0
+AXIS_DIST = 4
+RADIUS = 10
 
-def leftActivator(rightSensor):
-	return DEFAULT_SPEED - limit(rightSensor, 0, 1)
+def leftActivator(leftSensor, rightSensor):
+	# tangent velocity @ left wheel
+	return RADIUS*leftSensor/3 + (RADIUS+AXIS_DIST)*rightSensor/3
 
-def rightActivator(leftSensor):
-	return DEFAULT_SPEED - limit(leftSensor, 0, 1)
+def rightActivator(leftSensor, rightSensor):
+	# tangent velocity @ right wheel
+	return (RADIUS+AXIS_DIST)*leftSensor/3 + RADIUS*rightSensor/3
 
 class SphereMobile(breve.Mobile):
 	def __init__(self):
@@ -31,27 +35,27 @@ class FiveAVehicle(breve.BraitenbergVehicle):
 		self.addWheel(self.leftWheel,  breve.vector(-0.5, 0, -2), breve.vector(0, 0, 1))
 		self.addWheel(self.rightWheel, breve.vector(-0.5, 0,  2), breve.vector(0, 0, 1))
 
-		self.leftSensor  = breve.createInstances(ProximitySensor, 1, 'leftSensor', math.pi/4, [SphereMobile])
-		self.rightSensor = breve.createInstances(ProximitySensor, 1, 'rightSensor', math.pi/4, [SphereMobile])
+		self.leftSensor  = breve.createInstances(ProximitySensor, 1, 'leftSensor', math.pi/3, [SphereMobile])
+		self.rightSensor  = breve.createInstances(ProximitySensor, 1, 'rightSensor', math.pi/3, [SphereMobile])
 		
-		self.addSensor(self.leftSensor,  breve.vector(3.5, 0.3, -1), breve.vector(1, 0, 0))
-		self.addSensor(self.rightSensor, breve.vector(3.5, 0.3,  1), breve.vector(1, 0, 0))
+		self.addSensor(self.leftSensor,  breve.vector(3.5, 0.3, -2), breve.vector(0, 0, -1))
+		self.addSensor(self.rightSensor,  breve.vector(3.5, 0.3, 2), breve.vector(0, 0, 1))
 		
-		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.rightSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftSensor], rightActivator)
+		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.leftSensor, self.rightSensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftSensor, self.rightSensor], rightActivator)
 
 class OrbitController(breve.BraitenbergControl):
 	def __init__(self):
 		breve.BraitenbergControl.__init__(self)
 
 		self.vehicle = breve.createInstances(FiveAVehicle, 1)
-		self.vehicle.move(breve.vector(10, 2, 0))
-		self.vehicle.rotate(breve.vector(0,1,0), math.pi/2);
+		self.vehicle.move(breve.vector(0, 2, 2.5*RADIUS))
+		#self.vehicle.rotate(breve.vector(0,1,0), math.pi/2);
 		self.watch(self.vehicle)
 
 		# environment
 		self.blocks = breve.createInstances(SphereMobile, 2)
-		self.blocks[0].move(breve.vector(0, 1, 50))
-		self.blocks[1].move(breve.vector(0, 1, -50))
+		self.blocks[0].move(breve.vector(0, 2, RADIUS*1.5))
+		self.blocks[1].move(breve.vector(0, 2, -RADIUS*1.5))
 
 orbit = OrbitController()
