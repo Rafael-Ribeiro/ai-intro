@@ -11,8 +11,7 @@ class SoundSource(breve.Mobile):
 		self.intensity = intensity
 		self.type = type
 
-		#self.setShape(breve.createInstances(breve.Sphere,1).initWith(0.300000))
-		self.setShape(breve.createInstances(breve.Cube,1).initWith(breve.vector(1,1,1)))
+		self.setShape(breve.createInstances(breve.Sphere,1).initWith(0.300000))
 		self.setColor(type)
 	
 	def getIntensity(self):
