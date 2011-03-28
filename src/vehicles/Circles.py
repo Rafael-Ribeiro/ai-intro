@@ -1,15 +1,20 @@
 #!/usr/share/breve/bin/breve
+# -*- coding: utf-8 -*-
+
+import sys
+sys.path.append("../") 
 
 import math
 import breve
 
 from custom.proximity.sensor import ProximitySensor
+from custom.proximity.obstacles import SphereMobile
 from custom.functions import gaussian, limit
 from lib.Activator import BraitenbergActivator
 
 # http://en.wikipedia.org/wiki/Angular_frequency
 RADIUS = 40.0
-VELOCITY = 2.0
+VELOCITY = 10.0
 
 ANGULAR_FREQUENCY = VELOCITY/RADIUS
 
@@ -22,23 +27,13 @@ def leftActivator(leftSensor):
 def rightActivator(leftSensor):
 	return VELOCITY + ANGULAR_FREQUENCY*AXIS_DIST
 
-class SphereMobile(breve.Mobile):
-	def __init__(self, opacity = 1.0):
-		breve.Mobile.__init__(self)
-		self.shape = breve.createInstances(breve.Sphere, 1)
-		self.shape.initWith(1.0)
-		self.setShape(self.shape)
-		self.opacity = opacity
-
-	def getOpacity(self):
-		return self.opacity
 
 class CircleVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
 		breve.BraitenbergVehicle.__init__(self, breve.vector(7, 1, 4))
 
-		self.leftWheel = breve.createInstances(breve.BraitenbergWheel,  1, 1.5, 0.4)
-		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 1.5, 0.4)
+		self.leftWheel = breve.createInstances(breve.BraitenbergWheel,  1, 1.5, 1.5)
+		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 1.5, 1.5)
 
 		self.addWheel(self.leftWheel,  breve.vector(-0.5, 0, -2), breve.vector(0, 0, 1))
 		self.addWheel(self.rightWheel, breve.vector(-0.5, 0,  2), breve.vector(0, 0, 1))
