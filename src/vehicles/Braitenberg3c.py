@@ -33,12 +33,12 @@ VELOCITY = 0.0 	# Natural velocity
 
 LIGHT_BIAS = 5.0
 PROXIMITY_BIAS = 5.0
-SMELL_BIAS = 5.0
+SMELL_BIAS = 3.5
 SOUND_BIAS = 5.0
 
 LIGHT_FACTOR = 5.0
 PROXIMITY_FACTOR = 5.0
-SMELL_FACTOR = 15.0
+SMELL_FACTOR = 20.0
 SOUND_FACTOR = 5.0
 
 def leftActivator(rightLightSensor,rightProximitySensor,rightSmellSensor,leftSoundSensor):
