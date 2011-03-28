@@ -10,7 +10,7 @@ class DistanceSensor(breve.BraitenbergSensor):
 		self.direction = breve.vector(0, 1, 0)
 		self.sensorAngle = angle
 
-		self.shape = breve.createInstances(breve.PolygonCone, 1, 10, 0.2, 0.2)
+		self.shape = breve.createInstances(breve.PolygonCone, 1, 10, 0.2, 0.15)
 		self.setColor(breve.vector(0,0,0))
 		self.setShape(self.shape)
 

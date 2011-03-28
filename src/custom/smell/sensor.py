@@ -15,7 +15,7 @@ class SmellSensor(breve.BraitenbergSensor):
 
 		self.bias = bias
 
-		self.shape = breve.createInstances(breve.PolygonCone, 1, 5, 0.4, 0.5)
+		self.shape = breve.createInstances(breve.Sphere, 1).initWith(0.2)
 		self.setShape(self.shape)
 
 
