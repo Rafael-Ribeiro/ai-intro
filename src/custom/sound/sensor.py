@@ -15,7 +15,7 @@ class SoundSensor(breve.BraitenbergSensor):
 		self.direction = breve.vector(0, 1, 0)
 		self.sensorAngle = angle
 
-		self.shape = breve.createInstances(breve.PolygonCone, 1, 3, 0.3, 0.7)
+		self.shape = breve.createInstances(breve.PolygonCone, 1, 20, 0.3, 0.3)
 		self.setShape(self.shape)
 
 	def iterate(self):

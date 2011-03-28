@@ -17,7 +17,7 @@ class LightSensor(breve.BraitenbergSensor):
 		self.direction = breve.vector(0, 1, 0)
 		self.sensorAngle = angle
 		
-		self.shape = breve.createInstances(breve.PolygonCone, 1, 10, 0.5, 0.2)
+		self.shape = breve.createInstances(breve.PolygonCone, 1, 10, 0.5, 0.15)
 		self.setShape(self.shape)
 
 	def iterate(self):
