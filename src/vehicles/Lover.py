@@ -10,11 +10,10 @@ import math
 
 from custom.light.source import LightSource
 from custom.light.sensor import LightSensor
-from custom.proximity.sensor import ProximitySensor
 from lib.Activator import BraitenbergActivator
 
 VELOCITY = 2.0 	# Natural velocity
-BIAS = 5.0		# Try to maintain a 10 meter distance
+BIAS = 10.0		# Try to maintain a 10 meter distance
 
 def leftActivator(leftLightSensor):
 	return VELOCITY - leftLightSensor*(2*VELOCITY)

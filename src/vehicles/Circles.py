@@ -14,7 +14,7 @@ from lib.Activator import BraitenbergActivator
 
 # http://en.wikipedia.org/wiki/Angular_frequency
 RADIUS = 40.0
-VELOCITY = 10.0
+VELOCITY = 5.0
 
 ANGULAR_FREQUENCY = VELOCITY/RADIUS
 
@@ -32,8 +32,8 @@ class CircleVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
 		breve.BraitenbergVehicle.__init__(self, breve.vector(7, 1, 4))
 
-		self.leftWheel = breve.createInstances(breve.BraitenbergWheel,  1, 1.5, 1.5)
-		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 1.5, 1.5)
+		self.leftWheel = breve.createInstances(breve.BraitenbergWheel,  1, 1.5, 0.5)
+		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 1.5, 0.5)
 
 		self.addWheel(self.leftWheel,  breve.vector(-0.5, 0, -2), breve.vector(0, 0, 1))
 		self.addWheel(self.rightWheel, breve.vector(-0.5, 0,  2), breve.vector(0, 0, 1))
