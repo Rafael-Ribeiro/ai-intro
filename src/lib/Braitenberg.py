@@ -113,6 +113,11 @@ class BraitenbergWheel(breve.Link):
 		self.shape.initWithPolygonDisk(40, width, radius)
 		self.setShape(self.shape)
 
+		# Colision with a polygon disk is buggy at high speeds, make a sphere for the collision (also, it's faster)
+		self.wheel = breve.createInstances(breve.Shape, 1)
+		self.wheel.initWithSphere(radius)
+		self.setCollisionShape(self.wheel)
+
 	def activate(self, n):
 		self.velocity = min(n, BraitenbergWheel.MAX_VELOCITY)
 
