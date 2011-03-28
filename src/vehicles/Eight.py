@@ -6,16 +6,17 @@ import breve
 from custom.proximity.sensor import ProximitySensor
 from lib.Activator import BraitenbergActivator
 
+ANGULAR = 1.0/3.0
 AXIS_DIST = 4.0
 RADIUS = 10.0
 
 def leftActivator(leftSensor, rightSensor):
 	# tangent velocity @ left wheel
-	return RADIUS*leftSensor/3 + (RADIUS+AXIS_DIST)*rightSensor/3
+	return RADIUS*leftSensor*ANGULAR + (RADIUS+AXIS_DIST)*rightSensor*ANGULAR
 
 def rightActivator(leftSensor, rightSensor):
 	# tangent velocity @ right wheel
-	return (RADIUS+AXIS_DIST)*leftSensor/3 + RADIUS*rightSensor/3
+	return (RADIUS+AXIS_DIST)*leftSensor*ANGULAR + RADIUS*rightSensor*ANGULAR
 
 class SphereMobile(breve.Mobile):
 	def __init__(self):

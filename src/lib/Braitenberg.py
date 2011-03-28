@@ -98,7 +98,7 @@ class BraitenbergVehicle(breve.MultiBody):
 class BraitenbergWheel(breve.Link):
 	'''A BraitenbergWheel is used in conjunction with OBJECT(BraitenbergVehicle) to build Braitenberg vehicles.  This class is typically not instantiated manually, since OBJECT(BraitenbergVehicle) creates one for you when you add a wheel to the vehicle. <p> <b>NOTE: this class is included as part of the file "Braitenberg.tz".</b>'''
 
-	MAX_VELOCITY = 30
+	MAX_VELOCITY = 30.0
 
 	def __init__(self, radius, width):
 		breve.Link.__init__(self)
