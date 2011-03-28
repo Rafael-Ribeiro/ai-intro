@@ -1,9 +1,3 @@
 TODOs:
-	Calc angle in [-pi:pi] in SoundSensor
 	Validate all sensors
 	Build all vehicles
-	
-DECISIONS:
-	Distance sensor or Proximity sensor? (or both)
-	Angle Influence in light Sensor?
-

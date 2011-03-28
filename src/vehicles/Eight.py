@@ -1,28 +1,27 @@
 #!/usr/share/breve/bin/breve
+# -*- coding: utf-8 -*-
+
+import sys
+sys.path.append("../") 
 
 import math
 import breve
 
 from custom.proximity.sensor import ProximitySensor
+from custom.proximity.obstacles import SphereMobile
 from lib.Activator import BraitenbergActivator
 
+ANGULAR = 1.0/3.0
 AXIS_DIST = 4.0
 RADIUS = 10.0
 
 def leftActivator(leftSensor, rightSensor):
 	# tangent velocity @ left wheel
-	return RADIUS*leftSensor/3 + (RADIUS+AXIS_DIST)*rightSensor/3
+	return RADIUS*leftSensor*ANGULAR + (RADIUS+AXIS_DIST)*rightSensor*ANGULAR
 
 def rightActivator(leftSensor, rightSensor):
 	# tangent velocity @ right wheel
-	return (RADIUS+AXIS_DIST)*leftSensor/3 + RADIUS*rightSensor/3
-
-class SphereMobile(breve.Mobile):
-	def __init__(self):
-		breve.Mobile.__init__(self)
-		self.shape = breve.createInstances(breve.Sphere, 1)
-		self.shape.initWith(1.0)
-		self.setShape(self.shape)
+	return (RADIUS+AXIS_DIST)*leftSensor*ANGULAR + RADIUS*rightSensor*ANGULAR
 
 class EightVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
@@ -56,6 +55,5 @@ class OrbitController(breve.BraitenbergControl):
 		self.vehicle = breve.createInstances(EightVehicle, 1)
 		self.vehicle.move(breve.vector(0, 2, z+RADIUS+AXIS_DIST/2.0))
 		self.watch(self.vehicle)
-
 
 orbit = OrbitController()

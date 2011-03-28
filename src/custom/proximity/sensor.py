@@ -61,7 +61,7 @@ class ProximitySensor(breve.BraitenbergSensor):
 					angle = breve.breveInternalFunctionFinder.angle(self, toShape, transDir)
 
 					if (angle < self.sensorAngle):
-						proximity = min(proximity, i.distance(obj, self.getLocation()))
+						proximity = min(proximity, obj.getOpacity()*i.distance(obj, self.getLocation()))
 
 		intensity = 1.0/(proximity/self.bias+1.0)
 		self.activators.activate(intensity, self)

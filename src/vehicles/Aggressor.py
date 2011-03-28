@@ -1,6 +1,9 @@
 #!/usr/share/breve/bin/breve
+# -*- coding: utf-8 -*-
+# Light aggressor
 
-# Light aggressor, that runs away from blocks
+import sys
+sys.path.append("../") 
 
 import breve
 import math
@@ -37,8 +40,8 @@ class AggressorController(breve.BraitenbergControl):
 		self.vehicle.addWheel(self.leftWheel, breve.vector(-0.500000, 0, -1.500000))
 		self.vehicle.addWheel(self.rightWheel, breve.vector(-0.500000, 0, 1.500000))
 
-		self.rightLightSensor = breve.createInstances(LightSensor, 1, 'rightLightSensor', math.pi/4.0, breve.vector(0,1,0), 2.0)
-		self.leftLightSensor = breve.createInstances(LightSensor, 1, 'leftLightSensor', math.pi/4.0, breve.vector(0,1,0), 2.0)
+		self.rightLightSensor = breve.createInstances(LightSensor, 1, 'rightLightSensor', math.pi/2.0, breve.vector(0,1,0), 2.0)
+		self.leftLightSensor = breve.createInstances(LightSensor, 1, 'leftLightSensor', math.pi/2.0, breve.vector(0,1,0), 2.0)
 
 		self.vehicle.addSensor(self.rightLightSensor, breve.vector(2.0, 0.4, 1.5), breve.vector(1,0,0))
 		self.vehicle.addSensor(self.leftLightSensor,  breve.vector(2.0, 0.4,-1.5), breve.vector(1,0,0))

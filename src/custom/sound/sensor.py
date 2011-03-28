@@ -4,9 +4,6 @@
 import breve
 import math
 
-### TODO: This is a copy of light sensor... Adapt to cardioid formula.
-### UNTESTED MODIFICATIONS
-
 class SoundSensor(breve.BraitenbergSensor):
 	def __init__( self, name, type = breve.vector(0,0,1), angle = (3.0 * math.pi / 2), bias = 5.0 ):
 		breve.BraitenbergSensor.__init__(self,name)
@@ -31,11 +28,9 @@ class SoundSensor(breve.BraitenbergSensor):
 
 			toSound = i.getLocation() - self.getLocation()
 
-			# TODO: the problem NOW is that angle is [0, pi] and should be [-pi, pi]
-			# calc manualy?, or...
 			angle = breve.breveInternalFunctionFinder.angle(self, toSound, transDir)
 			distance = toSound.length()
-			strength = i.getIntensity()*0.5*((1+sin(angle))/(distance/self.bias+1))
+			strength = i.getIntensity()*0.5*((1+cos(angle))/(distance/self.bias+1))
 
 			total += strength
 	
