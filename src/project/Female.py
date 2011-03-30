@@ -40,5 +40,5 @@ class FemaleVehicle(breve.BraitenbergVehicle):
 		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.leftProximitySensor, self.rightProximitySensor], leftActivator)
 		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftProximitySensor, self.rightProximitySensor], rightActivator)
 
-		self.hormone = breve.createInstances(SmellSource, 1, 1.0, breve.vector(1, 0.6,1)) # TODO: modify intensity by time!
+		self.hormone = breve.createInstances(SmellSource, 1, 1.0, breve.vector(1, 0.6,1), True)
 		self.attach(self.hormone, breve.vector(-3.5,0.5,0))

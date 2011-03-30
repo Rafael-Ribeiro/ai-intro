@@ -4,7 +4,7 @@
 import breve
 
 class SoundSource(breve.Link):
-	def __init__(self, intensity, type): #type is an (r,g,b) vector (to identify the smell)
+	def __init__(self, intensity, type, physics): #type is an (r,g,b) vector (to identify the smell)
 		breve.Link.__init__(self)
 
 		self.intensity = intensity
@@ -13,6 +13,9 @@ class SoundSource(breve.Link):
 		self.setShape(breve.createInstances(breve.Sphere,1).initWith(0.300000))
 		self.setColor(type)
 	
+		if not physics:
+			self.disablePhysics()
+
 	def getIntensity(self):
 		return self.intensity
 

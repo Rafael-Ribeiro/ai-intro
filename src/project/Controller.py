@@ -27,6 +27,6 @@ class PopulationController(breve.BraitenbergControl):
 
 		male.move(breve.vector(10, 2, 0))
 		female.move(breve.vector(-10, 2, 0))
-		self.watch(female)
+		self.watch(male)
 
 orbit = PopulationController()

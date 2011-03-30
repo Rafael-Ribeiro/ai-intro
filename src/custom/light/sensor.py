@@ -7,7 +7,7 @@ import math
 class LightSensor(breve.BraitenbergSensor):
 	'''A BraitenbergSensor is used in conjunction with OBJECT(BraitenbergVehicle) to build Braitenberg vehicles.  This class is typically not instantiated manually, since OBJECT(BraitenbergVehicle) creates one for you when you add a sensor to the vehicle. <p> <b>NOTE: this class is included as part of the file "Braitenberg.tz".</b>'''
 
-	def __init__( self, name, angle, color, bias = 5.0 ):
+	def __init__( self, name, angle, color, bias = 5.0):
 		breve.BraitenbergSensor.__init__(self,name)
 
 		self.bias = bias
@@ -18,6 +18,7 @@ class LightSensor(breve.BraitenbergSensor):
 		self.sensorAngle = angle
 		
 		self.shape = breve.createInstances(breve.PolygonCone, 1, 10, 0.5, 0.15)
+
 		self.setShape(self.shape)
 
 	def iterate(self):
