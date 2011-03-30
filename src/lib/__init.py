@@ -311,7 +311,7 @@ class vector( array.array ):
 # Ordered to respect inter-object dependencies
 #
 
-if 1:
+if True:
 	from Object 		import *
 
 	from Abstract 		import *

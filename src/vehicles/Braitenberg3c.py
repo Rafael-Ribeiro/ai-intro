@@ -29,17 +29,35 @@ from custom.sound.source import SoundSource
 
 from lib.Activator import BraitenbergActivator
 
+from custom.constants import direction as dir
+
 VELOCITY = 0.0 	# Natural velocity
 
+#Sensors' bias
 LIGHT_BIAS = 5.0
 PROXIMITY_BIAS = 5.0
 SMELL_BIAS = 3.5
 SOUND_BIAS = 5.0
 
+#Sensors' factors
 LIGHT_FACTOR = 5.0
 PROXIMITY_FACTOR = 5.0
 SMELL_FACTOR = 20.0
 SOUND_FACTOR = 5.0
+
+#Sensor/Source types
+LEFT_LIGHT_TYPE = breve.vector(0,1,0)
+RIGHT_LIGHT_TYPE = LEFT_LIGHT_TYPE
+
+LEFT_PROXIMITY_TYPES = []
+RIGHT_PROXIMITY_TYPES = LEFT_PROXIMITY_TYPES
+
+LEFT_SMELL_TYPE = breve.vector(1,0,0)
+RIGHT_SMELL_TYPE = LEFT_SMELL_TYPE
+
+LEFT_SOUND_TYPE = breve.vector(0,0,0)
+RIGHT_SOUND_TYPE = LEFT_SOUND_TYPE
+
 
 def leftActivator(rightLightSensor,rightProximitySensor,rightSmellSensor,leftSoundSensor):
 	return VELOCITY - rightLightSensor*LIGHT_FACTOR - rightProximitySensor*PROXIMITY_FACTOR + rightSmellSensor*SMELL_FACTOR + leftSoundSensor*SOUND_FACTOR
@@ -47,62 +65,45 @@ def leftActivator(rightLightSensor,rightProximitySensor,rightSmellSensor,leftSou
 def rightActivator(leftLightSensor,leftProximitySensor,leftSmellSensor,rightSoundSensor):
 	return VELOCITY - leftLightSensor*LIGHT_FACTOR - leftProximitySensor*PROXIMITY_FACTOR + leftSmellSensor*SMELL_FACTOR + rightSoundSensor*SOUND_FACTOR
 
-class Braitenberg3cController(breve.BraitenbergControl):
+class Braitenberg3cVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
-		breve.BraitenbergControl.__init__(self)
-
-		#Scenario
-		light = breve.createInstances(breve.LightSource, 1, 1.0, breve.vector(0,1,0))
-		light.move(breve.vector(20, 1, 10))
-
-		smell = breve.createInstances(breve.SmellSource, 1, 1.0, breve.vector(1,0,0))
-		smell.move(breve.vector(20, 1, -10))
-
-		sound = breve.createInstances(breve.SoundSource, 1, 1, breve.vector(0,0,0))
-		sound.move(breve.vector(20, 1, 0))
-		sound = breve.createInstances(breve.SoundSource, 1, 1, breve.vector(0,0.5,1))
-		sound.move(breve.vector(20, 1, 0))
-
-		self.vehicle = breve.createInstances(breve.BraitenbergVehicle, 1, breve.vector(4, 0.7, 3))
-		self.watch(self.vehicle)
-
-		self.vehicle.move(breve.vector(0, 2, 0))
+		breve.BraitenbergVehicle.__init__(self, breve.vector(4, 0.7, 3))
 
 		#Wheels
 		self.leftWheel = breve.createInstances(breve.BraitenbergWheel, 1, 0.6, 0.2)
 		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 0.6, 0.2)
 	
-		self.vehicle.addWheel(self.leftWheel, breve.vector(-0.500000, 0, -1.500000))
-		self.vehicle.addWheel(self.rightWheel, breve.vector(-0.500000, 0, 1.500000))
+		self.addWheel(self.leftWheel, breve.vector(-0.500000, 0, -1.500000))
+		self.addWheel(self.rightWheel, breve.vector(-0.500000, 0, 1.500000))
 
 		# Sensors #
 		#Light sensors
-		self.leftLightSensor = breve.createInstances(LightSensor, 1, 'leftLightSensor', math.pi/2.0, breve.vector(0,1,0), LIGHT_BIAS)
-		self.rightLightSensor = breve.createInstances(LightSensor, 1, 'rightLightSensor', math.pi/2.0, breve.vector(0,1,0), LIGHT_BIAS)
+		self.leftLightSensor = breve.createInstances(LightSensor, 1, 'leftLightSensor', math.pi/2.0, LEFT_LIGHT_TYPE, LIGHT_BIAS)
+		self.rightLightSensor = breve.createInstances(LightSensor, 1, 'rightLightSensor', math.pi/2.0, RIGHT_LIGHT_TYPE, LIGHT_BIAS)
 
-		self.vehicle.addSensor(self.leftLightSensor,  breve.vector(1.80, 0.2,-1.1), breve.vector(1,0,0))
-		self.vehicle.addSensor(self.rightLightSensor, breve.vector(1.80, 0.2, 1.1), breve.vector(1,0,0))
+		self.addSensor(self.leftLightSensor,  breve.vector(1.80, 0.2,-1.1), dir.FRONT)
+		self.addSensor(self.rightLightSensor, breve.vector(1.80, 0.2, 1.1), dir.FRONT)
 
 		#Proximity sensors
-		self.leftProximitySensor = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/4.0, [], PROXIMITY_BIAS)
-		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/4.0, [], PROXIMITY_BIAS)
+		self.leftProximitySensor = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/4.0, LEFT_PROXIMITY_TYPES, PROXIMITY_BIAS)
+		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/4.0, RIGHT_PROXIMITY_TYPES, PROXIMITY_BIAS)
 
-		self.vehicle.addSensor(self.leftProximitySensor,  breve.vector(2.0, 0.2,-1.1), breve.vector(1,0,0))
-		self.vehicle.addSensor(self.rightProximitySensor, breve.vector(2.0, 0.2, 1.1), breve.vector(1,0,0))
+		self.addSensor(self.leftProximitySensor,  breve.vector(2.0, 0.2,-1.1), dir.FRONT)
+		self.addSensor(self.rightProximitySensor, breve.vector(2.0, 0.2, 1.1), dir.FRONT)
 
 		#Smell sensors
-		self.leftSmellSensor = breve.createInstances(SmellSensor, 1, 'leftSmellSensor', breve.vector(1,0,0), SMELL_BIAS)
-		self.rightSmellSensor = breve.createInstances(SmellSensor, 1, 'rightSmellSensor', breve.vector(1,0,0), SMELL_BIAS)
+		self.leftSmellSensor = breve.createInstances(SmellSensor, 1, 'leftSmellSensor', LEFT_SMELL_TYPE, SMELL_BIAS)
+		self.rightSmellSensor = breve.createInstances(SmellSensor, 1, 'rightSmellSensor', RIGHT_SMELL_TYPE, SMELL_BIAS)
 
-		self.vehicle.addSensor(self.leftSmellSensor,  breve.vector(2.0, -0.125,-1.1), breve.vector(1,0,0))
-		self.vehicle.addSensor(self.rightSmellSensor, breve.vector(2.0, -0.125, 1.1), breve.vector(1,0,0))
+		self.addSensor(self.leftSmellSensor,  breve.vector(2.0, -0.125,-1.1), dir.FRONT)
+		self.addSensor(self.rightSmellSensor, breve.vector(2.0, -0.125, 1.1), dir.FRONT)
 
 		#Sound sensors
-		self.leftSoundSensor = breve.createInstances(SoundSensor, 1, 'leftSoundSensor', breve.vector(0,0,0), SOUND_BIAS, 0)
-		self.rightSoundSensor = breve.createInstances(SoundSensor, 1, 'rightSoundSensor', breve.vector(0,0.5,1), SOUND_BIAS, 1)
+		self.leftSoundSensor = breve.createInstances(SoundSensor, 1, 'leftSoundSensor', LEFT_SOUND_TYPE, SOUND_BIAS, SoundSensor.LEFT_BALANCE)
+		self.rightSoundSensor = breve.createInstances(SoundSensor, 1, 'rightSoundSensor', RIGHT_SOUND_TYPE, SOUND_BIAS, SoundSensor.RIGHT_BALANCE)
 
-		self.vehicle.addSensor(self.leftSoundSensor,  breve.vector(1.5, 0,-1.5), breve.vector(0,0,-1))
-		self.vehicle.addSensor(self.rightSoundSensor, breve.vector(1.5, 0, 1.5), breve.vector(0,0,1))
+		self.addSensor(self.leftSoundSensor,  breve.vector(1.5, 0,-1.5), dir.LEFT)
+		self.addSensor(self.rightSoundSensor, breve.vector(1.5, 0, 1.5), dir.RIGHT)
 
 
 		#Activators
@@ -110,6 +111,15 @@ class Braitenberg3cController(breve.BraitenbergControl):
 		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftLightSensor,self.leftProximitySensor,self.leftSmellSensor,self.rightSoundSensor], rightActivator)
 
 
-# Create an instance of our controller object to initialize the simulation
+class Braitenberg3cController(breve.BraitenbergControl):
+	def __init__(self):
+		breve.BraitenbergControl.__init__(self)
+		self.vehicle = breve.createInstances(Braitenberg3cVehicle, 1).move(breve.vector(0, 2, 0))
+		self.watch(self.vehicle)
+
+		#Scenario
+		light = breve.createInstances(breve.LightSource, 1, 1.0, LEFT_LIGHT_TYPE).move(breve.vector(20, 1, 10))
+		smell = breve.createInstances(breve.SmellSource, 1, 1.0, LEFT_SMELL_TYPE).move(breve.vector(20, 1, -10))
+		sound = breve.createInstances(breve.SoundSource, 1, 1, LEFT_SOUND_TYPE).move(breve.vector(20, 1, 0))
 
 Braitenberg3cController()

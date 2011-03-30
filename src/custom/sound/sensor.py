@@ -5,6 +5,10 @@ import breve
 import math
 
 class SoundSensor(breve.BraitenbergSensor):
+	#Sound balance
+	LEFT_BALANCE = 0
+	RIGHT_BALANCE = 1
+
 	def __init__( self, name, type = breve.vector(0,0,1), bias = 5.0, balance = 0.5):
 		breve.BraitenbergSensor.__init__(self,name)
 
