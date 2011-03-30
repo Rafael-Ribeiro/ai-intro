@@ -14,6 +14,10 @@ from custom.smell.source import SmellSource
 
 from lib.Activator import BraitenbergActivator
 
+MATURITY = 60.0
+PROCRIATION = 30.0
+LIFESPAN = 300.0
+
 def leftActivator(leftSensor, rightSensor):
 	return 1
 
@@ -22,6 +26,9 @@ def rightActivator(leftSensor, rightSensor):
 
 class MaleVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
+		self.age = 0.0
+		self.last = 0.0
+
 		breve.BraitenbergVehicle.__init__(self, breve.vector(7, 1, 4))
 		self.setColor(breve.vector(1, 0, 0.0))
 
@@ -40,5 +47,16 @@ class MaleVehicle(breve.BraitenbergVehicle):
 		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.leftSensor, self.rightSensor], leftActivator)
 		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftSensor, self.rightSensor], rightActivator)
 
-		self.hormone = breve.createInstances(SmellSource, 1, 1.0, breve.vector(1, 0.0, 0)) # TODO: modify intensity by time!
+		self.hormone = breve.createInstances(SmellSource, 1, 0.0, breve.vector(1, 0.0, 0), True)
 		self.attach(self.hormone, breve.vector(-3.5,0.5,0))
+
+	def iterate(self):
+		self.age = self.getAge()
+
+		if self.age >= LIFESPAN:
+			self.destroy()
+
+		tired = 1 - min(1.0, (self.age-self.last)/PROCRIATION)
+		mature = min(1.0, self.age/MATURITY)
+
+		self.hormone.setIntensity(mature - tired)
