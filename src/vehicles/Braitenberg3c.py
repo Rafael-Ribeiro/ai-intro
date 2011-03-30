@@ -58,6 +58,11 @@ class Braitenberg3cController(breve.BraitenbergControl):
 		smell = breve.createInstances(breve.SmellSource, 1, 1.0, breve.vector(1,0,0))
 		smell.move(breve.vector(20, 1, -10))
 
+		sound = breve.createInstances(breve.SoundSource, 1, 1, breve.vector(0,0,0))
+		sound.move(breve.vector(20, 1, 0))
+		sound = breve.createInstances(breve.SoundSource, 1, 1, breve.vector(0,0.5,1))
+		sound.move(breve.vector(20, 1, 0))
+
 		self.vehicle = breve.createInstances(breve.BraitenbergVehicle, 1, breve.vector(4, 0.7, 3))
 		self.watch(self.vehicle)
 
@@ -93,8 +98,8 @@ class Braitenberg3cController(breve.BraitenbergControl):
 		self.vehicle.addSensor(self.rightSmellSensor, breve.vector(2.0, -0.125, 1.1), breve.vector(1,0,0))
 
 		#Sound sensors
-		self.leftSoundSensor = breve.createInstances(SoundSensor, 1, 'leftSoundSensor', breve.vector(0,0,1), SOUND_BIAS)
-		self.rightSoundSensor = breve.createInstances(SoundSensor, 1, 'rightSoundSensor', breve.vector(0,0,1), SOUND_BIAS)
+		self.leftSoundSensor = breve.createInstances(SoundSensor, 1, 'leftSoundSensor', breve.vector(0,0,0), SOUND_BIAS, 0)
+		self.rightSoundSensor = breve.createInstances(SoundSensor, 1, 'rightSoundSensor', breve.vector(0,0.5,1), SOUND_BIAS, 1)
 
 		self.vehicle.addSensor(self.leftSoundSensor,  breve.vector(1.5, 0,-1.5), breve.vector(0,0,-1))
 		self.vehicle.addSensor(self.rightSoundSensor, breve.vector(1.5, 0, 1.5), breve.vector(0,0,1))
