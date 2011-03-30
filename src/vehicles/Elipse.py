@@ -1,5 +1,8 @@
 #!/usr/share/breve/bin/breve
 
+import sys
+sys.path.append("../")
+
 import math
 import breve
 

@@ -1,0 +1,26 @@
+Improvements to the breve library:
+	OBB Sphere distance
+	Activators
+	Constructors with parameters
+	Sensor rotation/initialization
+
+Custom Sensors:
+	Light
+	Distance
+	Proximity
+	Smell
+	Sound
+	
+	Graphs
+
+Vehicles:
+	8 maker
+	Elipsoid
+	3c
+
+Project
+	Controller
+	Male
+	Female
+
+

@@ -69,8 +69,6 @@ class BraitenbergVehicle(breve.MultiBody):
 		self.sensors.append(sensor)
 
 	def addWheel(self, wheel, location, axis = breve.vector(0,0,1)):
-		joint = None
-
 		joint = breve.createInstances(breve.RevoluteJoint, 1)
 		joint.setRelativeRotation(breve.vector(-axis.z, 0, axis.x), 1.570800) # irrelevant
 		joint.link(axis, location, breve.vector(0, 0, 0), wheel, self.bodyLink)
@@ -79,12 +77,18 @@ class BraitenbergVehicle(breve.MultiBody):
 		wheel.setJoint(joint)
 
 		joint.setStrengthLimit((joint.getStrengthHardLimit() / 2))
-		wheel.setColor(breve.vector(0.600000, 0.600000, 0.600000))
 		wheel.setMu(100000)
 
 		self.addDependency(joint)
 		self.addDependency(wheel)
 		self.wheels.append(wheel)
+
+	def attach(self, what, pos):
+		joint = breve.createInstances(breve.RevoluteJoint, 1)
+		joint.link(breve.vector(0,1,0), pos, breve.vector(0, 0, 0), what, self.bodyLink)
+
+		self.addDependency(joint)
+		self.addDependency(what)
 
 	def destroy(self):
 		breve.deleteInstances(self.sensorShape)
@@ -100,7 +104,7 @@ class BraitenbergWheel(breve.Link):
 
 	MAX_VELOCITY = 30.0
 
-	def __init__(self, radius, width):
+	def __init__(self, radius, width, color = breve.vector(0,0,0)):
 		breve.Link.__init__(self)
 
 		self.joint = None
@@ -117,6 +121,9 @@ class BraitenbergWheel(breve.Link):
 		self.wheel = breve.createInstances(breve.Shape, 1)
 		self.wheel.initWithSphere(radius)
 		self.setCollisionShape(self.wheel)
+		
+		self.color = color
+		self.setColor(color)
 
 	def activate(self, n):
 		self.velocity = min(n, BraitenbergWheel.MAX_VELOCITY)
@@ -161,6 +168,4 @@ breve.BraitenbergSensor = BraitenbergSensor
 breve.BraitenbergVehicles = BraitenbergVehicle
 breve.BraitenbergWheels = BraitenbergWheel
 breve.BraitenbergSensors = BraitenbergSensor
-
-
 

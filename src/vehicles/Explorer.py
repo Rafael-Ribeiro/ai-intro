@@ -20,11 +20,11 @@ BIAS = 2.0			# Try to maintain a 2 meter distance
 D = 3.0				# Distance between spheres 
 
 def leftActivator(rightProximitySensor, leftSmellSensor, rightSmellSensor):
-#	print leftSmellSensor, rightSmellSensor
-	return VELOCITY - rightProximitySensor*(2*VELOCITY) + greater(leftSmellSensor, rightSmellSensor, 1.0, 0.0)*VELOCITY
+	a = VELOCITY - rightProximitySensor*(2*VELOCITY)
+	return cut(a, 0.3, 20, a, 0) # - leftSmellSensor*VELOCITY
 
 def rightActivator(leftProximitySensor, rightSmellSensor, leftSmellSensor):
-	return VELOCITY - leftProximitySensor*(2*VELOCITY) + greater(rightSmellSensor, leftSmellSensor, 1.0, 0.0)*VELOCITY
+	return VELOCITY - leftProximitySensor*(2*VELOCITY) # - rightSmellSensor*VELOCITY
 
 def piss(rightProximitySensor, leftProximitySensor, rightSmellSensor, leftSmellSensor):
 	return (rightSmellSensor + leftSmellSensor < 1) and (abs(2*rightProximitySensor+leftSmellSensor-1) < 0.05 and abs(2*leftProximitySensor+rightSmellSensor - 1) < 0.05)

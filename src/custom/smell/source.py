@@ -3,10 +3,9 @@
 
 import breve
 
-class SmellSource(breve.Mobile):
-
+class SmellSource(breve.Link):
 	def __init__(self, intensity, type): #type is an (r,g,b) vector (to identify the smell)
-		breve.Mobile.__init__(self)
+		breve.Link.__init__(self)
 
 		self.intensity = intensity
 		self.type = type
@@ -19,5 +18,6 @@ class SmellSource(breve.Mobile):
 
 	def getType(self):
 		return self.type
+
 
 breve.SmellSource = SmellSource
