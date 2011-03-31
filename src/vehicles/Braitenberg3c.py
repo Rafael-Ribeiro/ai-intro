@@ -20,6 +20,7 @@ from custom.light.sensor import LightSensor
 from custom.light.source import LightSource
 
 from custom.proximity.sensor import ProximitySensor
+from custom.proximity.obstacles import SphereMobile
 
 from custom.smell.sensor import SmellSensor
 from custom.smell.source import SmellSource
@@ -29,9 +30,12 @@ from custom.sound.source import SoundSource
 
 from lib.Activator import BraitenbergActivator
 
-from custom.constants import direction as dir
+from custom.constants import color,direction as dir
 
+#Simulation constants
 VELOCITY = 0.0 	# Natural velocity
+D = 2.0 #distance between objects on the grid
+
 
 #Sensors' bias
 LIGHT_BIAS = 5.0
@@ -118,8 +122,20 @@ class Braitenberg3cController(breve.BraitenbergControl):
 		self.watch(self.vehicle)
 
 		#Scenario
-		light = breve.createInstances(breve.LightSource, 1, 1.0, LEFT_LIGHT_TYPE).move(breve.vector(20, 1, 10))
-		smell = breve.createInstances(breve.SmellSource, 1, 1.0, LEFT_SMELL_TYPE).move(breve.vector(20, 1, -10))
-		sound = breve.createInstances(breve.SoundSource, 1, 1, LEFT_SOUND_TYPE).move(breve.vector(20, 1, 0))
+		f = open('maps/braitenberg3c', 'r')
+		lines = f.readlines()
+		for i in xrange(len(lines)):
+			for j in xrange(len(lines[i])):
+				if lines[i][j] == '*': #objects
+					breve.createInstances(SphereMobile, 1, 1.0, True).move(breve.vector(i*D, 1.0, j*D))
+				elif lines[i][j] == 'l': #<L>ight
+					breve.createInstances(LightSource, 1, 1.0, LEFT_LIGHT_TYPE, True).move(breve.vector(i*D, 1.0, j*D))
+				elif lines[i][j] == 's': #<S>mell
+					breve.createInstances(SmellSource, 1, 1.0, LEFT_SMELL_TYPE, True).move(breve.vector(i*D, 1.0, j*D))
+				elif lines[i][j] == 'o': #s<O>und
+					breve.createInstances(SoundSource, 1, 1.0, LEFT_SOUND_TYPE, True).move(breve.vector(i*D, 1.0, j*D))
+				elif lines[i][j] == 'X': #vehicle
+					self.vehicle.move(breve.vector(i*D, 2, j*D))
+		f.close()
 
 Braitenberg3cController()

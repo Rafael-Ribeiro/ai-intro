@@ -4,7 +4,7 @@
 import breve
 
 class DistanceSensor(breve.BraitenbergSensor):
-	def __init__(self, name, angle, classes, physics = False):
+	def __init__(self, name, angle, classes):
 		breve.BraitenbergSensor.__init__(self, name)
 
 		self.direction = breve.vector(0, 1, 0)
@@ -15,9 +15,6 @@ class DistanceSensor(breve.BraitenbergSensor):
 		self.setShape(self.shape)
 
 		self.classes = classes
-
-		if not physics:
-			self.disablePhysics()
 
 	def iterate( self ):
 		proximity = float("infinity")
