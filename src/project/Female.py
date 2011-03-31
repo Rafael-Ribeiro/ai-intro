@@ -14,16 +14,18 @@ from custom.smell.source import SmellSource
 
 from lib.Activator import BraitenbergActivator
 
+from custom.constants import color
+
 def leftActivator(leftProximitySensor, rightProximitySensor):
-	return 1
+	return 0
 
 def rightActivator(leftProximitySensor, rightProximitySensor):
-	return 1
+	return 0
 
 class FemaleVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
 		breve.BraitenbergVehicle.__init__(self, breve.vector(7, 1, 4))
-		self.setColor(breve.vector(1, 0.6, 1))
+		self.setColor(color.PINK)
 
 		self.leftWheel = breve.createInstances(breve.BraitenbergWheel,  1, 1.5, 0.5, breve.vector(1,1,1))
 		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 1.5, 0.5, breve.vector(1,1,1))

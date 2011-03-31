@@ -10,7 +10,9 @@ class LightSource(breve.Link):
 		breve.Link.__init__(self)
 
 		self.intensity = intensity
-		self.setShape(breve.createInstances(breve.Sphere, 1).initWithSphere(0.300000))
+		self.shape = breve.createInstances(breve.Sphere, 1).initWithSphere(0.300000)
+
+		self.setShape(self.shape)
 		self.setColor(color)
 				
 		if not physics:

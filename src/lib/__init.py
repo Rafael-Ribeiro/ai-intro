@@ -33,7 +33,7 @@ def setController( inControllerClass ):
 	return controller()
 
 def allInstances( inclass ):
-	cls = globals()[ inclass ]
+	cls = inclass
 
 	try:
 		return instanceDict[ cls ]
@@ -123,7 +123,7 @@ def deleteInstance( inInstance ):
 		traceDelete( inInstance )
 
 		breveInternal.removeInstance( breveInternal.breveEngine, inInstance )
-		all = allInstances( inInstance.__class__.__name__ )
+		all = allInstances( inInstance.__class__)
 		if inInstance in all:
 			all.remove( inInstance )
 

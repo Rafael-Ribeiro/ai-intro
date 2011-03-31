@@ -91,8 +91,6 @@ class BraitenbergVehicle(breve.MultiBody):
 		self.addDependency(what)
 
 	def destroy(self):
-		breve.deleteInstances(self.sensorShape)
-		breve.deleteInstances(self.wheelShape)
 		breve.deleteInstances(self.bodyShape)
 		breve.MultiBody.destroy(self)
 

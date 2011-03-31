@@ -24,7 +24,7 @@ def leftActivator(rightProximitySensor, leftProximitySensor):
 	b = 1 - leftProximitySensor*2
 
 	if (abs(a+b) < 0.1):
-		return -10
+		return -5*VELOCITY
 
 	return VELOCITY*a
 
@@ -33,7 +33,7 @@ def rightActivator(leftProximitySensor, rightProximitySensor):
 	b = 1 - rightProximitySensor*2
 
 	if (abs(a+b) < 0.1):
-		return 10
+		return 5*VELOCITY
 
 	return VELOCITY*a
 

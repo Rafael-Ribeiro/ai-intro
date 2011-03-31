@@ -10,45 +10,71 @@ import breve
 from custom.proximity.sensor import ProximitySensor
 from custom.proximity.obstacles import SphereMobile
 
+from custom.smell.sensor import SmellSensor
 from custom.smell.source import SmellSource
+
+from custom.constants import color, direction as dir
 
 from lib.Activator import BraitenbergActivator
 
 MATURITY = 60.0
-PROCRIATION = 30.0
+PROCRIATION = 45.0
 LIFESPAN = 300.0
+VELOCITY = 10.0
 
-def leftActivator(leftSensor, rightSensor):
-	return 1
+DISTANCE_BIAS = 2.5
 
-def rightActivator(leftSensor, rightSensor):
-	return 1
+def leftActivator(leftProximitySensor, rightProximitySensor):
+	a = 1 - rightProximitySensor*2
+	b = 1 - leftProximitySensor*2
+
+	if (abs(a+b) < 0.1):
+		return 5*VELOCITY
+
+	return VELOCITY*a
+
+def rightActivator(leftProximitySensor, rightProximitySensor):
+	a = 1 - rightProximitySensor*2
+	b = 1 - leftProximitySensor*2
+
+	if (abs(a+b) < 0.1):
+		return -5*VELOCITY
+
+	return VELOCITY*b
 
 class MaleVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
+		breve.BraitenbergVehicle.__init__(self, breve.vector(4, 0.7, 3))
+		self.setColor(color.RED)
+
 		self.age = 0.0
 		self.last = 0.0
 
-		breve.BraitenbergVehicle.__init__(self, breve.vector(7, 1, 4))
-		self.setColor(breve.vector(1, 0, 0.0))
+		self.leftWheel = breve.createInstances(breve.BraitenbergWheel,  1, 0.6, 0.2, color.BLACK)
+		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 0.6, 0.2, color.BLACK)
 
-		self.leftWheel = breve.createInstances(breve.BraitenbergWheel,  1, 1.5, 0.5, breve.vector(0,0,0))
-		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 1.5, 0.5, breve.vector(0,0,0))
+		self.addWheel(self.leftWheel,  breve.vector(-0.5, 0, -1.5), dir.RIGHT)
+		self.addWheel(self.rightWheel, breve.vector(-0.5, 0,  1.5), dir.RIGHT)
 
-		self.addWheel(self.leftWheel,  breve.vector(-0.5, 0, -2), breve.vector(0, 0, 1))
-		self.addWheel(self.rightWheel, breve.vector(-0.5, 0,  2), breve.vector(0, 0, 1))
-
-		self.leftSensor  = breve.createInstances(ProximitySensor, 1, 'leftSensor', math.pi/3, [SphereMobile])
-		self.rightSensor  = breve.createInstances(ProximitySensor, 1, 'rightSensor', math.pi/3, [SphereMobile])
+		# Proximity
+		self.leftProximitySensor  = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/3, [SphereMobile], DISTANCE_BIAS)
+		self.rightProximitySensor  = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/3, [SphereMobile], DISTANCE_BIAS)
 		
-		self.addSensor(self.leftSensor,  breve.vector(3.5, 0.3, -2), breve.vector(0, 0, -1))
-		self.addSensor(self.rightSensor,  breve.vector(3.5, 0.3, 2), breve.vector(0, 0, 1))
+		self.addSensor(self.leftProximitySensor,  breve.vector(2, 0.21, -1.2), dir.FRONT)
+		self.addSensor(self.rightProximitySensor,  breve.vector(2, 0.21, 1.2), dir.FRONT)
 		
-		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.leftSensor, self.rightSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftSensor, self.rightSensor], rightActivator)
+		# Hormones
+		self.leftSmellSensor  = breve.createInstances(SmellSensor, 1, 'leftSmellSensor', color.PINK)
+		self.rightSmellSensor  = breve.createInstances(SmellSensor, 1, 'rightSmellSensor', color.PINK)
+		
+		self.addSensor(self.leftSmellSensor,  breve.vector(2, -0.3, -1.5), dir.FRONT)
+		self.addSensor(self.rightSmellSensor,  breve.vector(2, -0.3, 1.5), dir.FRONT)
 
-		self.hormone = breve.createInstances(SmellSource, 1, 0.0, breve.vector(1, 0.0, 0), True)
-		self.attach(self.hormone, breve.vector(-3.5,0.5,0))
+		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.leftProximitySensor, self.rightProximitySensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftProximitySensor, self.rightProximitySensor], rightActivator)
+
+		self.hormone = breve.createInstances(SmellSource, 1, 0.0, color.RED, True)
+		self.attach(self.hormone, breve.vector(-2.5,0.5,0))
 
 	def iterate(self):
 		self.age = self.getAge()

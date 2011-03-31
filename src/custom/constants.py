@@ -9,4 +9,8 @@ class direction:
 	RIGHT = breve.vector(0,0,1)
 
 class color:
-	pass
+	RED = breve.vector(1,0,0)
+	BLACK = breve.vector(0,0,0)
+	PINK = breve.vector(1, 0.6, 1)
+	EGG = breve.vector(1,1,0.6)
+
