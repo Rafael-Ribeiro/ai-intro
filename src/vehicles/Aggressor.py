@@ -13,10 +13,10 @@ from custom.light.sensor import LightSensor
 from custom.proximity.sensor import ProximitySensor
 from lib.Activator import BraitenbergActivator
 
-def leftActivator(rightLightSensor):
+def leftActivator(vehicle, rightLightSensor):
 	return rightLightSensor*10 + 1
 
-def rightActivator(leftLightSensor):
+def rightActivator(vehicle, leftLightSensor):
 	return leftLightSensor*10 + 1
 
 class AggressorController(breve.BraitenbergControl):
@@ -46,8 +46,8 @@ class AggressorController(breve.BraitenbergControl):
 		self.vehicle.addSensor(self.rightLightSensor, breve.vector(2.0, 0.4, 1.5), breve.vector(1,0,0))
 		self.vehicle.addSensor(self.leftLightSensor,  breve.vector(2.0, 0.4,-1.5), breve.vector(1,0,0))
 
-		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.rightLightSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftLightSensor], rightActivator)
+		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.rightLightSensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftLightSensor], rightActivator)
 
 breve.AggressorController = AggressorController
 

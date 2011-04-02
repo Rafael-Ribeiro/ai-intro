@@ -33,7 +33,7 @@ from lib.Activator import BraitenbergActivator
 from custom.constants import color,direction as dir
 
 #Simulation constants
-VELOCITY = 0.0 	# Natural velocity
+VELOCITY = 5.0 	# Natural velocity
 D = 2.0 #distance between objects on the grid
 
 
@@ -63,10 +63,10 @@ LEFT_SOUND_TYPE = breve.vector(0,0,0)
 RIGHT_SOUND_TYPE = LEFT_SOUND_TYPE
 
 
-def leftActivator(rightLightSensor,rightProximitySensor,rightSmellSensor,leftSoundSensor):
+def leftActivator(vehicle, rightLightSensor,rightProximitySensor,rightSmellSensor,leftSoundSensor):
 	return VELOCITY - rightLightSensor*LIGHT_FACTOR - rightProximitySensor*PROXIMITY_FACTOR + rightSmellSensor*SMELL_FACTOR + leftSoundSensor*SOUND_FACTOR
 
-def rightActivator(leftLightSensor,leftProximitySensor,leftSmellSensor,rightSoundSensor):
+def rightActivator(vehicle, leftLightSensor,leftProximitySensor,leftSmellSensor,rightSoundSensor):
 	return VELOCITY - leftLightSensor*LIGHT_FACTOR - leftProximitySensor*PROXIMITY_FACTOR + leftSmellSensor*SMELL_FACTOR + rightSoundSensor*SOUND_FACTOR
 
 class Braitenberg3cVehicle(breve.BraitenbergVehicle):
@@ -111,8 +111,8 @@ class Braitenberg3cVehicle(breve.BraitenbergVehicle):
 
 
 		#Activators
-		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.rightLightSensor,self.rightProximitySensor,self.rightSmellSensor,self.leftSoundSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftLightSensor,self.leftProximitySensor,self.leftSmellSensor,self.rightSoundSensor], rightActivator)
+		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.rightLightSensor,self.rightProximitySensor,self.rightSmellSensor,self.leftSoundSensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftLightSensor,self.leftProximitySensor,self.leftSmellSensor,self.rightSoundSensor], rightActivator)
 
 
 class Braitenberg3cController(breve.BraitenbergControl):
@@ -127,13 +127,13 @@ class Braitenberg3cController(breve.BraitenbergControl):
 		for i in xrange(len(lines)):
 			for j in xrange(len(lines[i])):
 				if lines[i][j] == '*': #objects
-					breve.createInstances(SphereMobile, 1, 1.0, True).move(breve.vector(i*D, 1.0, j*D))
+					breve.createInstances(SphereMobile, 1, 1.0, False).move(breve.vector(i*D, 1.0, j*D))
 				elif lines[i][j] == 'l': #<L>ight
-					breve.createInstances(LightSource, 1, 1.0, LEFT_LIGHT_TYPE, True).move(breve.vector(i*D, 1.0, j*D))
+					breve.createInstances(LightSource, 1, 1.0, LEFT_LIGHT_TYPE, False).move(breve.vector(i*D, 1.0, j*D))
 				elif lines[i][j] == 's': #<S>mell
-					breve.createInstances(SmellSource, 1, 1.0, LEFT_SMELL_TYPE, True).move(breve.vector(i*D, 1.0, j*D))
+					breve.createInstances(SmellSource, 1, 1.0, LEFT_SMELL_TYPE, False).move(breve.vector(i*D, 1.0, j*D))
 				elif lines[i][j] == 'o': #s<O>und
-					breve.createInstances(SoundSource, 1, 1.0, LEFT_SOUND_TYPE, True).move(breve.vector(i*D, 1.0, j*D))
+					breve.createInstances(SoundSource, 1, 1.0, LEFT_SOUND_TYPE, False).move(breve.vector(i*D, 1.0, j*D))
 				elif lines[i][j] == 'X': #vehicle
 					self.vehicle.move(breve.vector(i*D, 2, j*D))
 		f.close()

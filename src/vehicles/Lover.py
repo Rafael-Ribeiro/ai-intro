@@ -15,10 +15,10 @@ from lib.Activator import BraitenbergActivator
 VELOCITY = 2.0 	# Natural velocity
 BIAS = 10.0		# Try to maintain a 10 meter distance
 
-def leftActivator(leftLightSensor):
+def leftActivator(vehicle, leftLightSensor):
 	return VELOCITY - leftLightSensor*(2*VELOCITY)
 
-def rightActivator(rightLightSensor):
+def rightActivator(vehicle, rightLightSensor):
 	return VELOCITY - rightLightSensor*(2*VELOCITY)
 
 class LoverController(breve.BraitenbergControl):
@@ -44,8 +44,8 @@ class LoverController(breve.BraitenbergControl):
 		self.vehicle.addSensor(self.rightLightSensor, breve.vector(2.0, 0.4, 1.5), breve.vector(1,0,0))
 		self.vehicle.addSensor(self.leftLightSensor,  breve.vector(2.0, 0.4,-1.5), breve.vector(1,0,0))
 
-		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.leftLightSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.rightLightSensor], rightActivator)
+		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.leftLightSensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.rightLightSensor], rightActivator)
 
 
 # Create an instance of our controller object to initialize the simulation

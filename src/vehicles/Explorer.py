@@ -19,7 +19,7 @@ VELOCITY = 10.0 	# Natural velocity
 BIAS = 2.5			# Try to maintain a 2 meter distance
 D = 2.0				# Distance between spheres
 
-def leftActivator(rightProximitySensor, leftProximitySensor):
+def leftActivator(vehicle, rightProximitySensor, leftProximitySensor):
 	a = 1 - rightProximitySensor*2
 	b = 1 - leftProximitySensor*2
 
@@ -28,7 +28,7 @@ def leftActivator(rightProximitySensor, leftProximitySensor):
 
 	return VELOCITY*a
 
-def rightActivator(leftProximitySensor, rightProximitySensor):
+def rightActivator(vehicle, leftProximitySensor, rightProximitySensor):
 	a = 1 - leftProximitySensor*2
 	b = 1 - rightProximitySensor*2
 
@@ -52,8 +52,8 @@ class ExplorerVehicle(breve.BraitenbergVehicle):
 		self.addSensor(self.rightProximitySensor, breve.vector(2.0, 0.4, 1.5), breve.vector(1,0,0))
 		self.addSensor(self.leftProximitySensor,  breve.vector(2.0, 0.4,-1.5), breve.vector(1,0,0))
 
-		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.rightProximitySensor, self.leftProximitySensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftProximitySensor, self.rightProximitySensor], rightActivator)
+		self.leftActivator = BraitenbergActivator(self ,self.leftWheel, [self.rightProximitySensor, self.leftProximitySensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftProximitySensor, self.rightProximitySensor], rightActivator)
 
 class ExplorerController(breve.BraitenbergControl):
 	def __init__(self):

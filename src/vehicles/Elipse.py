@@ -24,10 +24,10 @@ BIAS = 10
 def angularFrequency(sensor): # rad/s
 	return # will this work? math.arccot(max(0, sensor - (RADIUS_F - RADIUS_A)))
 
-def leftActivator(leftSensor):
+def leftActivator(vehicle, leftSensor):
 	return VELOCITY
 
-def rightActivator(leftSensor):
+def rightActivator(vehicle, leftSensor):
 	return VELOCITY + angularFrequency(leftSensor)*AXIS_DIST
 
 class SphereMobile(breve.Mobile):
@@ -51,8 +51,8 @@ class ElipseVehicle(breve.BraitenbergVehicle):
 		
 		self.addSensor(self.leftSensor,  breve.vector(-0.5, 1.5, 0), breve.vector(0, 0, -1))
 		
-		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.leftSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftSensor], rightActivator)
+		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.leftSensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftSensor], rightActivator)
 
 class OrbitController(breve.BraitenbergControl):
 	def __init__(self):

@@ -21,10 +21,10 @@ ANGULAR_FREQUENCY = VELOCITY/RADIUS
 AXIS_DIST = 4.0
 BIAS = 1.0
 
-def leftActivator(leftSensor):
+def leftActivator(vehicle, leftSensor):
 	return VELOCITY
 
-def rightActivator(leftSensor):
+def rightActivator(vehicle, leftSensor):
 	return VELOCITY + ANGULAR_FREQUENCY*AXIS_DIST
 
 
@@ -42,8 +42,8 @@ class CircleVehicle(breve.BraitenbergVehicle):
 		
 		self.addSensor(self.leftSensor,  breve.vector(-0.5, 1.5, 0), breve.vector(0, 0, -1))
 		
-		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.leftSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftSensor], rightActivator)
+		self.leftActivator = BraitenbergActivator(self ,self.leftWheel, [self.leftSensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftSensor], rightActivator)
 
 class OrbitController(breve.BraitenbergControl):
 	def __init__(self):

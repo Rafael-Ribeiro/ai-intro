@@ -15,11 +15,11 @@ ANGULAR = 1.0/3.0
 AXIS_DIST = 4.0
 RADIUS = 10.0
 
-def leftActivator(leftSensor, rightSensor):
+def leftActivator(vehicle, leftSensor, rightSensor):
 	# tangent velocity @ left wheel
 	return RADIUS*leftSensor*ANGULAR + (RADIUS+AXIS_DIST)*rightSensor*ANGULAR
 
-def rightActivator(leftSensor, rightSensor):
+def rightActivator(vehicle, leftSensor, rightSensor):
 	# tangent velocity @ right wheel
 	return (RADIUS+AXIS_DIST)*leftSensor*ANGULAR + RADIUS*rightSensor*ANGULAR
 
@@ -39,8 +39,8 @@ class EightVehicle(breve.BraitenbergVehicle):
 		self.addSensor(self.leftSensor,  breve.vector(3.5, 0.3, -2), breve.vector(0, 0, -1))
 		self.addSensor(self.rightSensor,  breve.vector(3.5, 0.3, 2), breve.vector(0, 0, 1))
 		
-		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.leftSensor, self.rightSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.leftSensor, self.rightSensor], rightActivator)
+		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.leftSensor, self.rightSensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftSensor, self.rightSensor], rightActivator)
 
 class OrbitController(breve.BraitenbergControl):
 	def __init__(self):
