@@ -27,17 +27,18 @@ VELOCITY = 10.0
 DISTANCE_BIAS = 2.5
 LIGHT_BIAS = 6.0
 SMELL_BIAS = 3.0
+SOUND_BIAS = 6.0
 
-def leftActivator(vehicle, leftProximitySensor, rightProximitySensor, leftLightSensor, rightSmellSensor):
+def leftActivator(vehicle, leftProximitySensor, rightProximitySensor, leftLightSensor, rightSmellSensor, leftSoundSensor):
 	a = 1 - rightProximitySensor*2
 	b = 1 - leftProximitySensor*2
 
 	if (abs(a+b) < 0.1):
 		return 5*VELOCITY
 
-	return VELOCITY*(a - 2*leftLightSensor + 2*rightSmellSensor*vehicle.sexuality)
+	return VELOCITY*(a - 2*leftLightSensor + 2*rightSmellSensor*vehicle.sexuality + )
 
-def rightActivator(vehicle, leftProximitySensor, rightProximitySensor, rightLightSensor, leftSmellSensor):
+def rightActivator(vehicle, leftProximitySensor, rightProximitySensor, rightLightSensor, leftSmellSensor, rightSoundSensor):
 	a = 1 - rightProximitySensor*2
 	b = 1 - leftProximitySensor*2
 
@@ -81,13 +82,25 @@ class MaleVehicle(breve.BraitenbergVehicle):
 		self.addSensor(self.leftLightSensor,  breve.vector(2, 0.1, -1.5), dir.FRONT)
 		self.addSensor(self.rightLightSensor,  breve.vector(2, 0.1, 1.5), dir.FRONT)
 
-		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.leftProximitySensor, self.rightProximitySensor, self.leftLightSensor, self.rightSmellSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftProximitySensor, self.rightProximitySensor, self.rightLightSensor, self.leftSmellSensor], rightActivator)
+		# Sound
+		self.leftSoundSensor  = breve.createInstances(LightSensor, 1, 'leftSoundSensor', color.GREEN, SOUND_BIAS)
+		self.rightSoundSensor  = breve.createInstances(LightSensor, 1, 'rightSoundSensor', color.GREEN, SOUND_BIAS)
+		
+		self.addSensor(self.leftLightSensor,  breve.vector(2, 0.1, -1.5), dir.FRONT)
+		self.addSensor(self.rightLightSensor,  breve.vector(2, 0.1, 1.5), dir.FRONT)
+
+		# Activators
+		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.leftProximitySensor, self.rightProximitySensor, self.leftLightSensor, self.rightSmellSensor, self.leftSoundSensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftProximitySensor, self.rightProximitySensor, self.rightLightSensor, self.leftSmellSensor, self.rightSoundSensor], rightActivator)
+
+		self.cry = breve.createInstances(SoundSource, 1, 1.0, color.GREEN, True)
+		self.attach(self.cry, breve.vector(1.7, 0, 0))  
 
 		self.hormone = breve.createInstances(SmellSource, 1, 0.0, color.RED, True)
 		self.attach(self.hormone, breve.vector(-2.5,0.5,0))
-		self.sexuality = 0
 
+		self.sexuality = 0.0
+		self.maturity = 0.0
 	def iterate(self):
 		self.age = self.getAge()
 
@@ -100,4 +113,4 @@ class MaleVehicle(breve.BraitenbergVehicle):
 	
 		self.sexuality = self.maturity - tired
 		self.hormone.setIntensity(self.maturity - tired)
-		
+		self.cry.setIntensity(1-self.maturity)

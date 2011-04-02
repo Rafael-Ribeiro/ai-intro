@@ -11,7 +11,7 @@ from custom.proximity.sensor import ProximitySensor
 from custom.proximity.obstacles import SphereMobile
 from lib.Activator import BraitenbergActivator
 
-ANGULAR = 1.0/3.0
+ANGULAR = 1.0
 AXIS_DIST = 4.0
 RADIUS = 10.0
 
