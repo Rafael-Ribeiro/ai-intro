@@ -7,8 +7,10 @@ sys.path.append("../")
 import math
 import breve
 
-from custom.proximity.obstacles import SphereMobile
+from random import sample
 
+from custom.proximity.obstacles import SphereStationary
+from custom.constants import direction as d
 from Male import MaleVehicle
 from Female import FemaleVehicle
 from Egg import Egg
@@ -19,18 +21,33 @@ class PopulationController(breve.BraitenbergControl):
 		breve.BraitenbergControl.__init__(self)
 		
 		for i in xrange(40):
-			sphere = breve.createInstances(SphereMobile, 1).move(breve.vector((i-20)*D, 1, -20*D))
-			sphere = breve.createInstances(SphereMobile, 1).move(breve.vector((i-20)*D, 1, 20*D))
-			sphere = breve.createInstances(SphereMobile, 1).move(breve.vector(-20*D, 1, (i-20)*D))
-			sphere = breve.createInstances(SphereMobile, 1).move(breve.vector(20*D, 1, (i-20)*D))
+			sphere = breve.createInstances(SphereStationary, 1).move(breve.vector((i-20)*D, 1, -20*D))
+			sphere = breve.createInstances(SphereStationary, 1).move(breve.vector((i-20)*D, 1, 20*D))
+			sphere = breve.createInstances(SphereStationary, 1).move(breve.vector(-20*D, 1, (i-20)*D))
+			sphere = breve.createInstances(SphereStationary, 1).move(breve.vector(20*D, 1, (i-20)*D))
 
-		male = MaleVehicle()
+		male = breve.createInstances(MaleVehicle, 1)
+		female = breve.createInstances(FemaleVehicle, 1)
 
-		egg = Egg()
-		egg.move(breve.vector(10, 10, 10))
 		male.move(breve.vector(-10, 2, 10))
+		female.move(breve.vector(10, 2, 10)).rotate(d.UP, math.pi)
+
+		egg = breve.createInstances(Egg, 1).move(breve.vector(0, 2, 10))
 
 		self.watch(male)
+		self.target = male
+
+	def unwatch(self, obj):
+		if obj == self.target:
+			targets = breve.allInstances(MaleVehicle) + breve.allInstances(FemaleVehicle)
+			targets.remove(obj)
+			try:
+				self.target = sample(targets, 1)[0]
+			except ValueError:
+				self.target = 0
+
+			self.watch(self.target)
 
 
-orbit = PopulationController()
+if __name__ == '__main__':
+	population = PopulationController()

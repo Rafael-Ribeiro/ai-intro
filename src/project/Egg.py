@@ -8,9 +8,10 @@ import math
 import breve
 
 from custom.light.source import LightSource
-from custom.constants import color
+from custom.constants import color, direction as d
+from random import random
 
-BIRTH_TIME = 30.0
+BIRTH_TIME = 20.0
 MIN_SIZE = .5
 MAX_SIZE = 2.5
 
@@ -23,7 +24,21 @@ class Egg(LightSource):
 	def iterate(self):
 		self.age = self.getAge()
 
-		if self.age >= BIRTH_TIME: # work
+		if self.age >= BIRTH_TIME:
+			sex = random()
+
+			if sex < 0.5:
+				from Male import MaleVehicle
+				child = breve.createInstances(MaleVehicle, 1)
+
+			else:
+				from Female import FemaleVehicle
+				child = breve.createInstances(FemaleVehicle, 1)
+
+			child.move(self.getLocation())
+			child.rotate(d.UP, math.pi*2*random())
+
+			breve.deleteInstances(self)
 			return
 		
 		shape = breve.createInstances(breve.Sphere, 1).initWithSphere(self.age/BIRTH_TIME*(MAX_SIZE-MIN_SIZE)+MIN_SIZE)
