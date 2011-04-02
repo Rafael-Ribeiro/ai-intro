@@ -16,10 +16,10 @@ from lib.Activator import BraitenbergActivator
 RADIUS = 40.0
 VELOCITY = 5.0
 
-def leftActivator(distanceSensor):
+def leftActivator(self, distanceSensor):
 	return VELOCITY - VELOCITY/2*gaussian(distanceSensor, 9.5, 5.0)
 
-def rightActivator(distanceSensor):
+def rightActivator(self, distanceSensor):
 	return VELOCITY + VELOCITY/2*gaussian(distanceSensor, 9.5, 5.0)
 
 class ElipseVehicle(breve.BraitenbergVehicle):
@@ -36,8 +36,8 @@ class ElipseVehicle(breve.BraitenbergVehicle):
 		
 		self.addSensor(self.distanceSensor,  breve.vector(-0.5, 1, 0), breve.vector(1, 0, 0))
 		
-		self.leftActivator = BraitenbergActivator(self.leftWheel, [self.distanceSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self.rightWheel, [self.distanceSensor], rightActivator)
+		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.distanceSensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.distanceSensor], rightActivator)
 
 class ElipseController(breve.BraitenbergControl):
 	def __init__(self):

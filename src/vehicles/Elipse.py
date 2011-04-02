@@ -1,70 +1,56 @@
 #!/usr/share/breve/bin/breve
+# -*- coding: utf-8 -*-
 
 import sys
-sys.path.append("../")
+sys.path.append("../") 
 
 import math
 import breve
 
+from custom.proximity.obstacles import SphereMobile
 from custom.proximity.sensor import DistanceSensor
-from custom.functions import gaussian, limit
+from custom.functions import gaussian, limit, negexp
 from lib.Activator import BraitenbergActivator
 
 # http://en.wikipedia.org/wiki/Angular_frequency
-RADIUS_A = 40.0
-RADIUS_B = 20.0
-RADIUS_F = math.sqrt(RADIUS_A**2 - RADIUS_B**2)
-VELOCITY = 1.0
+RADIUS = 40.0
+VELOCITY = 5.0
 
-ANGULAR_FREQUENCY = VELOCITY/RADIUS_A
+def leftActivator(self, distanceSensor):
+	return VELOCITY - VELOCITY/2*gaussian(distanceSensor, 9.5, 5.0)
 
-AXIS_DIST = 4.0
-BIAS = 10
-
-def angularFrequency(sensor): # rad/s
-	return # will this work? math.arccot(max(0, sensor - (RADIUS_F - RADIUS_A)))
-
-def leftActivator(vehicle, leftSensor):
-	return VELOCITY
-
-def rightActivator(vehicle, leftSensor):
-	return VELOCITY + angularFrequency(leftSensor)*AXIS_DIST
-
-class SphereMobile(breve.Mobile):
-	def __init__(self):
-		breve.Mobile.__init__(self)
-		self.shape = breve.createInstances(breve.Sphere, 1)
-		self.shape.initWith(1.0)
-		self.setShape(self.shape)
+def rightActivator(self, distanceSensor):
+	return VELOCITY + VELOCITY/2*gaussian(distanceSensor, 9.5, 5.0)
 
 class ElipseVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
 		breve.BraitenbergVehicle.__init__(self, breve.vector(7, 1, 4))
 
-		self.leftWheel = breve.createInstances(breve.BraitenbergWheel,  1, 1.5, 0.7)
-		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 1.5, 0.7)
+		self.leftWheel = breve.createInstances(breve.BraitenbergWheel,  1, 1.5, 0.5)
+		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 1.5, 0.5)
 
 		self.addWheel(self.leftWheel,  breve.vector(-0.5, 0, -2), breve.vector(0, 0, 1))
 		self.addWheel(self.rightWheel, breve.vector(-0.5, 0,  2), breve.vector(0, 0, 1))
 
-		self.leftSensor  = breve.createInstances(DistanceSensor, 1, 'leftSensor', math.pi/4, [SphereMobile])
+		self.distanceSensor  = breve.createInstances(DistanceSensor, 1, 'distanceSensor', math.pi, [SphereMobile])
 		
-		self.addSensor(self.leftSensor,  breve.vector(-0.5, 1.5, 0), breve.vector(0, 0, -1))
+		self.addSensor(self.distanceSensor,  breve.vector(-0.5, 1, 0), breve.vector(1, 0, 0))
 		
-		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.leftSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftSensor], rightActivator)
+		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.distanceSensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.distanceSensor], rightActivator)
 
-class OrbitController(breve.BraitenbergControl):
+class ElipseController(breve.BraitenbergControl):
 	def __init__(self):
 		breve.BraitenbergControl.__init__(self)
 
-		# environment
-		self.lights = breve.createInstances(LightSource, 2, 1.0, breve.vector(0,1,0))
-		self.lights[0].move(breve.vector(0, 2.5, RADIUS_F))
-		self.lights[1].move(breve.vector(0, 2.5, -RADIUS_F))
-
+		RADIUSX = RADIUS + 10
+		self.lights = breve.createInstances(SphereMobile, 2, 1.0)
+		self.lights[0].move(breve.vector(0, 1, RADIUSX))
+		self.lights[1].move(breve.vector(0, 1, -RADIUSX))
+	
 		self.vehicle = breve.createInstances(ElipseVehicle, 1)
-		self.vehicle.move(breve.vector(0, 2, RADIUS_A+AXIS_DIST/2))
+		self.vehicle.move(breve.vector(0,1, RADIUS))
+		#self.vehicle.setRotation(dir.UP, math.pi/2)
 		self.watch(self.vehicle)
 
-orbit = OrbitController()
+elipse = ElipseController()
