@@ -127,7 +127,7 @@ class BraitenbergWheel(breve.Link):
 		self.velocity = min(n, BraitenbergWheel.MAX_VELOCITY)
 
 	def postIterate(self):
-		self.joint.setJointVelocity(self.velocity)
+		self.joint.setJointVelocity(self.velocity)#/self.radius)
 
 	def getRadius(self):
 		return self.radius

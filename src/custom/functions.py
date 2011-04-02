@@ -23,3 +23,7 @@ def gaussian(x, med, dev):
 def hiperbole(x):
 	return math.sqrt(1.0+x*x)
 
+def negexp(x, lamb):
+	return lamb*math.exp(-lamb*x)
+	
+

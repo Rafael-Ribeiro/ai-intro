@@ -4,7 +4,8 @@
 #import breve
 
 class BraitenbergActivator(object):
-	def __init__(self, wheel, sensors, fn):
+	def __init__(self, vehicle, wheel, sensors, fn):
+		self.vehicle = vehicle
 		self.wheel = wheel
 		self.activationFunction = fn
 
@@ -16,4 +17,4 @@ class BraitenbergActivator(object):
 
 	def activate(self, value, sensor):
 		self.sensors[sensor.getName()] = value
-		self.wheel.activate(self.activationFunction(**self.sensors))
+		self.wheel.activate(self.activationFunction(self.vehicle, **self.sensors))

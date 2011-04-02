@@ -33,7 +33,10 @@ def setController( inControllerClass ):
 	return controller()
 
 def allInstances( inclass ):
-	cls = inclass
+	if type(inclass) == type("a"):
+		cls = globals()[inclass]
+	else:
+		cls = inclass
 
 	try:
 		return instanceDict[ cls ]
@@ -418,4 +421,3 @@ breveInternal.vectorType = vector
 breveInternal.matrixType = matrix
 
 instanceDict = {}
-
