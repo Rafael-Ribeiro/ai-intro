@@ -32,11 +32,13 @@ def leftActivator(self, distanceSensor,laserSensor):
 	return VELOCITY
 
 def rightActivator(self, distanceSensor,laserSensor):
-	#	if distanceSensor > RADIUS*2 and laserSensor == -1:
-	#		#inverse quadratic function
-	#		return VELOCITY + 4/math.sqrt(distanceSensor)
-	#	elif distanceSensor > RADIUS*2:
-	#		return VELOCITY
+	#	if distanceSensor > RADIUS*2:
+	#		if laserSensor > 0:
+	#			# object detected
+	#			return VELOCITY
+	#		else:
+	#			# no object found, correct trajectory
+	#			return VELOCITY + 4/math.sqrt(distanceSensor) #inverse quadratic function
 	#	else:
 	#		return VELOCITY + ANGULAR_FREQUENCY * AXIS_DIST
 	return greater(distanceSensor,RADIUS*2,greater(laserSensor,0,VELOCITY,VELOCITY + 4/math.sqrt(distanceSensor)),VELOCITY + ANGULAR_FREQUENCY * AXIS_DIST)
