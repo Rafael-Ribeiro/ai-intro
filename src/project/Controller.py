@@ -30,6 +30,7 @@ class PopulationController(breve.BraitenbergControl):
 		female = breve.createInstances(FemaleVehicle, 1)
 
 		male.move(breve.vector(-10, 2, 10))
+		female.move(breve.vector(10, 2, 10)).rotate(d.UP, 0.1)
 		female.move(breve.vector(10, 2, 10)).rotate(d.UP, math.pi)
 
 		egg = breve.createInstances(Egg, 1).move(breve.vector(0, 2, 10))

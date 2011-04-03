@@ -3,6 +3,7 @@ Improvements to the breve library:
 	Activators
 	Constructors with parameters
 	Sensor rotation/initialization
+	Multibody collision handlers (Proxies, and Real's parents )
 
 Custom Sensors:
 	Light

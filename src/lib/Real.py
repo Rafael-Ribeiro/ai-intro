@@ -28,6 +28,7 @@ class Real( breve.Object ):
 		self.mu = 0
 		self.neighborhoodSize = 0
 		self.realWorldPointer = None
+
 		Real.init( self )
 
 	def addDottedLine( self, otherObject, theColor = breve.vector( 0.000000, 0.000000, 0.000000 ) ):
@@ -194,7 +195,7 @@ class Real( breve.Object ):
 
 	def handleCollisions( self, theType, theMethod ):
 		'''Adds a collision handler for this object.  When a collision occurs between an instance of the this type and theType, the breve engine will automatically call theMethod of the colliding instance.'''
-
+		
 		self.collisionHandlerList.append( [ theType, theMethod, 0 ] )
 		breve.breveInternalFunctionFinder.addCollisionHandler( self, self, theType, theMethod )
 
@@ -524,11 +525,22 @@ class Real( breve.Object ):
 
 		self.controller.watch( self )
 
+	def setParent(self, parent):
+		self.parent = parent
+
+	def callProxy(self, obj):
+		try:
+			if self.parent:
+				f = getattr(obj.parent, obj.parent.proxies[self.parent.__class__.__name__])
+				f(self.parent)
+
+			else:
+				f = getattr(obj.parent, obj.parent.proxies[self.__class__.__name__])
+				f(self)
+		except KeyError:
+			pass
 
 breve.Real = Real
 # Add our newly created classes to the breve namespace
 
 breve.Reals = Real
-
-
-

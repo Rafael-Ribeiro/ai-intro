@@ -15,6 +15,8 @@ class MultiBody( breve.Object ):
 		self.multibodyPointer = None
 		self.rootLink = None
 		self.selfCollisions = 0
+		self.proxies = {}
+
 		MultiBody.init( self )
 
 	def addMenu( self, menuName, theMethod ):
@@ -166,8 +168,8 @@ class MultiBody( breve.Object ):
 
 		if ( not root.getLinkPointer() ):
 			raise Exception( '''attempting to register MultiBody with uninitialized Link object''' )
-
-
+	
+		root.setParent(self)
 		self.rootLink = root
 		if ( not root ):
 			self.removeDependency( self.rootLink )
@@ -206,6 +208,16 @@ class MultiBody( breve.Object ):
 		'''Enables the bounding box for all connected links.'''
 
 		self.getAllConnectedLinks().showBoundingBox()
+
+	def getCollisionShape(self):
+		return self.rootLink.getCollisionShape()
+
+	def getRotationMatrix(self):
+		return self.rootLink.getRotationMatrix()
+
+	def handleCollisions(self, theType, theMethod):
+		self.proxies[theType] = theMethod
+		self.rootLink.handleCollisions("Link", "callProxy")
 
 	def suspendPhysics( self ):
 		pass

@@ -7,10 +7,9 @@ class SmellSource(breve.Link):
 	def __init__(self, intensity, type, physics = False): #type is an (r,g,b) vector (to identify the smell)
 		breve.Link.__init__(self)
 
-		self.type = type
-
 		self.setShape(breve.createInstances(breve.Sphere,1).initWith(0.300000))
-		
+
+		self.type = type
 		self.setIntensity(intensity)		
 
 		if not physics:

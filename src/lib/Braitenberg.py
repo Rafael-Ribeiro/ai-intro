@@ -64,6 +64,8 @@ class BraitenbergVehicle(breve.MultiBody):
 		joint.link(direction, location, breve.vector(0, 0, 0), sensor, self.bodyLink)
 		joint.setDoubleSpring(300, 0.01, -0.01)
 
+		sensor.setParent(self)
+
 		self.addDependency(joint)
 		self.addDependency(sensor)
 		self.sensors.append(sensor)
@@ -79,6 +81,8 @@ class BraitenbergVehicle(breve.MultiBody):
 		joint.setStrengthLimit((joint.getStrengthHardLimit() / 2))
 		wheel.setMu(100000)
 
+		wheel.setParent(self)
+
 		self.addDependency(joint)
 		self.addDependency(wheel)
 		self.wheels.append(wheel)
@@ -86,6 +90,8 @@ class BraitenbergVehicle(breve.MultiBody):
 	def attach(self, what, pos):
 		joint = breve.createInstances(breve.RevoluteJoint, 1)
 		joint.link(breve.vector(0,1,0), pos, breve.vector(0, 0, 0), what, self.bodyLink)
+
+		what.setParent(self)
 
 		self.addDependency(joint)
 		self.addDependency(what)

@@ -39,14 +39,14 @@ D = 2.0 #distance between objects on the grid
 
 #Sensors' bias
 LIGHT_BIAS = 3.0
-PROXIMITY_BIAS = 2.0
-SMELL_BIAS = 0.1
-SOUND_BIAS = 0.1
+PROXIMITY_BIAS = 4.0
+SMELL_BIAS = 4.0
+SOUND_BIAS = 0.5
 
 #Sensors' factors
 LIGHT_FACTOR = 1.0
 PROXIMITY_FACTOR = 1.0
-SMELL_FACTOR = 0.0
+SMELL_FACTOR = 0.5
 SOUND_FACTOR = 0.0
 
 #Sensor/Source types
@@ -64,11 +64,9 @@ RIGHT_SOUND_TYPE = LEFT_SOUND_TYPE
 
 
 def leftActivator(vehicle, rightLightSensor,rightProximitySensor,rightSmellSensor,leftSoundSensor):
-	print "1",rightProximitySensor
 	return VELOCITY * (1 - rightLightSensor*LIGHT_FACTOR - rightProximitySensor*PROXIMITY_FACTOR + rightSmellSensor*SMELL_FACTOR + leftSoundSensor*SOUND_FACTOR)
 
 def rightActivator(vehicle, leftLightSensor,leftProximitySensor,leftSmellSensor,rightSoundSensor):
-	print "0",leftProximitySensor
 	return VELOCITY * (1 - leftLightSensor*LIGHT_FACTOR - leftProximitySensor*PROXIMITY_FACTOR + leftSmellSensor*SMELL_FACTOR + rightSoundSensor*SOUND_FACTOR)
 
 class Braitenberg3cVehicle(breve.BraitenbergVehicle):
@@ -131,11 +129,11 @@ class Braitenberg3cController(breve.BraitenbergControl):
 				if lines[i][j] == '*': #objects
 					breve.createInstances(SphereStationary, 1, 1.0).move(breve.vector(i*D, 1.0, j*D))
 				elif lines[i][j] == 'l': #<L>ight
-					breve.createInstances(LightSource, 1, 1.0, LEFT_LIGHT_TYPE, True).move(breve.vector(i*D, 1.0, j*D))
+					breve.createInstances(LightSource, 1, 1.0, LEFT_LIGHT_TYPE, False).move(breve.vector(i*D, 1.0, j*D))
 				elif lines[i][j] == 's': #<S>mell
-					breve.createInstances(SmellSource, 1, 1.0, LEFT_SMELL_TYPE, True).move(breve.vector(i*D, 1.0, j*D))
+					breve.createInstances(SmellSource, 1, 1.0, LEFT_SMELL_TYPE, False).move(breve.vector(i*D, 1.0, j*D))
 				elif lines[i][j] == 'o': #s<O>und
-					breve.createInstances(SoundSource, 1, 1.0, LEFT_SOUND_TYPE, True).move(breve.vector(i*D, 1.0, j*D))
+					breve.createInstances(SoundSource, 1, 1.0, LEFT_SOUND_TYPE, False).move(breve.vector(i*D, 1.0, j*D))
 				elif lines[i][j] == 'X': #vehicle
 					self.vehicle.move(breve.vector(i*D, 2, j*D))
 		f.close()

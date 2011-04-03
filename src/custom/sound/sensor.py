@@ -4,6 +4,8 @@
 import breve
 import math
 
+from source import SoundSource
+
 class SoundSensor(breve.BraitenbergSensor):
 	#Sound balance
 	LEFT_BALANCE = 0
@@ -29,12 +31,12 @@ class SoundSensor(breve.BraitenbergSensor):
 		total = 0
 
 		transDir = self.getRotation() * self.direction
-		for i in breve.allInstances("SoundSource"):
+		for i in breve.allInstances(SoundSource):
 			if i.getType() != self.type:
 				continue
 
 			toSound = i.getLocation() - self.getLocation()
-
+	
 			angle = breve.breveInternalFunctionFinder.angle(self, toSound, transDir)
 			distance = toSound.length()
 
