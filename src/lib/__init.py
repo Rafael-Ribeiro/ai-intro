@@ -33,8 +33,11 @@ def setController( inControllerClass ):
 	return controller()
 
 def allInstances( inclass ):
-	if type(inclass) == type("a"):
-		cls = globals()[inclass]
+	if inclass.__class__.__name__ == "str":
+		try:
+			cls = globals()[inclass]
+		except KeyError:
+			return objectList()
 	else:
 		cls = inclass
 
