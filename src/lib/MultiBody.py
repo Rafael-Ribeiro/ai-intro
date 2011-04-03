@@ -215,9 +215,11 @@ class MultiBody( breve.Object ):
 	def getRotationMatrix(self):
 		return self.rootLink.getRotationMatrix()
 
-	def handleCollisions(self, theType, theMethod):
+	def handleCollisions(self, theType, theMethod, types = ["Link"]):
 		self.proxies[theType] = theMethod
-		self.rootLink.handleCollisions("Link", "callProxy")
+
+		for i in types:
+			self.rootLink.handleCollisions(i, "callProxy")
 
 	def suspendPhysics( self ):
 		pass
