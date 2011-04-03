@@ -34,6 +34,31 @@ class DistanceSensor(breve.BraitenbergSensor):
 		proximity = max(0.0001, proximity) # avoid division by zero errors
 		self.activators.activate(proximity, self)
 
+
+class LaserSensor(DistanceSensor):
+	def __init__(self, name, angle, classes):
+		DistanceSensor.__init__(self, name, angle, classes)
+
+	def iterate( self ):
+		transDir = self.getRotation() * self.direction
+
+		for c in breve.instanceDict.keys():
+			if c in self.classes:
+				for obj in breve.instanceDict[c]:
+					i = obj.getCollisionShape()
+					toShape = obj.getLocation() - self.getLocation()
+					angle = breve.breveInternalFunctionFinder.angle(self, toShape, transDir)
+
+					if (angle < self.sensorAngle):
+						# There is an object on the sensor's angle
+						self.activators.activate(1, self)
+						# No need to continue
+						return
+
+		# No object found
+		self.activators.activate(-1, self)
+
+
 class ProximitySensor(breve.BraitenbergSensor):
 	def __init__(self, name, angle, classes, bias = 5):
 		breve.BraitenbergSensor.__init__(self, name)
