@@ -48,16 +48,13 @@ def leftActivator(vehicle, distanceSensor,laserSensor):
 	return VELOCITY
 
 def rightActivator(vehicle, distanceSensor,laserSensor):
-	#	if distanceSensor > RADIUS*2:
-	#		if laserSensor > 0:
-	#			# object detected
-	#			return VELOCITY
-	#		else:
-	#			# no object found, correct trajectory
-	#			return VELOCITY + 4/math.sqrt(distanceSensor) #inverse quadratic function
-	#	else:
-	#		return VELOCITY + ANGULAR_FREQUENCY * AXIS_DIST
-	return greater(distanceSensor,RADIUS*2,greater(laserSensor,0,VELOCITY,VELOCITY + 4/math.sqrt(distanceSensor)),VELOCITY + ANGULAR_FREQUENCY * AXIS_DIST)
+	OFFSET = 0.6 #4/math.sqrt(distanceSensor)
+	DIFFERENTIAL = ANGULAR_FREQUENCY * AXIS_DIST
+
+	a = greater(laserSensor, 0, 0, OFFSET)
+	b = greater(distanceSensor, RADIUS*2, 0, DIFFERENTIAL)
+
+	return VELOCITY + limit(a + b, 0, DIFFERENTIAL)
 
 class EllipseVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
