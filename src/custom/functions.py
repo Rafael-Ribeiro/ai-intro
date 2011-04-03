@@ -18,6 +18,7 @@ def greater(a, b, T, F):
 	return F
 
 def gaussian(x, med, dev):
+	x = min(x,10000)
 	return math.exp(-(x-med)**2/(2*dev**2))
 
 def hiperbole(x):
