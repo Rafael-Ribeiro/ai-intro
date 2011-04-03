@@ -14,7 +14,7 @@ from custom.proximity.obstacles import SphereMobile
 from custom.proximity.sensor import DistanceSensor
 from custom.proximity.sensor import LaserSensor
 
-from custom.functions import gaussian, limit, negexp
+from custom.functions import greater, limit, negexp
 from custom.constants import color, direction as dir
 
 # TODO
@@ -32,13 +32,14 @@ def leftActivator(self, distanceSensor,laserSensor):
 	return VELOCITY
 
 def rightActivator(self, distanceSensor,laserSensor):
-	if distanceSensor > RADIUS*2 and laserSensor == -1:
-		#inverse quadratic function
-		return VELOCITY + 4/math.sqrt(distanceSensor)
-	elif distanceSensor > RADIUS*2:
-		return VELOCITY
-	else:
-		return VELOCITY + ANGULAR_FREQUENCY * AXIS_DIST
+	#	if distanceSensor > RADIUS*2 and laserSensor == -1:
+	#		#inverse quadratic function
+	#		return VELOCITY + 4/math.sqrt(distanceSensor)
+	#	elif distanceSensor > RADIUS*2:
+	#		return VELOCITY
+	#	else:
+	#		return VELOCITY + ANGULAR_FREQUENCY * AXIS_DIST
+	return greater(distanceSensor,RADIUS*2,greater(laserSensor,0,VELOCITY,VELOCITY + 4/math.sqrt(distanceSensor)),VELOCITY + ANGULAR_FREQUENCY * AXIS_DIST)
 
 class ElipseVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
