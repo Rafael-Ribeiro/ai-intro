@@ -44,3 +44,6 @@ class Egg(LightSource):
 		shape = breve.createInstances(breve.Sphere, 1).initWithSphere(self.age/BIRTH_TIME*(MAX_SIZE-MIN_SIZE)+MIN_SIZE)
 		self.setShape(shape)
 		self.offset(breve.vector(0,0.01,0))
+
+	def getOpacity(self):
+		return 1.0

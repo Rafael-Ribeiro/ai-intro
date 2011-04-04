@@ -122,10 +122,15 @@ class FemaleVehicle(breve.BraitenbergVehicle):
 		tired = 1 - min(1.0, (self.age-self.last)/PROCRIATION)
 
 		self.maturity = min(1.0, self.age/MATURITY)
-		self.sexuality = max(0.0, self.maturity - tired)
+
+		if self.maturity - tired == 1.0:
+			self.sexuality = 1.0
+		else:
+			self.sexuality = 0.0
+
 
 		self.hormone.setIntensity(self.sexuality)
-		self.cry.setIntensity(max(1-self.maturity, 0.5))
+		self.cry.setIntensity(max(1-self.maturity, 0.2))
 
 	def iterate(self):
 		self.age = self.getAge()
@@ -146,7 +151,7 @@ class FemaleVehicle(breve.BraitenbergVehicle):
 		self.updateSexuality()
 
 		location = self.getLocation()
-		location.y = 10.0
+		location.y = 3.0
 
 		egg = breve.createInstances(Egg, 1)
 		egg.move(location)
