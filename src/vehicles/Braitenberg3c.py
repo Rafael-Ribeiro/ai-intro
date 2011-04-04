@@ -3,12 +3,12 @@
 
 # Braitenberg 3c vehicle:
 
-#	Sensor Pair	|	Connection	|	Bias		|	Behaviour					#
-#---------------+---------------+---------------+-------------------------------#
-#	Light		|	Crossed		|	Negative	|	Explorer of light			#
-#	Proximity	|	Crossed		|	Negative	|	Explorer of objects			#
-#	Smell		|	Crossed		|	Positive	|	Aggressor towards smell		#
-#	Sound		|	Uncrossed	|	Positive	|	Coward towards sound		#
+#	Sensor Pair	|	Connection	|	Bias		|	Behaviour					|	Color	#
+#---------------+---------------+---------------+-------------------------------+-----------#
+#	Proximity	|	Crossed		|	Negative	|	Explorer of objects			|	White	#
+#	Sound		|	Uncrossed	|	Positive	|	Coward towards sound		|	Black	#
+#	Smell		|	Crossed		|	Positive	|	Aggressor towards smell		|	Red		#
+#	Light		|	Crossed		|	Negative	|	Explorer of light			|	Green	#
 
 import sys
 sys.path.append("../") 
@@ -16,17 +16,17 @@ sys.path.append("../")
 import breve
 import math
 
-from custom.light.sensor import LightSensor
-from custom.light.source import LightSource
-
 from custom.proximity.sensor import ProximitySensor
 from custom.proximity.obstacles import SphereStationary
+
+from custom.sound.sensor import SoundSensor
+from custom.sound.source import SoundSource
 
 from custom.smell.sensor import SmellSensor
 from custom.smell.source import SmellSource
 
-from custom.sound.sensor import SoundSensor
-from custom.sound.source import SoundSource
+from custom.light.sensor import LightSensor
+from custom.light.source import LightSource
 
 from lib.Activator import BraitenbergActivator
 
@@ -39,22 +39,19 @@ D = 2.0 #distance between objects on the grid
 
 #Sensors' bias
 LIGHT_BIAS = 3.0
-PROXIMITY_BIAS = 4.0
 SMELL_BIAS = 4.0
 SOUND_BIAS = 0.5
+PROXIMITY_BIAS = 4.0
 
 #Sensors' factors
 LIGHT_FACTOR = 1.0
-PROXIMITY_FACTOR = 1.0
-SMELL_FACTOR = 0.5
-SOUND_FACTOR = 0.0
+SMELL_FACTOR = 1.0
+SOUND_FACTOR = 1.0
+PROXIMITY_FACTOR = LIGHT_FACTOR + SMELL_FACTOR + SOUND_FACTOR + 2
 
 #Sensor/Source types
 LEFT_LIGHT_TYPE = color.GREEN
 RIGHT_LIGHT_TYPE = LEFT_LIGHT_TYPE
-
-LEFT_PROXIMITY_TYPES = [SphereStationary]
-RIGHT_PROXIMITY_TYPES = LEFT_PROXIMITY_TYPES
 
 LEFT_SMELL_TYPE = color.RED
 RIGHT_SMELL_TYPE = LEFT_SMELL_TYPE
@@ -62,12 +59,25 @@ RIGHT_SMELL_TYPE = LEFT_SMELL_TYPE
 LEFT_SOUND_TYPE = color.BLACK
 RIGHT_SOUND_TYPE = LEFT_SOUND_TYPE
 
+LEFT_PROXIMITY_TYPES = [SphereStationary]
+RIGHT_PROXIMITY_TYPES = LEFT_PROXIMITY_TYPES
+
 
 def leftActivator(vehicle, rightLightSensor,rightProximitySensor,rightSmellSensor,leftSoundSensor):
-	return VELOCITY * (1 - rightLightSensor*LIGHT_FACTOR - rightProximitySensor*PROXIMITY_FACTOR + rightSmellSensor*SMELL_FACTOR + leftSoundSensor*SOUND_FACTOR)
+	proximity = PROXIMITY_FACTOR * (0.5 - rightProximitySensor)
+	sound = SOUND_FACTOR * 0
+	smell = SMELL_FACTOR * 0
+	light = LIGHT_FACTOR * (1 - 0)
+
+	return VELOCITY * (proximity + sound + smell + light)
 
 def rightActivator(vehicle, leftLightSensor,leftProximitySensor,leftSmellSensor,rightSoundSensor):
-	return VELOCITY * (1 - leftLightSensor*LIGHT_FACTOR - leftProximitySensor*PROXIMITY_FACTOR + leftSmellSensor*SMELL_FACTOR + rightSoundSensor*SOUND_FACTOR)
+	proximity = PROXIMITY_FACTOR * (0.5 - leftProximitySensor)
+	sound = SOUND_FACTOR * 0
+	smell = SMELL_FACTOR * 0
+	light = LIGHT_FACTOR * (1 - 0)
+
+	return VELOCITY * (proximity + sound + smell + light)
 
 class Braitenberg3cVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
