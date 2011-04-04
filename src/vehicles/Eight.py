@@ -10,12 +10,23 @@ import breve
 from custom.proximity.sensor import ProximitySensor
 from custom.proximity.obstacles import SphereMobile
 from lib.Activator import BraitenbergActivator
+from custom.constants import direction as dir
 
-ANGULAR = 1.0
+ANGULAR = 0.5
 AXIS_DIST = 4.0
 RADIUS = 10.0
 
+drawing = None
+lastLocation = None
+
+def draw(vehicle):
+	global drawing,lastLocation
+	drawing.drawLine(lastLocation,vehicle.getLocation())
+	lastLocation = vehicle.getLocation()
+
+
 def leftActivator(vehicle, leftSensor, rightSensor):
+	draw(vehicle)
 	# tangent velocity @ left wheel
 	return RADIUS*leftSensor*ANGULAR + (RADIUS+AXIS_DIST)*rightSensor*ANGULAR
 
@@ -54,6 +65,11 @@ class OrbitController(breve.BraitenbergControl):
 
 		self.vehicle = breve.createInstances(EightVehicle, 1)
 		self.vehicle.move(breve.vector(0, 2, z+RADIUS+AXIS_DIST/2.0))
-		self.watch(self.vehicle)
+		#self.watch(self.vehicle)
+		self.setCameraOffset(dir.UP*150)
+
+		global drawing,lastLocation
+		drawing = breve.createInstances(breve.Drawing, 1)
+		lastLocation = self.vehicle.getLocation()
 
 orbit = OrbitController()
