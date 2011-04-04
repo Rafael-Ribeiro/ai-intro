@@ -46,8 +46,8 @@ class ExplorerVehicle(breve.BraitenbergVehicle):
 		self.addWheel(self.leftWheel, breve.vector(-0.5, 0, -1.500000))
 		self.addWheel(self.rightWheel, breve.vector(-0.5, 0, 1.500000))
 
-		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/3.0, [SphereMobile], BIAS)
 		self.leftProximitySensor = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/3.0, [SphereMobile], BIAS)
+		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/3.0, [SphereMobile], BIAS)
 
 		self.addSensor(self.rightProximitySensor, breve.vector(2.0, 0.4, 1.5), breve.vector(1,0,0))
 		self.addSensor(self.leftProximitySensor,  breve.vector(2.0, 0.4,-1.5), breve.vector(1,0,0))
