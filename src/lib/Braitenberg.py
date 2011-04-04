@@ -166,9 +166,15 @@ class BraitenbergSensor(breve.Link):
 	def getName(self):
 		return self.name
 
-breve.BraitenbergSensor = BraitenbergSensor
-# Add our newly created classes to the breve namespace
+class Stabilizer(breve.Link):
+	def __init__(self, radius = 1.0):
+		breve.Link.__init__(self)
 
+		self.shape = breve.createInstances(breve.Sphere, 1).initWith(radius)
+		self.setShape(self.shape)
+		self.setTransparency(0.0)
+
+breve.BraitenbergSensor = BraitenbergSensor
 breve.BraitenbergVehicles = BraitenbergVehicle
 breve.BraitenbergWheels = BraitenbergWheel
 breve.BraitenbergSensors = BraitenbergSensor

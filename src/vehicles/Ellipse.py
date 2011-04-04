@@ -17,14 +17,6 @@ from custom.proximity.sensor import LaserSensor
 from custom.functions import greater, limit, negexp
 from custom.constants import color, direction as dir
 
-# TODO: REMOVE?
-# Drawing the ellipse
-from breve import Drawing
-#/ TODO: REMOVE?
-
-# TODO
-from custom.smell.sensor import SmellSensor
-
 # http://en.wikipedia.org/wiki/Angular_frequency
 DISTANCE = 20.0
 RADIUS = 13.0
@@ -33,10 +25,8 @@ ANGULAR_FREQUENCY = VELOCITY / RADIUS
 
 AXIS_DIST = 4.0
 
-# TODO: REMOVE?
 drawing = None
 lastLocation = None
-#/ TODO: REMOVE?
 
 def draw(vehicle):
 	global drawing,lastLocation
@@ -44,7 +34,9 @@ def draw(vehicle):
 	lastLocation = vehicle.getLocation()
 
 def leftActivator(vehicle, distanceSensor,laserSensor):
+	# TODO REMOVE
 	draw(vehicle)
+	#/ TODO REMOVE
 	return VELOCITY
 
 def rightActivator(vehicle, distanceSensor,laserSensor):
@@ -66,12 +58,9 @@ class EllipseVehicle(breve.BraitenbergVehicle):
 		self.addWheel(self.leftWheel,  breve.vector(0, 0, -2), breve.vector(0, 0, 1))
 		self.addWheel(self.rightWheel, breve.vector(0, 0,  2), breve.vector(0, 0, 1))
 
-		#TODO: Class "Stabilizers", since sensors are ugly and wheels don't work
-		# since friction causes the vehicle to bump with the ground;
-		# however, without them the vehicle is unstable enough to render
-		# every single calculation useless
-		self.attach(breve.createInstances(SmellSensor,1,'smell',color.RED,5.0),breve.vector(-2,-1.0,0))
-		self.attach(breve.createInstances(SmellSensor,1,'smell',color.RED,5.0),breve.vector(2,-1.0,0))
+		# Stabilizers
+		self.attach(breve.createInstances(breve.Stabilizer,1,0.3),breve.vector(-2,-0.9,0))
+		self.attach(breve.createInstances(breve.Stabilizer,1,0.3),breve.vector(2,-0.9,0))
 
 		self.distanceSensor  = breve.createInstances(DistanceSensor, 1, 'distanceSensor', math.pi, [SphereMobile])
 		self.laserSensor  = breve.createInstances(LaserSensor, 1, 'laserSensor', math.pi/20, [SphereMobile])
@@ -97,11 +86,8 @@ class EllipseController(breve.BraitenbergControl):
 
 		self.setCameraOffset(dir.UP*200)
 
-		# TODO: REMOVE?
-		# Drawing the path
 		global drawing,lastLocation
 		drawing = breve.createInstances(breve.Drawing, 1)
 		lastLocation = self.vehicle.getLocation()
-		#/ TODO: REMOVE?
 
 ellipse = EllipseController()
