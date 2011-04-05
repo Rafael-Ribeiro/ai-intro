@@ -61,7 +61,7 @@ class ExplorerController(breve.BraitenbergControl):
 		self.vehicle = breve.createInstances(ExplorerVehicle, 1)
 		self.watch(self.vehicle)
 
-		f = open('maps/circuit', 'r')
+		f = open('maps/trap', 'r')
 		lines = f.readlines()
 		for i in xrange(len(lines)):
 			for j in xrange(len(lines[i])):

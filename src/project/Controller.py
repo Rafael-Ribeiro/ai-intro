@@ -39,15 +39,13 @@ class PopulationController(breve.BraitenbergControl):
 		self.target = male
 
 	def unwatch(self, obj):
-		if obj == self.target:
-			targets = breve.allInstances(MaleVehicle) + breve.allInstances(FemaleVehicle)
+		if obj == self.watchObject:
+			targets = breve.allInstances(MaleVehicle) + breve.allInstances(FemaleVehicle) + breve.allInstances(Egg)
 			targets.remove(obj)
 			try:
-				self.target = sample(targets, 1)[0]
+				self.watch(sample(targets, 1)[0])
 			except ValueError:
-				self.target = 0
-
-			self.watch(self.target)
+				self.watch(None)
 
 
 if __name__ == '__main__':
