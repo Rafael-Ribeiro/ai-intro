@@ -39,6 +39,7 @@ class Egg(LightSource):
 			child.rotate(d.UP, math.pi*2*random())
 
 			self.getController().unwatch(self)
+			self.getController().watch(child)
 			breve.deleteInstances(self)
 
 			return

@@ -46,6 +46,7 @@ class PopulationController(breve.BraitenbergControl):
 				self.watch(sample(targets, 1)[0])
 			except ValueError:
 				self.watch(None)
+				self.pause()
 
 
 if __name__ == '__main__':
