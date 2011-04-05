@@ -38,15 +38,15 @@ D = 2.0 #distance between objects on the grid
 
 
 #Sensors' bias
-LIGHT_BIAS = 3.0
+LIGHT_BIAS = 6.0
 SMELL_BIAS = 4.0
 SOUND_BIAS = 0.5
 PROXIMITY_BIAS = 4.0
 
 #Sensors' factors
 LIGHT_FACTOR = 1.0
-SMELL_FACTOR = 1.0
-SOUND_FACTOR = 1.0
+SMELL_FACTOR = 0.0
+SOUND_FACTOR = 0.0
 PROXIMITY_FACTOR = LIGHT_FACTOR + SMELL_FACTOR + SOUND_FACTOR + 2
 
 #Sensor/Source types
@@ -64,30 +64,50 @@ RIGHT_PROXIMITY_TYPES = LEFT_PROXIMITY_TYPES
 
 
 def leftActivator(vehicle, rightLightSensor,leftProximitySensor,rightProximitySensor,rightSmellSensor,leftSoundSensor):
+	maxSensor = 0
+	maxImpulse = 0
+
 	proximity = PROXIMITY_FACTOR * (0.5 - rightProximitySensor)
 	opposite_proximity = PROXIMITY_FACTOR * (0.5 - leftProximitySensor)
 
-	#if abs(proximity + opposite_proximity) < 0.1:
-	#	return 2*VELOCITY
+	if abs(proximity + opposite_proximity) < 0.5:
+		proximity = 2
 
 	sound = SOUND_FACTOR * 0
 	smell = SMELL_FACTOR * 0
-	light = LIGHT_FACTOR * (1 - 0)
+	light = LIGHT_FACTOR * (0.5 - rightLightSensor)
 
-	return VELOCITY * (proximity + sound + smell + light)
+	maxSensor = rightProximitySensor
+	maxImpulse = proximity
+
+	if abs(rightLightSensor) > abs(maxSensor):
+		maxSensor = rightLightSensor
+		maxImpulse = light
+
+	return VELOCITY*maxImpulse
 
 def rightActivator(vehicle, leftLightSensor,leftProximitySensor,rightProximitySensor,leftSmellSensor,rightSoundSensor):
+	maxSensor = 0
+	maxImpulse = 0
+
 	proximity = PROXIMITY_FACTOR * (0.5 - leftProximitySensor)
 	opposite_proximity = PROXIMITY_FACTOR * (0.5 - rightProximitySensor)
 
-	#if abs(proximity + opposite_proximity) < 0.1:
-	#	return -2*VELOCITY
+	if abs(proximity + opposite_proximity) < 0.5:
+		proximity = -2
 
 	sound = SOUND_FACTOR * 0
 	smell = SMELL_FACTOR * 0
-	light = LIGHT_FACTOR * (1 - 0)
+	light = LIGHT_FACTOR * (0.5 - leftLightSensor)
 
-	return VELOCITY * (proximity + sound + smell + light)
+	maxSensor = leftProximitySensor
+	maxImpulse = proximity
+
+	if abs(leftLightSensor) > abs(maxSensor):
+		maxSensor = leftLightSensor
+		maxImpulse = light
+
+	return VELOCITY*maxImpulse
 
 class Braitenberg3cVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
@@ -102,8 +122,8 @@ class Braitenberg3cVehicle(breve.BraitenbergVehicle):
 
 		# Sensors #
 		#Light sensors
-		self.leftLightSensor = breve.createInstances(LightSensor, 1, 'leftLightSensor', math.pi/2.0, LEFT_LIGHT_TYPE, LIGHT_BIAS)
-		self.rightLightSensor = breve.createInstances(LightSensor, 1, 'rightLightSensor', math.pi/2.0, RIGHT_LIGHT_TYPE, LIGHT_BIAS)
+		self.leftLightSensor = breve.createInstances(LightSensor, 1, 'leftLightSensor', math.pi/4.0, LEFT_LIGHT_TYPE, LIGHT_BIAS)
+		self.rightLightSensor = breve.createInstances(LightSensor, 1, 'rightLightSensor', math.pi/4.0, RIGHT_LIGHT_TYPE, LIGHT_BIAS)
 
 		self.addSensor(self.leftLightSensor,  breve.vector(1.80, 0.2,-1.1), dir.FRONT)
 		self.addSensor(self.rightLightSensor, breve.vector(1.80, 0.2, 1.1), dir.FRONT)
@@ -157,6 +177,7 @@ class Braitenberg3cController(breve.BraitenbergControl):
 				elif lines[i][j] == 'X': #vehicle
 					self.vehicle.move(breve.vector(i*D, 2, j*D))
 		f.close()
-		self.vehicle.rotate(breve.vector(0,1,0),40)
+
+		self.vehicle.rotate(breve.vector(0,1,0),3*math.pi/4)
 
 Braitenberg3cController()
