@@ -46,7 +46,7 @@ def leftActivator(vehicle, leftProximitySensor, rightProximitySensor, leftLightS
 		return 2*VELOCITY
 	
 	light = (0.5-leftLightSensor)
-	smell = (-0.5+rightSmellSensor) * vehicle.sexuality*2
+	smell = (rightSmellSensor) * vehicle.sexuality*2
 	sound = 0
 
 	return VELOCITY*(prox + light + smell + sound)
@@ -58,7 +58,7 @@ def rightActivator(vehicle, leftProximitySensor, rightProximitySensor, rightLigh
 		return -2*VELOCITY
 
 	light = (0.5-rightLightSensor)
-	smell = (-0.5+leftSmellSensor) * vehicle.sexuality*2
+	smell = (leftSmellSensor) * vehicle.sexuality*2
 	sound = 0
 
 	return VELOCITY*(prox + light + smell + sound)
