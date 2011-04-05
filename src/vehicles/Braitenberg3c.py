@@ -63,16 +63,26 @@ LEFT_PROXIMITY_TYPES = [SphereStationary]
 RIGHT_PROXIMITY_TYPES = LEFT_PROXIMITY_TYPES
 
 
-def leftActivator(vehicle, rightLightSensor,rightProximitySensor,rightSmellSensor,leftSoundSensor):
+def leftActivator(vehicle, rightLightSensor,leftProximitySensor,rightProximitySensor,rightSmellSensor,leftSoundSensor):
 	proximity = PROXIMITY_FACTOR * (0.5 - rightProximitySensor)
+	opposite_proximity = PROXIMITY_FACTOR * (0.5 - leftProximitySensor)
+
+	#if abs(proximity + opposite_proximity) < 0.1:
+	#	return 2*VELOCITY
+
 	sound = SOUND_FACTOR * 0
 	smell = SMELL_FACTOR * 0
 	light = LIGHT_FACTOR * (1 - 0)
 
 	return VELOCITY * (proximity + sound + smell + light)
 
-def rightActivator(vehicle, leftLightSensor,leftProximitySensor,leftSmellSensor,rightSoundSensor):
+def rightActivator(vehicle, leftLightSensor,leftProximitySensor,rightProximitySensor,leftSmellSensor,rightSoundSensor):
 	proximity = PROXIMITY_FACTOR * (0.5 - leftProximitySensor)
+	opposite_proximity = PROXIMITY_FACTOR * (0.5 - rightProximitySensor)
+
+	#if abs(proximity + opposite_proximity) < 0.1:
+	#	return -2*VELOCITY
+
 	sound = SOUND_FACTOR * 0
 	smell = SMELL_FACTOR * 0
 	light = LIGHT_FACTOR * (1 - 0)
@@ -121,8 +131,8 @@ class Braitenberg3cVehicle(breve.BraitenbergVehicle):
 
 
 		#Activators
-		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.rightLightSensor,self.rightProximitySensor,self.rightSmellSensor,self.leftSoundSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftLightSensor,self.leftProximitySensor,self.leftSmellSensor,self.rightSoundSensor], rightActivator)
+		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.rightLightSensor,self.leftProximitySensor,self.rightProximitySensor,self.rightSmellSensor,self.leftSoundSensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftLightSensor,self.leftProximitySensor,self.rightProximitySensor,self.leftSmellSensor,self.rightSoundSensor], rightActivator)
 
 
 class Braitenberg3cController(breve.BraitenbergControl):
@@ -147,5 +157,6 @@ class Braitenberg3cController(breve.BraitenbergControl):
 				elif lines[i][j] == 'X': #vehicle
 					self.vehicle.move(breve.vector(i*D, 2, j*D))
 		f.close()
+		self.vehicle.rotate(breve.vector(0,1,0),40)
 
 Braitenberg3cController()
