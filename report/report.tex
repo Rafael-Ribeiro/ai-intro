@@ -53,7 +53,7 @@ Por isso decidimos efectuar algumas alterações
 \subsection{Constructors with parameters}
 
 \subsection{Object distance}
-Para implementar correctamente os sensores, é necessário calcular a distância entre dois objectos.
+\indent \indent Para implementar correctamente os sensores, é necessário calcular a distância entre dois objectos.
 Para o cálculo desta distância as bibliotecas originais apenas teem em conta a distância euclidiana entre os centros.
 No entanto esta aproximação não é suficiente quando os objectos teem dimensões elevadas.
 
@@ -92,10 +92,13 @@ Esta transformação é obtida através do produto de matrizes:
 
 Onde $x, y, z$ são os versores do referencial $B$ em relação ao referencial $O$ e $O_{x}, O_{y}, O_{z}$ são as coordenadas da origem do rerefencial O nas coordenadas do referencial B. 
 
+\cleardoublepage
 \subsection{Activators}
 \indent \indent O veiculos de Braitenberg como definidos na literatura apenas permitem relacionar um sensor directamente com uma roda.
 Esta abordagem necessita a replicação de sensores quando se pretende que tenha influência em mais que uma roda.
-Para evitar esta duplicação introduzimos o conceito de \emph{Activador}
+Para evitar esta duplicação introduzimos o conceito de \emph{Activador}. 
+
+%TODO
 
 \subsection{Sensor rotation and initialization}
 \indent \indent 
