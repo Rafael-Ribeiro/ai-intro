@@ -16,8 +16,8 @@ from lib.Activator import BraitenbergActivator
 from custom.functions import cut, greater, hiperbole
 
 VELOCITY = 4.0	 	# Natural velocity
-BIAS = 3.0			# Try to maintain a 2 meter distance
-D = 2.0				# Distance between spheres
+BIAS = 2.0			# Try to maintain a 2 meter distance
+D = 3.0				# Distance between spheres
 
 def leftActivator(vehicle, rightProximitySensor):
 #	a = 1 - rightProximitySensor*2
@@ -26,7 +26,7 @@ def leftActivator(vehicle, rightProximitySensor):
 #	if (abs(a+b) < 0.1):
 #		return 2*VELOCITY
 
-	a = cut(rightProximitySensor, 1-rightProximitySensor*2, 0.5, 3)
+	a = cut(rightProximitySensor, 1-rightProximitySensor*2, 0.45, 1)
 	return VELOCITY*a
 
 def rightActivator(vehicle, leftProximitySensor):
@@ -36,7 +36,7 @@ def rightActivator(vehicle, leftProximitySensor):
 #	if (abs(a+b) < 0.1):
 #		return -2*VELOCITY
 
-	a = cut(leftProximitySensor, 1-leftProximitySensor*2, 0.5, -3)   
+	a = cut(leftProximitySensor, 1-leftProximitySensor*2, 0.45, -1)   
 	return VELOCITY*a
 
 class ExplorerVehicle(breve.BraitenbergVehicle):
@@ -48,8 +48,8 @@ class ExplorerVehicle(breve.BraitenbergVehicle):
 		self.addWheel(self.leftWheel, breve.vector(-0, 0, -1.500000))
 		self.addWheel(self.rightWheel, breve.vector(-0, 0, 1.500000))
 
-		self.leftProximitySensor = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/3.0, [SphereMobile], BIAS)
-		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/3.0, [SphereMobile], BIAS)
+		self.leftProximitySensor = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/2.0, [SphereMobile], BIAS)
+		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/2.0, [SphereMobile], BIAS)
 
 		self.addSensor(self.leftProximitySensor,  breve.vector(1.5, 0.4,-1.5), breve.vector(1,0,0))
 		self.addSensor(self.rightProximitySensor, breve.vector(1.5, 0.4, 1.5), breve.vector(1,0,0))
@@ -63,7 +63,7 @@ class ExplorerController(breve.BraitenbergControl):
 		self.vehicle = breve.createInstances(ExplorerVehicle, 1)
 		self.watch(self.vehicle)
 
-		f = open('maps/trap', 'r')
+		f = open('maps/road', 'r')
 		lines = f.readlines()
 		for i in xrange(len(lines)):
 			for j in xrange(len(lines[i])):

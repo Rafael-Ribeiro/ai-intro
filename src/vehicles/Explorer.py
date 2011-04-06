@@ -17,29 +17,34 @@ from lib.Activator import BraitenbergActivator
 from custom.functions import cut, greater, hiperbole
 from custom.constants import direction as d, color
 
-VELOCITY = 10.0 	# Natural velocity
-BIAS = 2.0			# Try to maintain a 2 meter distance
-D = 2.0				# Distance between spheres
+VELOCITY = 10.0 			# Natural velocity
+HALF_DISTANCE = 2.0			# Try to maintain a 2 meter distance
+HALF_LIGHT = 3.0
+D = 2.0						# Distance between spheres
 
 def leftActivator(vehicle, rightProximitySensor, leftProximitySensor, rightLightSensor):
-	a = 1 - rightProximitySensor*2
-	b = 1 - leftProximitySensor*2
+	#a = 1 - rightProximitySensor*2
+	#b = 1 - leftProximitySensor*2
 
-	if (abs(a+b) < 0.1):
-		return 2*VELOCITY
+	#if (abs(a+b) < 0.1):
+	#	return 2*VELOCITY
 
-	c = cut(rightLightSensor, rightLightSensor*2, 0.3, 1-(rightLightSensor-0.3)*4)
-	return VELOCITY*(a+c)
+	a = cut(rightProximitySensor, 1-rightProximitySensor*2, 0.45, -2)
+	b = cut(rightLightSensor, rightLightSensor*2, 0.3, 1-(rightLightSensor-0.3)*4)
+
+	return VELOCITY*(a+b)
 
 def rightActivator(vehicle, leftProximitySensor, rightProximitySensor, leftLightSensor):
-	a = 1 - leftProximitySensor*2
-	b = 1 - rightProximitySensor*2
+	#a = 1 - leftProximitySensor*2
+	#b = 1 - rightProximitySensor*2
 
-	if (abs(a+b) < 0.1):
-		return -2*VELOCITY
+	#if (abs(a+b) < 0.1):
+	#	return -2*VELOCITY
 
-	c = cut(leftLightSensor, leftLightSensor*2, 0.3, 1-(leftLightSensor-0.3)*4)
-	return VELOCITY*(a+c)
+	a = cut(leftProximitySensor, 1-leftProximitySensor*2, 0.45, 2)
+	b = cut(leftLightSensor, leftLightSensor*2, 0.3, 1-(leftLightSensor-0.3)*4)
+
+	return VELOCITY*(a+b)
 
 class ExplorerVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
@@ -51,15 +56,15 @@ class ExplorerVehicle(breve.BraitenbergVehicle):
 		self.addWheel(self.rightWheel, breve.vector(-0, 0, 1.500000))
 
 		# Proximity
-		self.leftProximitySensor = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/1.5, [SphereMobile], BIAS)
-		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/1.5, [SphereMobile], BIAS)
+		self.leftProximitySensor = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/3.0, [SphereMobile], HALF_DISTANCE)
+		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/3.0, [SphereMobile], HALF_DISTANCE)
 
 		self.addSensor(self.leftProximitySensor,  breve.vector(1.5, 0.4,-1.5), breve.vector(1,0,0))
 		self.addSensor(self.rightProximitySensor, breve.vector(1.5, 0.4, 1.5), breve.vector(1,0,0))
 
 		# Light
-		self.leftLightSensor = breve.createInstances(LightSensor, 1, 'leftLightSensor', math.pi/2.0, color.RED)
-		self.rightLightSensor = breve.createInstances(LightSensor, 1, 'rightLightSensor', math.pi/2.0, color.RED)
+		self.leftLightSensor = breve.createInstances(LightSensor, 1, 'leftLightSensor', math.pi/2.0, color.RED, HALF_LIGHT)
+		self.rightLightSensor = breve.createInstances(LightSensor, 1, 'rightLightSensor', math.pi/2.0, color.RED, HALF_LIGHT)
 
 		self.addSensor(self.leftLightSensor,  breve.vector(1.5, 0.4,-1.5), breve.vector(1,0,0))
 		self.addSensor(self.rightLightSensor, breve.vector(1.5, 0.4, 1.5), breve.vector(1,0,0))
