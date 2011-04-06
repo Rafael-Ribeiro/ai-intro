@@ -15,26 +15,28 @@ from custom.smell.sensor import SmellSensor
 from lib.Activator import BraitenbergActivator
 from custom.functions import cut, greater, hiperbole
 
-VELOCITY = 10.0 	# Natural velocity
-BIAS = 4.0			# Try to maintain a 2 meter distance
+VELOCITY = 4.0	 	# Natural velocity
+BIAS = 3.0			# Try to maintain a 2 meter distance
 D = 2.0				# Distance between spheres
 
-def leftActivator(vehicle, rightProximitySensor, leftProximitySensor):
-	a = 1 - rightProximitySensor*2
-	b = 1 - leftProximitySensor*2
+def leftActivator(vehicle, rightProximitySensor):
+#	a = 1 - rightProximitySensor*2
+#	b = 1 - leftProximitySensor*2
 
-	if (abs(a+b) < 0.1):
-		return 2*VELOCITY
+#	if (abs(a+b) < 0.1):
+#		return 2*VELOCITY
 
+	a = cut(rightProximitySensor, 1-rightProximitySensor*2, 0.5, 3)
 	return VELOCITY*a
 
-def rightActivator(vehicle, leftProximitySensor, rightProximitySensor):
-	a = 1 - leftProximitySensor*2
-	b = 1 - rightProximitySensor*2
+def rightActivator(vehicle, leftProximitySensor):
+#	a = 1 - leftProximitySensor*2
+#	b = 1 - rightProximitySensor*2
 
-	if (abs(a+b) < 0.1):
-		return -2*VELOCITY
+#	if (abs(a+b) < 0.1):
+#		return -2*VELOCITY
 
+	a = cut(leftProximitySensor, 1-leftProximitySensor*2, 0.5, -3)   
 	return VELOCITY*a
 
 class ExplorerVehicle(breve.BraitenbergVehicle):
@@ -52,8 +54,8 @@ class ExplorerVehicle(breve.BraitenbergVehicle):
 		self.addSensor(self.leftProximitySensor,  breve.vector(1.5, 0.4,-1.5), breve.vector(1,0,0))
 		self.addSensor(self.rightProximitySensor, breve.vector(1.5, 0.4, 1.5), breve.vector(1,0,0))
 
-		self.leftActivator = BraitenbergActivator(self ,self.leftWheel, [self.rightProximitySensor, self.leftProximitySensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftProximitySensor, self.rightProximitySensor], rightActivator)
+		self.leftActivator = BraitenbergActivator(self ,self.leftWheel, [self.rightProximitySensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftProximitySensor], rightActivator)
 
 class ExplorerController(breve.BraitenbergControl):
 	def __init__(self):
@@ -61,7 +63,7 @@ class ExplorerController(breve.BraitenbergControl):
 		self.vehicle = breve.createInstances(ExplorerVehicle, 1)
 		self.watch(self.vehicle)
 
-		f = open('maps/circuit', 'r')
+		f = open('maps/trap', 'r')
 		lines = f.readlines()
 		for i in xrange(len(lines)):
 			for j in xrange(len(lines[i])):

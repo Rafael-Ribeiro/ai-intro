@@ -7,7 +7,7 @@ def limit(x, m, M):
 
 def cut(x, *args):
 	for i in xrange(len(args)/2):
-		if x < args[(i+1)*2]:
+		if x < args[i*2+1]:
 			return args[i*2]
 
 	return args[-1]
