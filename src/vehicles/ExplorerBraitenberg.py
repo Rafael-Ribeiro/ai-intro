@@ -15,7 +15,7 @@ from custom.smell.sensor import SmellSensor
 from lib.Activator import BraitenbergActivator
 from custom.functions import cut, greater, hiperbole
 
-VELOCITY = 4.0	 	# Natural velocity
+VELOCITY = 10.0	 	# Natural velocity
 BIAS = 2.0			# Try to maintain a 2 meter distance
 D = 3.0				# Distance between spheres
 
@@ -26,7 +26,7 @@ def leftActivator(vehicle, rightProximitySensor):
 #	if (abs(a+b) < 0.1):
 #		return 2*VELOCITY
 
-	a = cut(rightProximitySensor, 1-rightProximitySensor*2, 0.45, 1)
+	a = cut(rightProximitySensor, 1-rightProximitySensor*2, 0.5, 1)
 	return VELOCITY*a
 
 def rightActivator(vehicle, leftProximitySensor):
@@ -36,7 +36,7 @@ def rightActivator(vehicle, leftProximitySensor):
 #	if (abs(a+b) < 0.1):
 #		return -2*VELOCITY
 
-	a = cut(leftProximitySensor, 1-leftProximitySensor*2, 0.45, -1)   
+	a = cut(leftProximitySensor, 1-leftProximitySensor*2, 0.5, -1)   
 	return VELOCITY*a
 
 class ExplorerVehicle(breve.BraitenbergVehicle):
