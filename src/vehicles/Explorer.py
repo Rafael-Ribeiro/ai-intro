@@ -25,9 +25,9 @@ D = 3.0						# Distance between spheres
 
 OFFSET = gaussian(0,0.25,0.1)
 
-# [0 .. 0.25]	aggressor with increasing intensity
-# [0.25 .. 0.5] aggressor with decreasing intensity
-# [0.5 .. 1] 	explorer
+# [0	.. 0.25]	aggressor with increasing intensity
+# [0.25	..  0.5] 	aggressor with decreasing intensity
+# [0.5	..    1] 	explorer
 def leftActivator(vehicle, rightProximitySensor, leftProximitySensor, rightLightSensor):
 	a = cut(rightProximitySensor, 1-rightProximitySensor*2, 0.45, -1)
 	b = cut(rightLightSensor, (gaussian(rightLightSensor, 0.25, 0.1)-OFFSET)/2, 0.5, -(1-rightLightSensor*2)**2)
