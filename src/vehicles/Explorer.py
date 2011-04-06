@@ -18,9 +18,9 @@ from custom.functions import cut, greater, hiperbole
 from custom.constants import direction as d, color
 
 VELOCITY = 10.0 			# Natural velocity
-HALF_DISTANCE = 2.0			# Try to maintain a 2 meter distance
-HALF_LIGHT = 3.0
-D = 2.0						# Distance between spheres
+HALF_DISTANCE = 3.0			# Try to maintain at least 3 meter distance
+HALF_LIGHT = 5.0			# Behaviour change at 5 meters
+D = 3.0						# Distance between spheres
 
 def leftActivator(vehicle, rightProximitySensor, leftProximitySensor, rightLightSensor):
 	#a = 1 - rightProximitySensor*2
@@ -30,7 +30,7 @@ def leftActivator(vehicle, rightProximitySensor, leftProximitySensor, rightLight
 	#	return 2*VELOCITY
 
 	a = cut(rightProximitySensor, 1-rightProximitySensor*2, 0.45, -2)
-	b = cut(rightLightSensor, rightLightSensor*2, 0.3, 1-(rightLightSensor-0.3)*4)
+	b = cut(rightLightSensor, rightLightSensor*2, 0.4, 0.8-(rightLightSensor-0.4)*8, 0.5, 1-rightLightSensor*2)
 
 	return VELOCITY*(a+b)
 
@@ -42,7 +42,7 @@ def rightActivator(vehicle, leftProximitySensor, rightProximitySensor, leftLight
 	#	return -2*VELOCITY
 
 	a = cut(leftProximitySensor, 1-leftProximitySensor*2, 0.45, 2)
-	b = cut(leftLightSensor, leftLightSensor*2, 0.3, 1-(leftLightSensor-0.3)*4)
+	b = cut(leftLightSensor, leftLightSensor * 2, 0.4, 0.8-(leftLightSensor-0.4)*8, 0.5, 1-leftLightSensor*2)
 
 	return VELOCITY*(a+b)
 
@@ -56,8 +56,8 @@ class ExplorerVehicle(breve.BraitenbergVehicle):
 		self.addWheel(self.rightWheel, breve.vector(-0, 0, 1.500000))
 
 		# Proximity
-		self.leftProximitySensor = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/3.0, [SphereMobile], HALF_DISTANCE)
-		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/3.0, [SphereMobile], HALF_DISTANCE)
+		self.leftProximitySensor = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/4.0, [SphereMobile], HALF_DISTANCE)
+		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/4.0, [SphereMobile], HALF_DISTANCE)
 
 		self.addSensor(self.leftProximitySensor,  breve.vector(1.5, 0.4,-1.5), breve.vector(1,0,0))
 		self.addSensor(self.rightProximitySensor, breve.vector(1.5, 0.4, 1.5), breve.vector(1,0,0))
