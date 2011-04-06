@@ -14,16 +14,19 @@ from custom.proximity.obstacles import SphereMobile
 from custom.proximity.sensor import DistanceSensor
 from custom.proximity.sensor import LaserSensor
 
-from custom.functions import greater, limit, negexp
+from custom.functions import cut, limit, negexp
 from custom.constants import color, direction as dir
 
 # http://en.wikipedia.org/wiki/Angular_frequency
 DISTANCE = 20.0
 RADIUS = 13.0
 VELOCITY = 5.0
+AXIS_DIST = 4.0
+
 ANGULAR_FREQUENCY = VELOCITY / RADIUS
 
-AXIS_DIST = 4.0
+OFFSET = 0.6 #4/math.sqrt(distanceSensor)
+DIFFERENTIAL = ANGULAR_FREQUENCY * AXIS_DIST
 
 drawing = None
 lastLocation = None
@@ -34,17 +37,13 @@ def draw(vehicle):
 	lastLocation = vehicle.getLocation()
 
 def leftActivator(vehicle, distanceSensor,laserSensor):
-	# TODO REMOVE
-	draw(vehicle)
-	#/ TODO REMOVE
 	return VELOCITY
 
 def rightActivator(vehicle, distanceSensor,laserSensor):
-	OFFSET = 0.6 #4/math.sqrt(distanceSensor)
-	DIFFERENTIAL = ANGULAR_FREQUENCY * AXIS_DIST
+	a = cut(laserSensor, OFFSET, 0, 0)
+	b = cut(distanceSensor, DIFFERENTIAL, RADIUS*2, 0)
 
-	a = greater(laserSensor, 0, 0, OFFSET)
-	b = greater(distanceSensor, RADIUS*2, 0, DIFFERENTIAL)
+	draw(vehicle)
 
 	return VELOCITY + limit(a + b, 0, DIFFERENTIAL)
 
