@@ -19,6 +19,7 @@
 	,pdfborder = {0 0 0}
 }
 
+\usepackage{subfig}
 \usepackage{amsmath}
 \usepackage{wrapfig}
 \usepackage{array}
@@ -46,7 +47,7 @@
 \cleardoublepage
 \section{Breve Libraries}
 % TODO
-Como referenciado na documentação da biblioteca Breve, o código Python fornecido é obtido através da compilação de código Steve.
+\indent \indent Como referenciado na documentação da biblioteca Breve, o código Python fornecido é obtido através da compilação de código Steve.
 Assim, esta biblioteca está pouco optimizada na medida em que não utiliza todas as potencialidades da linguagem. 
 Por isso decidimos efectuar algumas alterações
 
@@ -54,8 +55,8 @@ Por isso decidimos efectuar algumas alterações
 
 \subsection{Object distance}
 \indent \indent Para implementar correctamente os sensores, é necessário calcular a distância entre dois objectos.
-Para o cálculo desta distância as bibliotecas originais apenas teem em conta a distância euclidiana entre os centros.
-No entanto esta aproximação não é suficiente quando os objectos teem dimensões elevadas.
+Para o cálculo desta distância as bibliotecas originais apenas têm em conta a distância euclidiana entre os centros.
+No entanto esta aproximação não é suficiente quando os objectos têm dimensões elevadas.
 
 \subsubsection{Point - Sphere}
 \indent \indent Por definição todos os pontos da superficie esférica estão à mesma distância do centro.
@@ -94,9 +95,13 @@ Onde $x, y, z$ são os versores do referencial $B$ em relação ao referencial $
 
 \cleardoublepage
 \subsection{Activators}
-\indent \indent O veiculos de Braitenberg como definidos na literatura apenas permitem relacionar um sensor directamente com uma roda.
-Esta abordagem necessita a replicação de sensores quando se pretende que tenha influência em mais que uma roda.
+\indent \indent Os veículos de Braitenberg como definidos na literatura apenas permitem relacionar um sensor directamente com uma única roda.
+Esta abordagem implica a replicação de sensores quando se pretende que estes tenham influências diferentes para cada roda.
 Para evitar esta duplicação introduzimos o conceito de \emph{Activador}. 
+
+Um \emph{Activador} é um bloco conceptual introduzido entre vários sensores e uma roda.
+Este é responsável pelo cálculo das funções de activação de cada sensor e posterior agregação dos resultados, enviando depois o sinal correspondente para a roda.  
+Desta forma, o veículo continua a ser um veículo de Braitenberg desde que a agregação dos resultados seja efectuada com apenas operações elementares (i.e: adição). 
 
 %TODO
 
@@ -108,65 +113,70 @@ Para evitar esta duplicação introduzimos o conceito de \emph{Activador}.
 
 \cleardoublepage
 \section{Sensors}
-Uma das partes que compõem um veículo de Braitenber (e agentes reactivos na sua generalidade) são os sensores.
-Um
-% Sensores complexos permitem simular melhor a realidade,
-% No entanto demasiada informação torna difícil a análise e obtenção de resultados desejáveis. (Information overloading)
-% É necessário efectuar decisões de engenharia?
-% Complexidade crescente
+\indent \indent Uma das partes que compõem um veículo de Braitenberg (e agentes reactivos na sua generalidade) são os sensores.
+Estes comportam toda a entrada de dados fornecidos ao agente e podem apresentar diferentes complexidades.
+Quanto mais realistas os sensores forem melhor é a qualidade máxima teorica dos agentes uma vez que estes possuem mais informação.
+No entanto, mais complexidade necessita de mais poder computacional e e torna-se mais difícil analisar (um fenómeno denominado por \emph{information overloading}).
+Desta forma é necessario efectuar \emph{trade-offs} de forma a encontrar um equilibrio adequado.
 
+\cleardoublepage
 \subsection{Laser}
-TODO
 
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\vspace{-30pt}
+\begin{figure}[h]
+	\vspace{-20pt}
 	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/sensors/laser.png}
+		\includegraphics[width=0.6\textwidth]{graphs/sensors/laser.png}
 	\end{center}
-	\vspace{-30pt}
+	\vspace{-20pt}
 	\caption{Laser: $\alpha=\frac{\pi}{20}$}
-\end{wrapfigure}
+\end{figure}
 
-
-\subsection{Distance}
 TODO
 
-\begin{figure}
-	\vspace{-30pt}
+\cleardoublepage
+\subsection{Distance}
+
+\begin{figure}[h]
+	\vspace{-20pt}
 	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/sensors/distance.png}
+		\includegraphics[width=0.6\textwidth]{graphs/sensors/distance.png}
 	\end{center}
-	\vspace{-30pt}
+	\vspace{-20pt}
 	\caption{Distance: $\alpha=\frac{\pi}{4}$}
 \end{figure}
 
+TODO
+
+\cleardoublepage
 \subsection{Proximity}
-TODO
 
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\vspace{-30pt}
+\begin{figure}[h]
+	\vspace{-20pt}
 	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/sensors/proximity.png}
+		\includegraphics[width=0.6\textwidth]{graphs/sensors/proximity.png}
 	\end{center}
-	\vspace{-30pt}
+	\vspace{-20pt}
 	\caption{Proximity: $bias=50$ $\alpha=\frac{\pi}{4}$}
-\end{wrapfigure}
+\end{figure}
 
-\subsection{Smell}
 TODO
 
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\vspace{-30pt}
+\cleardoublepage
+\subsection{Smell}
+\begin{figure}[h]
+	\vspace{-20pt}
 	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/sensors/smell.png}
+		\includegraphics[width=0.6\textwidth]{graphs/sensors/smell.png}
 	\end{center}
-	\vspace{-30pt}
+	\vspace{-20pt}
 	\caption{Smell: $bias=50$}
-\end{wrapfigure}
+\end{figure}
+
+TODO
 
 \cleardoublepage
 \subsection{Light}
-\begin{figure}[hb]
+\begin{figure}[h]
 	\vspace{-20pt}
 	\begin{center}
 		\includegraphics[width=0.6\textwidth]{graphs/sensors/light.png}
@@ -182,13 +192,13 @@ directamente á frente do sensor influenciam mais que os existentes na periferia
 	I = \displaystyle\sum\limits_{l \in lights} \frac{l_{i}}{1 + (\frac{l_{d}}{d})^{2}*cos(\frac{2\pi}{\alpha}*l_{\alpha})}
 \]
 
-Onde $l_{i}$, $l_{d}$, $l_{\alpha}$ são a intensidade, a distância e o ângulo de visão para cada luz;
+onde $l_{i}$, $l_{d}$, $l_{\alpha}$ são a intensidade, a distância e o ângulo de visão para cada luz;
 $\alpha$ é a abertura do sensor ($rad$);
 e $d$ é a distância á qual uma luz com intensidade 1 situada em frente ao sensor produz uma saida no sensor de 0.5.
 
 \cleardoublepage
 \subsection{Sound}
-\begin{figure}[hb]
+\begin{figure}[h]
 	\vspace{-20pt}
 	\begin{center}
 		\includegraphics[width=0.6\textwidth]{graphs/sensors/cardioid.png}
@@ -217,65 +227,54 @@ mas decresce mais rapidamente quando o ângulo aumenta.
 
 \cleardoublepage
 \section{Vehicles}
+%TODO
+
 \subsection{Eight}
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\begin{center}
-		\includegraphics[width=0.48\textwidth]{trail/eight.png}
-	\end{center}
-	\caption{Trail of the eight vehicle}
-\end{wrapfigure}
+\begin{figure}[h]
+	\centering
 
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/activators/eight_l.png}
-	\end{center}
-	\caption{Left wheel activator functions}
-\end{wrapfigure}
+	\subfloat[Trail]{\includegraphics[width=0.2\textwidth]{trail/eight.png}}
+	\subfloat[Left activator]{\includegraphics[width=0.4\textwidth]{graphs/activators/eight_l.png}}
+	\subfloat[Right activator]{\includegraphics[width=0.4\textwidth]{graphs/activators/eight_r.png}}
+	
+	\caption{The eight vehicle}
+\end{figure}
 
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/activators/eight_r.png}
-	\end{center}
-	\caption{Right wheel activator functions}
-\end{wrapfigure}
 
+\cleardoublepage
 \subsection{Ellipse}
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\begin{center}
-		\includegraphics[width=0.48\textwidth]{trail/ellipse.png}
-	\end{center}
-	\caption{Trail of the ellipse vehicle}
-\end{wrapfigure}
+\begin{figure}[h]
+	\centering
+	\subfloat[Trail]{\includegraphics[width=0.2\textwidth]{trail/ellipse.png}}
+	\subfloat[Left activator]{\includegraphics[width=0.4\textwidth]{graphs/activators/ellipse_l.png}}
+	\subfloat[Right activator]{\includegraphics[width=0.4\textwidth]{graphs/activators/ellipse_r.png}}
+	
+	\caption{The ellipse vehicle}
+\end{figure}
 
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/activators/ellipse_l.png}
-	\end{center}
-	\caption{Left wheel activator functions}
-\end{wrapfigure}
-
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/activators/ellipse_r.png}
-	\end{center}
-	\caption{Right wheel activator functions}
-\end{wrapfigure}
-
+\cleardoublepage
 \subsection{Braitenberg 3c}
+\begin{figure}[h]
+	\centering
+	\subfloat[Left activator]{\includegraphics[width=0.5\textwidth]{graphs/activators/3c_l.png}}
+	\subfloat[Right activator]{\includegraphics[width=0.5\textwidth]{graphs/activators/3c_r.png}}
+	
+	\caption{The Braitenberg 3c vehicle}
+\end{figure}
 
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/activators/3c_l.png}
-	\end{center}
-	\caption{Left wheel activator functions}
-\end{wrapfigure}
+%\begin{wrapfigure}{r}{0.5\textwidth}
+%	\begin{center}
+%		\includegraphics[width=0.48\textwidth]{graphs/activators/3c_l.png}
+%	\end{center}
+%	\caption{Left wheel activator functions}
+%\end{wrapfigure}
 
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/activators/3c_r.png}
-	\end{center}
-	\caption{Right wheel activator functions}
-\end{wrapfigure}
+%\begin{wrapfigure}{r}{0.5\textwidth}
+%	\begin{center}
+%		\includegraphics[width=0.48\textwidth]{graphs/activators/3c_r.png}
+%	\end{center}
+%	\caption{Right wheel activator functions}
+%\end{wrapfigure}
 
 \cleardoublepage
 \section{Project}

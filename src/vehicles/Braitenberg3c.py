@@ -131,7 +131,7 @@ class Braitenberg3cController(breve.BraitenbergControl):
 		for i in xrange(len(lines)):
 			for j in xrange(len(lines[i])):
 				if lines[i][j] == '*': #objects
-					breve.createInstances(SphereStationary, 1, 1.0).move(breve.vector(i*D, 1.0, j*D))
+					breve.createInstances(SphereStationary, 1, b1.0).move(breve.vector(i*D, 1.0, j*D))
 				elif lines[i][j] == 'l': #<L>ight
 					breve.createInstances(LightSource, 1, 1.0, LIGHT_TYPE, False).move(breve.vector(i*D, 1.0, j*D))
 				elif lines[i][j] == 's': #<S>mell
