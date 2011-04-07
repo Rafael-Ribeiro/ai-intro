@@ -38,8 +38,9 @@ class Egg(LightSource):
 			child.move(self.getLocation())
 			child.rotate(d.UP, math.pi*2*random())
 
-			self.getController().unwatch(self)
-			self.getController().watch(child)
+			if self.getController().unwatch(self):
+				self.getController().watch(child) # Continue to watch the child (if the egg was the camera target)
+
 			breve.deleteInstances(self)
 
 			return

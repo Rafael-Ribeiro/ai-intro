@@ -20,18 +20,25 @@ from custom.light.sensor import LightSensor
 
 from Egg import Egg
 from custom.constants import color, direction as dir
+from custom.functions import cut
 
 from lib.Activator import BraitenbergActivator
 
-MATURITY 		= 50.0
-PROCRIATION 	= 40.0
-LIFESPAN 		= 300.0
-VELOCITY 		= 8.0
+MATURITY 		= 50.0 / 3
+PROCRIATION 	= 40.0 / 3
+LIFESPAN 		= 300.0 / 3
+VELOCITY 		= 3.0
+NATURAL			= 2.0
 
-DISTANCE_BIAS = 2.5
+HALF_DISTANCE = 3
+HALF_LIGHT = 7.0
+#HALF_SMELL = 10.0
+HALF_SOUND = 3.0
+
+DISTANCE_BIAS = 1.0
 LIGHT_BIAS = 4.0
-SMELL_BIAS = 10.0
-SOUND_BIAS = 3.0
+#SMELL_BIAS = 1.0
+SOUND_BIAS = 1.0
 
 #	Sensor Pair	|	Connection	|	Bias		|	Behaviour				|	Explanation	         		#
 #---------------+---------------+---------------+---------------------------+-------------------------------#
@@ -40,27 +47,24 @@ SOUND_BIAS = 3.0
 #	Smell		|	??			|	??			|	???						|	???				 			#
 #	Sound		|	Uncrossed	|	Negative	|	Lover towards sound		|	Cares for its babies		#
 
-def leftActivator(vehicle, leftProximitySensor, rightProximitySensor, leftLightSensor, leftSoundSensor):
-	a = 1 - rightProximitySensor*2
-	b = 1 - leftProximitySensor*2
+C = 0.2
+def leftActivator(vehicle, rightProximitySensor, leftLightSensor, leftSoundSensor):
+	prox = cut(rightProximitySensor, 0, C, (C - rightProximitySensor) * DISTANCE_BIAS, 0.5, NATURAL - 1)
+	light = cut(leftLightSensor, 0, C, (C - leftLightSensor) * LIGHT_BIAS)
+	sound = 0 * SOUND_BIAS
 
-	if (abs(a+b) < 0.1):
-		return 5*VELOCITY
+	return VELOCITY*(prox + light + sound + NATURAL)
 
-	return VELOCITY*(a - 2*leftLightSensor + leftSoundSensor)
+def rightActivator(vehicle, leftProximitySensor, rightLightSensor, rightSoundSensor):
+	prox = cut(leftProximitySensor, 0, 0.2, 0.2 - leftProximitySensor * DISTANCE_BIAS, 0.5, -NATURAL - 1)
+	light = cut(rightLightSensor, 0, C, (C - rightLightSensor) * LIGHT_BIAS)
+	sound = 0 * SOUND_BIAS
 
-def rightActivator(vehicle, leftProximitySensor, rightProximitySensor, rightLightSensor, rightSoundSensor):
-	a = 1 - rightProximitySensor*2
-	b = 1 - leftProximitySensor*2
-
-	if (abs(a+b) < 0.1):
-		return -5*VELOCITY
-
-	return VELOCITY*(b - 2*rightLightSensor + rightSoundSensor)
+	return VELOCITY*(prox + light + sound + NATURAL)
 
 class FemaleVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
-		breve.BraitenbergVehicle.__init__(self, breve.vector(4, 0.7, 3))
+		breve.BraitenbergVehicle.__init__(self, breve.vector(3, 0.7, 3))
 		self.setColor(color.PINK)
 
 		self.handleCollisions("MaleVehicle", "reproduce", ["Link", "LightSensor"])
@@ -68,52 +72,52 @@ class FemaleVehicle(breve.BraitenbergVehicle):
 		self.age = 0.0
 		self.last = 0.0
 
-		self.leftWheel = breve.createInstances(breve.BraitenbergWheel,  1, 0.6, 0.2, color.WHITE)
-		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 0.6, 0.2, color.WHITE)
+		self.leftWheel = breve.createInstances(breve.BraitenbergWheel,  1, 0.5, 0.2, color.WHITE)
+		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 0.5, 0.2, color.WHITE)
 
-		self.addWheel(self.leftWheel,  breve.vector(-0.5, 0, -1.5), dir.RIGHT)
-		self.addWheel(self.rightWheel, breve.vector(-0.5, 0,  1.5), dir.RIGHT)
+		self.addWheel(self.leftWheel,  breve.vector(0.5, 0, -1.5), dir.RIGHT)
+		self.addWheel(self.rightWheel, breve.vector(0.5, 0,  1.5), dir.RIGHT)
 
 		from Male import MaleVehicle
 
 		# Proximity
-		self.leftProximitySensor  = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/3, [SphereStationary, FemaleVehicle, MaleVehicle], DISTANCE_BIAS)
-		self.rightProximitySensor  = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/3, [SphereStationary, FemaleVehicle, MaleVehicle], DISTANCE_BIAS)
+		self.leftProximitySensor  = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/2, [SphereStationary, FemaleVehicle, MaleVehicle, Egg], HALF_DISTANCE)
+		self.rightProximitySensor  = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/2, [SphereStationary, FemaleVehicle, MaleVehicle, Egg], HALF_DISTANCE)
 		
-		self.addSensor(self.leftProximitySensor,  breve.vector(2, 0.21, -1.2), dir.FRONT)
-		self.addSensor(self.rightProximitySensor,  breve.vector(2, 0.21, 1.2), dir.FRONT)
+		self.addSensor(self.leftProximitySensor,  breve.vector(1.5, 0.21, -1.2), dir.FRONT)
+		self.addSensor(self.rightProximitySensor,  breve.vector(1.5, 0.21, 1.2), dir.FRONT)
 		
-		# Hormones
-		self.leftSmellSensor  = breve.createInstances(SmellSensor, 1, 'leftSmellSensor', color.RED, SMELL_BIAS)
-		self.rightSmellSensor  = breve.createInstances(SmellSensor, 1, 'rightSmellSensor', color.RED, SMELL_BIAS)
-		
-		self.addSensor(self.leftSmellSensor,  breve.vector(2, -0.3, -1.5), dir.FRONT)
-		self.addSensor(self.rightSmellSensor,  breve.vector(2, -0.3, 1.5), dir.FRONT)
+		# Smell
+		#self.leftSmellSensor  = breve.createInstances(SmellSensor, 1, 'leftSmellSensor', color.RED, HALF_SMELL)
+		#self.rightSmellSensor  = breve.createInstances(SmellSensor, 1, 'rightSmellSensor', color.RED, HALF_SMELL)
+
+		#self.addSensor(self.leftSmellSensor,  breve.vector(2, -0.3, -1.5), dir.FRONT)
+		#self.addSensor(self.rightSmellSensor,  breve.vector(2, -0.3, 1.5), dir.FRONT)
 
 
 		# Light
-		self.leftLightSensor  = breve.createInstances(LightSensor, 1, 'leftLightSensor', math.pi/2, color.EGG, LIGHT_BIAS, [Egg])
-		self.rightLightSensor  = breve.createInstances(LightSensor, 1, 'rightLightSensor', math.pi/2, color.EGG, LIGHT_BIAS, [Egg])
+		self.leftLightSensor  = breve.createInstances(LightSensor, 1, 'leftLightSensor', math.pi/2, color.EGG, HALF_LIGHT, [Egg])
+		self.rightLightSensor  = breve.createInstances(LightSensor, 1, 'rightLightSensor', math.pi/2, color.EGG, HALF_LIGHT, [Egg])
 		
-		self.addSensor(self.leftLightSensor,  breve.vector(2, 0.1, -1.5), dir.FRONT)
-		self.addSensor(self.rightLightSensor,  breve.vector(2, 0.1, 1.5), dir.FRONT)
+		self.addSensor(self.leftLightSensor,  breve.vector(1.2, 0.1, -1.3), dir.FRONT)
+		self.addSensor(self.rightLightSensor,  breve.vector(1.2, 0.1, 1.3), dir.FRONT)
 
 		# Sound
-		self.leftSoundSensor  = breve.createInstances(SoundSensor, 1, 'leftSoundSensor', color.GREEN, SOUND_BIAS)
-		self.rightSoundSensor  = breve.createInstances(SoundSensor, 1, 'rightSoundSensor', color.GREEN, SOUND_BIAS)
+		self.leftSoundSensor  = breve.createInstances(SoundSensor, 1, 'leftSoundSensor', color.GREEN, HALF_SOUND)
+		self.rightSoundSensor  = breve.createInstances(SoundSensor, 1, 'rightSoundSensor', color.GREEN, HALF_SOUND)
 		
-		self.addSensor(self.leftSoundSensor,  breve.vector(1.5, 0.0, -1.5), dir.LEFT)
-		self.addSensor(self.rightSoundSensor,  breve.vector(1.5, 0.0, 1.5), dir.RIGHT)
+		self.addSensor(self.leftSoundSensor,  breve.vector(1.1, 0.0, -1.3), dir.LEFT)
+		self.addSensor(self.rightSoundSensor,  breve.vector(1.1, 0.0, 1.3), dir.RIGHT)
 
 		# Activator
-		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.leftProximitySensor, self.rightProximitySensor, self.leftLightSensor, self.leftSoundSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftProximitySensor, self.rightProximitySensor, self.rightLightSensor, self.rightSoundSensor], rightActivator)
+		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.rightProximitySensor, self.leftLightSensor, self.leftSoundSensor], leftActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftProximitySensor, self.rightLightSensor, self.rightSoundSensor], rightActivator)
 
 		self.cry = breve.createInstances(SoundSource, 1, 1.0, color.GREEN, True)
-		self.attach(self.cry, breve.vector(1.7, 0, 0))  
+		self.attach(self.cry, breve.vector(1.1, 0, 0))  
 
 		self.hormone = breve.createInstances(SmellSource, 1, 0.0, color.PINK, True)
-		self.attach(self.hormone, breve.vector(-2.0,0.7,0))
+		self.attach(self.hormone, breve.vector(-1.5,0.7,0))
 
 		self.sexuality = 0.0
 		self.maturity = 0.0
@@ -129,7 +133,7 @@ class FemaleVehicle(breve.BraitenbergVehicle):
 			self.sexuality = 0.0
 
 
-		self.hormone.setIntensity(self.sexuality)
+		self.hormone.setIntensity(self.sexuality*0.2)
 		self.cry.setIntensity(max(1-self.maturity, 0.2))
 
 	def iterate(self):

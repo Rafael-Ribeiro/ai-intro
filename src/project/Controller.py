@@ -15,7 +15,7 @@ from Male import MaleVehicle
 from Female import FemaleVehicle
 from Egg import Egg
 
-D = 2.0
+D = 3.0
 class PopulationController(breve.BraitenbergControl):
 	def __init__(self):
 		breve.BraitenbergControl.__init__(self)
@@ -33,12 +33,12 @@ class PopulationController(breve.BraitenbergControl):
 		female.move(breve.vector(10, 2, 10)).rotate(d.UP, 0.1)
 		female.move(breve.vector(10, 2, 10)).rotate(d.UP, math.pi)
 
-		egg = breve.createInstances(Egg, 1).move(breve.vector(0, 2, 10))
+		egg = breve.createInstances(Egg, 1).move(breve.vector(0, -1, 10)) #breve.vector(0, 0, 10)
 
 		self.watch(male)
 		self.target = male
 
-	def unwatch(self, obj):
+	def unwatch(self, obj): # return whether the object was the target or not
 		if obj == self.watchObject:
 			targets = breve.allInstances(MaleVehicle) + breve.allInstances(FemaleVehicle) + breve.allInstances(Egg)
 			targets.remove(obj)
@@ -48,6 +48,13 @@ class PopulationController(breve.BraitenbergControl):
 				self.watch(None)
 				self.pause()
 
+			return True
+
+		return False
+
 
 if __name__ == '__main__':
 	population = PopulationController()
+
+	global asd
+	asd = population
