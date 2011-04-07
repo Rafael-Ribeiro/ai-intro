@@ -108,59 +108,92 @@ Para evitar esta duplicação introduzimos o conceito de \emph{Activador}.
 
 \cleardoublepage
 \section{Sensors}
+% Sensores complexos permitem simular melhor a realidade,
+% No entanto demasiada informação torna difícil a análise e obtenção de resultados desejáveis. (Information overloading)
+% É necessário efectuar decisões de engenharia?
+% Complexidade crescente
 
-\subsection{Light}
+\subsection{Laser}
+TODO
 
 \begin{wrapfigure}{r}{0.5\textwidth}
 	\vspace{-30pt}
 	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/light.png}
+		\includegraphics[width=0.48\textwidth]{graphs/sensors/laser.png}
 	\end{center}
 	\vspace{-30pt}
-	\caption{Light: $bias=50$ $\alpha=\pi/2$}
+	\caption{Laser: $\alpha=\frac{\pi}{20}$}
 \end{wrapfigure}
+
 
 \subsection{Distance}
-\begin{wrapfigure}{r}{0.5\textwidth}
+TODO
+
+\begin{figure}
 	\vspace{-30pt}
 	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/distance.png}
+		\includegraphics[width=0.48\textwidth]{graphs/sensors/distance.png}
 	\end{center}
 	\vspace{-30pt}
-	\caption{Distance: $\alpha=\pi/4$}
-\end{wrapfigure}
+	\caption{Distance: $\alpha=\frac{\pi}{4}$}
+\end{figure}
 
 \subsection{Proximity}
+TODO
+
 \begin{wrapfigure}{r}{0.5\textwidth}
 	\vspace{-30pt}
 	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/proximity.png}
+		\includegraphics[width=0.48\textwidth]{graphs/sensors/proximity.png}
 	\end{center}
 	\vspace{-30pt}
-	\caption{Proximity: $bias=50$ $\alpha=\pi/4$}
+	\caption{Proximity: $bias=50$ $\alpha=\frac{\pi}{4}$}
 \end{wrapfigure}
 
 \subsection{Smell}
+TODO
+
 \begin{wrapfigure}{r}{0.5\textwidth}
 	\vspace{-30pt}
 	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/smell.png}
+		\includegraphics[width=0.48\textwidth]{graphs/sensors/smell.png}
 	\end{center}
 	\vspace{-30pt}
 	\caption{Smell: $bias=50$}
 \end{wrapfigure}
 
+\cleardoublepage
+\subsection{Light}
+\begin{figure}[hb]
+	\vspace{-20pt}
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{graphs/sensors/light.png}
+	\end{center}
+	\vspace{-20pt}
+	\caption{Light: $bias=50$ $\alpha=\frac{\pi}{2}$}
+\end{figure}
+
+\indent Este sensor permite captar a intensidade de luz captada. Tal como no sensor de cheiro a intensidade transmitida
+é comulativa e inversamente proporsional ao quadrado da distância. No entanto este sensor é direcionado (i.e. fontes
+directamente á frente do sensor influenciam mais que os existentes na periferia. Assim a intensidade total do sensor é:
+\[
+	I = \displaystyle\sum\limits_{l \in lights} \frac{l_{i}}{1 + (\frac{l_{d}}{d})^{2}*cos(\frac{2\pi}{\alpha}*l_{\alpha})}
+\]
+
+Onde $l_{i}$, $l_{d}$, $l_{\alpha}$ são a intensidade, a distância e o ângulo de visão para cada luz;
+$\alpha$ é a abertura do sensor ($rad$);
+e $d$ é a distância á qual uma luz com intensidade 1 situada em frente ao sensor produz uma saida no sensor de 0.5.
+
 \subsection{Sound}
+TODO
 \begin{wrapfigure}{r}{0.5\textwidth}
 	\vspace{-30pt}
 	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/cardioid.png}
+		\includegraphics[width=0.48\textwidth]{graphs/sensors/cardioid.png}
 	\end{center}
 	\vspace{-30pt}
 	\caption{Sound: $bias=50$}
 \end{wrapfigure}
-
-% TODO \subsection{Beam}
 
 \cleardoublepage
 \section{Vehicles}
@@ -172,6 +205,20 @@ Para evitar esta duplicação introduzimos o conceito de \emph{Activador}.
 	\caption{Trail of the eight vehicle}
 \end{wrapfigure}
 
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\begin{center}
+		\includegraphics[width=0.48\textwidth]{graphs/activators/eight_l.png}
+	\end{center}
+	\caption{Left wheel activator functions}
+\end{wrapfigure}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\begin{center}
+		\includegraphics[width=0.48\textwidth]{graphs/activators/eight_r.png}
+	\end{center}
+	\caption{Right wheel activator functions}
+\end{wrapfigure}
+
 \subsection{Ellipse}
 \begin{wrapfigure}{r}{0.5\textwidth}
 	\begin{center}
@@ -180,7 +227,35 @@ Para evitar esta duplicação introduzimos o conceito de \emph{Activador}.
 	\caption{Trail of the ellipse vehicle}
 \end{wrapfigure}
 
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\begin{center}
+		\includegraphics[width=0.48\textwidth]{graphs/activators/ellipse_l.png}
+	\end{center}
+	\caption{Left wheel activator functions}
+\end{wrapfigure}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\begin{center}
+		\includegraphics[width=0.48\textwidth]{graphs/activators/ellipse_r.png}
+	\end{center}
+	\caption{Right wheel activator functions}
+\end{wrapfigure}
+
 \subsection{Braitenberg 3c}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\begin{center}
+		\includegraphics[width=0.48\textwidth]{graphs/activators/3c_l.png}
+	\end{center}
+	\caption{Left wheel activator functions}
+\end{wrapfigure}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\begin{center}
+		\includegraphics[width=0.48\textwidth]{graphs/activators/3c_r.png}
+	\end{center}
+	\caption{Right wheel activator functions}
+\end{wrapfigure}
 
 \cleardoublepage
 \section{Project}
