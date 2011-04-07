@@ -108,6 +108,8 @@ Para evitar esta duplicação introduzimos o conceito de \emph{Activador}.
 
 \cleardoublepage
 \section{Sensors}
+Uma das partes que compõem um veículo de Braitenber (e agentes reactivos na sua generalidade) são os sensores.
+Um
 % Sensores complexos permitem simular melhor a realidade,
 % No entanto demasiada informação torna difícil a análise e obtenção de resultados desejáveis. (Information overloading)
 % É necessário efectuar decisões de engenharia?
@@ -173,7 +175,7 @@ TODO
 	\caption{Light: $bias=50$ $\alpha=\frac{\pi}{2}$}
 \end{figure}
 
-\indent Este sensor permite captar a intensidade de luz captada. Tal como no sensor de cheiro a intensidade transmitida
+\indent Este sensor permite obter a intensidade de luz captada. Tal como no sensor de cheiro a intensidade transmitida
 é comulativa e inversamente proporsional ao quadrado da distância. No entanto este sensor é direcionado (i.e. fontes
 directamente á frente do sensor influenciam mais que os existentes na periferia. Assim a intensidade total do sensor é:
 \[
@@ -184,16 +186,34 @@ Onde $l_{i}$, $l_{d}$, $l_{\alpha}$ são a intensidade, a distância e o ângulo
 $\alpha$ é a abertura do sensor ($rad$);
 e $d$ é a distância á qual uma luz com intensidade 1 situada em frente ao sensor produz uma saida no sensor de 0.5.
 
+\cleardoublepage
 \subsection{Sound}
-TODO
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\vspace{-30pt}
+\begin{figure}[hb]
+	\vspace{-20pt}
 	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/sensors/cardioid.png}
+		\includegraphics[width=0.6\textwidth]{graphs/sensors/cardioid.png}
 	\end{center}
-	\vspace{-30pt}
+	\vspace{-20pt}
 	\caption{Sound: $bias=50$}
-\end{wrapfigure}
+\end{figure}
+
+\indent Este sensor indica a intensidade de som captado e pretende simular o
+comportamento do ouvido humano. Desta forma fontes de som em frente ao sensor têm mais impacto
+mas fontes atrás deste também o influenciam. Este comportamento foi bastante estudado e é aproximado pela função \emph{cardioide} definida em $\theta \in [0..2\pi]$:
+\[
+	cardioid(\theta) = \frac{1 + cos(\theta)}{2}
+\]
+
+\indent Extendendo esta função para 3 dimensões obtemos uma fórmula fechada para a superficie cardioidal
+que utilizamos para construir o sensor de som cuja intensidade é
+\[
+	I = \displaystyle\sum\limits_{s \in sounds}\frac{1+cos(s_{\alpha})}{2}*\frac{s_{i}}{\frac{s_{d}}{d}+1}
+\] 
+
+onde $s_{i}$, $s_{d}$, $s_{\alpha}$ são a intensidade, a distância e o ângulo de fonte de som;
+e $d$ é a distância à qual uma uma fonte com intensidade 1 situada em frente ao sensor produz uma saída no sensor de 0.5.
+Note-se que o resultado deste sensor é semelhante ao do sensor de luz quando $\alpha=\pi$,
+mas decresce mais rapidamente quando o ângulo aumenta.
 
 \cleardoublepage
 \section{Vehicles}
