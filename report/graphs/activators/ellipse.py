@@ -22,7 +22,7 @@ x2 = arange(0, RADIUS+DISTANCE, 1)
 yleft = map(lambda x: VELOCITY, x2)
 
 y1 = map(lambda x: cut(x, OFFSET, 0, 0), x)
-y2 = map(lambda x: cut(x, DIFFERENTIAL, RADIUS*2, 0), x2)
+y2 = map(lambda x: cut(x, DIFFERENTIAL, RADIUS*2, 0)+VELOCITY, x2)
 
 figure(0)
 plot(x2, yleft)
@@ -31,7 +31,7 @@ axis([0.0, RADIUS+DISTANCE, 0, 6])
 figure(1)
 subplot(2,1,1)
 plot(x2, y2)
-axis([0.0, RADIUS+DISTANCE, -0.1, 2])
+axis([0.0, RADIUS+DISTANCE, 0, 7])
 
 subplot(2,1,2)
 plot(x, y1)

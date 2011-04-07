@@ -20,7 +20,7 @@ class SmellSource(breve.Link):
 
 	def setIntensity(self, intensity):
 		self.intensity = intensity
-		self.setColor(self.type*intensity)
+		self.setColor(self.type*(intensity+1)/2 )
 
 	def getType(self):
 		return self.type

@@ -24,5 +24,4 @@ plot(x, yLL, x, yLR)
 
 figure(1)
 plot(x, yRL, x, yRR)
-
 show()
