@@ -8,9 +8,15 @@ def limit(x, m, M):
 def cut(x, *args):
 	for i in xrange(len(args)/2):
 		if x < args[i*2+1]:
-			return args[i*2]
-
-	return args[-1]
+			try:
+				return args[i*2](x)	
+			except TypeError:
+				return args[i*2]
+			
+	try:
+		return args[-1](x)
+	except TypeError:
+		return args[-1]
 
 def greater(a, b, T, F):
 	if a > b:

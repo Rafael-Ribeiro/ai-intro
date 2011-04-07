@@ -22,20 +22,19 @@ HALF_DISTANCE = 3.0			# Try to maintain at least 3 meter distance
 HALF_LIGHT = 5.0			# Behaviour change at 5 meters
 D = 3.0						# Distance between spheres
 
-
 OFFSET = gaussian(0,0.25,0.1)
 
 # [0	.. 0.25]	aggressor with increasing intensity
 # [0.25	..  0.5] 	aggressor with decreasing intensity
 # [0.5	..    1] 	explorer
 def leftActivator(vehicle, rightProximitySensor, leftProximitySensor, rightLightSensor):
-	a = cut(rightProximitySensor, 1-rightProximitySensor*2, 0.45, -1)
+	a = cut(rightProximitySensor, 1-rightProximitySensor*2, 0.5, -1)
 	b = cut(rightLightSensor, (gaussian(rightLightSensor, 0.25, 0.1)-OFFSET)/2, 0.5, -(1-rightLightSensor*2)**2)
 
 	return VELOCITY*(a+b)
 
 def rightActivator(vehicle, leftProximitySensor, rightProximitySensor, leftLightSensor):
-	a = cut(leftProximitySensor, 1-leftProximitySensor*2, 0.45, 1)
+	a = cut(leftProximitySensor, 1-leftProximitySensor*2, 0.5, 1)
 	b = cut(leftLightSensor, (gaussian(leftLightSensor, 0.25, 0.1)-OFFSET)/2, 0.5, -(1-leftLightSensor*2)**2)
 
 	return VELOCITY*(a+b)
