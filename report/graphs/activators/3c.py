@@ -21,11 +21,11 @@ C = 0.2
 CSOUND = 0.3
 
 x = arange(0, 1, 0.01)
-y_prox_l = map(lambda x: cut(x, 0, C, (C-x)*PROXIMITY_BIAS, 0.5, (NATURAL-1)), x)
-y_prox_r = map(lambda x: cut(x, 0, C, (C-x)*PROXIMITY_BIAS, 0.5, -(NATURAL+1)), x)
+y_prox_l = map(lambda x: cut(x, 0, C, (C-x)*PROXIMITY_BIAS, 0.5, -NATURAL-1), x)
+y_prox_r = map(lambda x: cut(x, 0, C, (C-x)*PROXIMITY_BIAS, 0.5, -NATURAL+1), x)
 
-y_light_l = map(lambda x: cut(x, 0, C, (C-x)*LIGHT_BIAS, 0.5, -(NATURAL+1)), x)
-y_light_r = map(lambda x: cut(x, 0, C, (C-x)*LIGHT_BIAS, 0.5, (NATURAL-1)), x)
+y_light_l = map(lambda x: cut(x, 0, C, (C-x)*LIGHT_BIAS, 0.5, -NATURAL-1), x)
+y_light_r = map(lambda x: cut(x, 0, C, (C-x)*LIGHT_BIAS, 0.5, -NATURAL+1), x)
 
 y_smell_l = map(lambda x: cut(x, 0, C, (x-C)*SMELL_BIAS), x)
 y_smell_r = map(lambda x: cut(x, 0, C, (x-C)*SMELL_BIAS), x)

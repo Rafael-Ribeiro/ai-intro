@@ -91,3 +91,6 @@ class ProximitySensor(breve.BraitenbergSensor):
 		intensity = 1.0/(proximity/self.bias+1.0)
 		self.activators.activate(intensity, self)
 
+
+breve.DistanceSensor = DistanceSensor
+breve.ProximitySensor = ProximitySensor

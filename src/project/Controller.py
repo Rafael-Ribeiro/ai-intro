@@ -33,8 +33,7 @@ class PopulationController(breve.BraitenbergControl):
 		self.watch(breve.allInstances(Egg)[0])
 
 		self.jazzMusic = breve.createInstances(breve.Sound, 1)
-		self.jazzMusic.load("sounds/jazzMusic.wav")
-		self.jazzMusic.play()
+		self.jazzMusic.load("sounds/sax.wav")
 
 	def playJazzMusic(self):
 		self.jazzMusic.play()
