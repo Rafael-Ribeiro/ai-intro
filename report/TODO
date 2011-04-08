@@ -1,22 +1,15 @@
 Improvements to the breve library:
-X	OBB Sphere distance
-	Activators
-	Constructors with parameters
 	Sensor rotation/initialization
-	Multibody collision handlers (Proxies, and Real's parents )
 
 SUP X Custom Sensors:
-SUP	X	Light
 ZE		Distance
 ZE		Proximity
 ZE		Smell
-SUP X	Sound
 ZE		Laser
 
 Vehicles:
 SUP	Eight
 ZE	Ellipse
-SUP	Braitenberg 3c
 
 ZE	Project
 		Controller
