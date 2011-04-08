@@ -8,8 +8,9 @@ import math
 import breve
 
 from custom.proximity.sensor import ProximitySensor
-from custom.proximity.obstacles import SphereMobile
+from custom.proximity.obstacles import SphereStationary
 from lib.Activator import BraitenbergActivator
+
 from custom.constants import direction as dir
 
 ANGULAR = 0.5
@@ -41,14 +42,14 @@ class EightVehicle(breve.BraitenbergVehicle):
 		self.leftWheel = breve.createInstances(breve.BraitenbergWheel,  1, 1.5, 0.5)
 		self.rightWheel = breve.createInstances(breve.BraitenbergWheel, 1, 1.5, 0.5)
 
-		self.addWheel(self.leftWheel,  breve.vector(-0.5, 0, -2), breve.vector(0, 0, 1))
-		self.addWheel(self.rightWheel, breve.vector(-0.5, 0,  2), breve.vector(0, 0, 1))
+		self.addWheel(self.leftWheel,  breve.vector(-0.5, 0, -2), dir.RIGHT)
+		self.addWheel(self.rightWheel, breve.vector(-0.5, 0,  2), dir.RIGHT)
 
-		self.leftSensor  = breve.createInstances(ProximitySensor, 1, 'leftSensor', math.pi/3, [SphereMobile])
-		self.rightSensor  = breve.createInstances(ProximitySensor, 1, 'rightSensor', math.pi/3, [SphereMobile])
+		self.leftSensor  = breve.createInstances(ProximitySensor, 1, 'leftSensor', math.pi/3, [SphereStationary])
+		self.rightSensor  = breve.createInstances(ProximitySensor, 1, 'rightSensor', math.pi/3, [SphereStationary])
 		
-		self.addSensor(self.leftSensor,  breve.vector(3.5, 0.3, -2), breve.vector(0, 0, -1))
-		self.addSensor(self.rightSensor,  breve.vector(3.5, 0.3, 2), breve.vector(0, 0, 1))
+		self.addSensor(self.leftSensor,  breve.vector(3.5, 0.3, -2), dir.LEFT)
+		self.addSensor(self.rightSensor,  breve.vector(3.5, 0.3, 2), dir.RIGHT)
 		
 		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.leftSensor, self.rightSensor], leftActivator)
 		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftSensor, self.rightSensor], rightActivator)
@@ -59,7 +60,7 @@ class OrbitController(breve.BraitenbergControl):
 
 		# environment
 		z = 1.3*RADIUS
-		self.blocks = breve.createInstances(SphereMobile, 2)
+		self.blocks = breve.createInstances(SphereStationary, 2)
 		self.blocks[0].move(breve.vector(0, 2, z))
 		self.blocks[1].move(breve.vector(0, 2, -z))
 

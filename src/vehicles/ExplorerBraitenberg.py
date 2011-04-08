@@ -8,36 +8,22 @@ sys.path.append("../")
 import breve
 import math
 
-from custom.proximity.obstacles import SphereMobile
+from custom.proximity.obstacles import SphereStationary
 from custom.proximity.sensor import ProximitySensor
 from custom.smell.source import SmellSource
 from custom.smell.sensor import SmellSensor
 from lib.Activator import BraitenbergActivator
-from custom.functions import cut, greater, hiperbole
+from custom.functions import *
 
 VELOCITY = 10.0	 	# Natural velocity
-BIAS = 2.0			# Try to maintain a 2 meter distance
+HALF_DIST = 2.0		# Try to maintain a 2 meter distance
 D = 3.0				# Distance between spheres
 
 def leftActivator(vehicle, rightProximitySensor):
-#	a = 1 - rightProximitySensor*2
-#	b = 1 - leftProximitySensor*2
-
-#	if (abs(a+b) < 0.1):
-#		return 2*VELOCITY
-
-	a = cut(rightProximitySensor, 1-rightProximitySensor*2, 0.5, 1)
-	return VELOCITY*a
+	return VELOCITY*cut(rightProximitySensor, 1-rightProximitySensor*2, 0.5, 1)
 
 def rightActivator(vehicle, leftProximitySensor):
-#	a = 1 - leftProximitySensor*2
-#	b = 1 - rightProximitySensor*2
-
-#	if (abs(a+b) < 0.1):
-#		return -2*VELOCITY
-
-	a = cut(leftProximitySensor, 1-leftProximitySensor*2, 0.5, -1)   
-	return VELOCITY*a
+	return VELOCITY*cut(leftProximitySensor, 1-leftProximitySensor*2, 0.5, -1)
 
 class ExplorerVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
@@ -48,8 +34,8 @@ class ExplorerVehicle(breve.BraitenbergVehicle):
 		self.addWheel(self.leftWheel, breve.vector(-0, 0, -1.500000))
 		self.addWheel(self.rightWheel, breve.vector(-0, 0, 1.500000))
 
-		self.leftProximitySensor = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/2.0, [SphereMobile], BIAS)
-		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/2.0, [SphereMobile], BIAS)
+		self.leftProximitySensor = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/2.0, [SphereMobile], HALF_DIST)
+		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/2.0, [SphereMobile], HALF_DIST)
 
 		self.addSensor(self.leftProximitySensor,  breve.vector(1.5, 0.4,-1.5), breve.vector(1,0,0))
 		self.addSensor(self.rightProximitySensor, breve.vector(1.5, 0.4, 1.5), breve.vector(1,0,0))
@@ -68,7 +54,7 @@ class ExplorerController(breve.BraitenbergControl):
 		for i in xrange(len(lines)):
 			for j in xrange(len(lines[i])):
 				if lines[i][j] == '*':
-					breve.createInstances(SphereMobile, 1, 1.0, True).move(breve.vector(i*D, 1.0, j*D))
+					breve.createInstances(SphereStationary, 1, 1.0).move(breve.vector(i*D, 1.0, j*D))
 				if lines[i][j] == 'X':
 					self.vehicle.move(breve.vector(i*D, 2, j*D))
 		f.close()

@@ -27,7 +27,6 @@ def leftActivator(vehicle, leftSensor):
 def rightActivator(vehicle, leftSensor):
 	return VELOCITY + ANGULAR_FREQUENCY*AXIS_DIST
 
-
 class CircleVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
 		breve.BraitenbergVehicle.__init__(self, breve.vector(7, 1, 4))
