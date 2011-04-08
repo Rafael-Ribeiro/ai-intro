@@ -25,19 +25,25 @@ from lib.Activator import BraitenbergActivator
 
 MATURITY 		= 60.0 / 3
 PROCRIATION 	= 30.0 / 3
-LIFESPAN 		= 250.0 / 3
+LIFESPAN 		= 250.0
 VELOCITY 		= 4.0
 NATURAL			= 2.0
+CURVING_FACTOR	= 25
 
 HALF_DISTANCE = 3
-HALF_LIGHT = 7.0
+HALF_LIGHT = 14.0
 HALF_SMELL = 30.0
-HALF_SOUND = 3.0
+HALF_SOUND = 7.0
 
 DISTANCE_BIAS = 1.0
-LIGHT_BIAS = 4.0
+LIGHT_BIAS = 5.0
 SMELL_BIAS = 2.0
-SOUND_BIAS = 1.0
+SOUND_BIAS = 9.0
+
+DISTANCE_CUT	= 0.2
+LIGHT_CUT		= DISTANCE_CUT
+SMELL_CUT		= DISTANCE_CUT
+SOUND_CUT		= DISTANCE_CUT
 
 #	Sensor Pair	|	Connection	|	Bias		|	Behaviour				|	Explanation	         		#
 #---------------+---------------+---------------+---------------------------+-------------------------------#
@@ -46,26 +52,25 @@ SOUND_BIAS = 1.0
 #	Smell		|	Crossed		|	Positive	|	Aggressor towards smell	|	Tries to procriate 			#
 #	Sound		|	Uncrossed	|	Positive	|	Coward towards sound	|	Runs away from noisy babies #
 
-C = 0.2
 def leftActivator(vehicle, rightProximitySensor, leftLightSensor, leftSmellSensor, rightSmellSensor, leftSoundSensor):
-	prox = cut(rightProximitySensor, 0, C, (C - rightProximitySensor) * DISTANCE_BIAS, 0.5, NATURAL - 1)
-	light = cut(leftLightSensor, 0, C, (C - leftLightSensor) * LIGHT_BIAS)
+	prox = cut(rightProximitySensor, 0, DISTANCE_CUT, (DISTANCE_CUT - rightProximitySensor) * DISTANCE_BIAS, 0.5, -NATURAL + 1)
+	light = cut(leftLightSensor, 0, LIGHT_CUT, (LIGHT_CUT - leftLightSensor) * LIGHT_BIAS)
+	sound = cut(leftSoundSensor, 0, SOUND_CUT, (leftSoundSensor - SOUND_CUT) * SOUND_BIAS)
 
-	smell = (((rightSmellSensor - leftSmellSensor) * 10) + cut(abs(leftSmellSensor-rightSmellSensor),(leftSmellSensor+rightSmellSensor) - prox,0.01,0)) * vehicle.sexuality * SMELL_BIAS
-	print prox,smell
-
-	sound = 0 * SOUND_BIAS
+	smell_diff = rightSmellSensor - leftSmellSensor
+	smell_sum = rightSmellSensor + leftSmellSensor
+	smell = ((smell_diff * CURVING_FACTOR) + cut(smell_sum, 0, 0.20, cut(abs(smell_diff)/(max(smell_sum,0.0001)/2.0), -sound + 1, 0.05, 0))) * vehicle.sexuality * SMELL_BIAS
 
 	return VELOCITY*(prox + light + smell + sound + NATURAL)
 
 def rightActivator(vehicle, leftProximitySensor, rightLightSensor, leftSmellSensor, rightSmellSensor, rightSoundSensor):
-	prox = cut(leftProximitySensor, 0, 0.2, 0.2 - leftProximitySensor * DISTANCE_BIAS, 0.5, -NATURAL - 1)
-	light = cut(rightLightSensor, 0, C, (C - rightLightSensor) * LIGHT_BIAS)
+	prox = cut(leftProximitySensor, 0, DISTANCE_CUT, (DISTANCE_CUT - leftProximitySensor) * DISTANCE_BIAS, 0.5, -NATURAL - 1)
+	light = cut(rightLightSensor, 0, LIGHT_CUT, (LIGHT_CUT - rightLightSensor) * LIGHT_BIAS)
+	sound = cut(rightSoundSensor, 0, SOUND_CUT, (rightSoundSensor - SOUND_CUT) * SOUND_BIAS - 0.1)
 
-	smell = (((leftSmellSensor - rightSmellSensor) * 10) + cut(abs(leftSmellSensor-rightSmellSensor),(leftSmellSensor+rightSmellSensor),0.01,0)) * vehicle.sexuality * SMELL_BIAS
-#	print prox,smell
-
-	sound = 0 * SOUND_BIAS
+	smell_diff = leftSmellSensor - rightSmellSensor
+	smell_sum = leftSmellSensor + rightSmellSensor
+	smell = ((smell_diff * CURVING_FACTOR) + cut(smell_sum, 0, 0.20, cut(abs(smell_diff)/(max(smell_sum,0.0001)/2.0), -sound + 1, 0.05, 0))) * vehicle.sexuality * SMELL_BIAS
 
 	return VELOCITY*(prox + light + smell + sound + NATURAL)
 
@@ -88,8 +93,8 @@ class MaleVehicle(breve.BraitenbergVehicle):
 		from Female import FemaleVehicle
 
 		# Proximity
-		self.leftProximitySensor  = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/2, [SphereStationary, MaleVehicle, FemaleVehicle, Egg], HALF_DISTANCE)
-		self.rightProximitySensor  = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/2, [SphereStationary, MaleVehicle, FemaleVehicle, Egg], HALF_DISTANCE)
+		self.leftProximitySensor  = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/2, [SphereStationary, MaleVehicle, Egg], HALF_DISTANCE)
+		self.rightProximitySensor  = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/2, [SphereStationary, MaleVehicle, Egg], HALF_DISTANCE)
 		
 		self.addSensor(self.leftProximitySensor,  breve.vector(1.5, 0.21, -1.3), dir.FRONT)
 		self.addSensor(self.rightProximitySensor,  breve.vector(1.5, 0.21, 1.3), dir.FRONT)
@@ -112,15 +117,15 @@ class MaleVehicle(breve.BraitenbergVehicle):
 		self.leftSoundSensor  = breve.createInstances(SoundSensor, 1, 'leftSoundSensor', color.GREEN, HALF_SOUND)
 		self.rightSoundSensor  = breve.createInstances(SoundSensor, 1, 'rightSoundSensor', color.GREEN, HALF_SOUND)
 		
-		self.addSensor(self.leftSoundSensor,  breve.vector(1.1, 0.0, -1.3), dir.LEFT)
-		self.addSensor(self.rightSoundSensor,  breve.vector(1.1, 0.0, 1.3), dir.RIGHT)
+		self.addSensor(self.leftSoundSensor,  breve.vector(1, 0.0, -1), dir.FRONT + dir.LEFT)
+		self.addSensor(self.rightSoundSensor,  breve.vector(1, 0.0, 1), dir.FRONT + dir.RIGHT)
 
 		# Activators
 		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.rightProximitySensor, self.leftLightSensor, self.leftSmellSensor, self.rightSmellSensor, self.leftSoundSensor], leftActivator)
 		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftProximitySensor, self.rightLightSensor, self.leftSmellSensor, self.rightSmellSensor, self.rightSoundSensor], rightActivator)
 
 		self.cry = breve.createInstances(SoundSource, 1, 1.0, color.GREEN, True)
-		self.attach(self.cry, breve.vector(1.1, 0, 0))  
+		self.attach(self.cry, breve.vector(0, 0, 0))  
 
 		self.hormone = breve.createInstances(SmellSource, 1, 0.0, color.RED, True)
 		self.attach(self.hormone, breve.vector(-1.5,0.7,0))

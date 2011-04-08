@@ -26,39 +26,39 @@ from lib.Activator import BraitenbergActivator
 
 MATURITY 		= 50.0 / 3
 PROCRIATION 	= 40.0 / 3
-LIFESPAN 		= 300.0 / 3
+LIFESPAN 		= 300.0
 VELOCITY 		= 3.0
 NATURAL			= 2.0
 
 HALF_DISTANCE = 3
 HALF_LIGHT = 7.0
-#HALF_SMELL = 10.0
-HALF_SOUND = 3.0
+HALF_SOUND = 7.0
 
 DISTANCE_BIAS = 1.0
 LIGHT_BIAS = 4.0
-#SMELL_BIAS = 1.0
-SOUND_BIAS = 1.0
+SOUND_BIAS = 3.0
+
+DISTANCE_CUT	= 0.2
+LIGHT_CUT		= DISTANCE_CUT
+SOUND_CUT		= DISTANCE_CUT
 
 #	Sensor Pair	|	Connection	|	Bias		|	Behaviour				|	Explanation	         		#
 #---------------+---------------+---------------+---------------------------+-------------------------------#
 #	Light		|	Uncrossed	|	Negative	|	Lover of light			| 	Cares for its eggs			#
 #	Proximity	|	Crossed 	|	Negative	|	Explorer of objects		|	                    		#
-#	Smell		|	??			|	??			|	???						|	???				 			#
 #	Sound		|	Uncrossed	|	Negative	|	Lover towards sound		|	Cares for its babies		#
 
-C = 0.2
 def leftActivator(vehicle, rightProximitySensor, leftLightSensor, leftSoundSensor):
-	prox = cut(rightProximitySensor, 0, C, (C - rightProximitySensor) * DISTANCE_BIAS, 0.5, NATURAL - 1)
-	light = cut(leftLightSensor, 0, C, (C - leftLightSensor) * LIGHT_BIAS)
-	sound = 0 * SOUND_BIAS
+	prox = cut(rightProximitySensor, 0, DISTANCE_CUT, (DISTANCE_CUT - rightProximitySensor) * DISTANCE_BIAS, 0.5, -NATURAL + 1)
+	light = cut(leftLightSensor, 0, LIGHT_CUT, (LIGHT_CUT - leftLightSensor) * LIGHT_BIAS)
+	sound = cut(leftSoundSensor, 0, SOUND_CUT, (SOUND_CUT - leftSoundSensor) * SOUND_BIAS)
 
 	return VELOCITY*(prox + light + sound + NATURAL)
 
-def rightActivator(vehicle, leftProximitySensor, rightLightSensor, rightSoundSensor):
-	prox = cut(leftProximitySensor, 0, 0.2, 0.2 - leftProximitySensor * DISTANCE_BIAS, 0.5, -NATURAL - 1)
-	light = cut(rightLightSensor, 0, C, (C - rightLightSensor) * LIGHT_BIAS)
-	sound = 0 * SOUND_BIAS
+def rightActivator(vehicle, leftProximitySensor, rightLightSensor, rightSoundSensor, leftSoundSensor):
+	prox = cut(leftProximitySensor, 0, DISTANCE_CUT, (DISTANCE_CUT - leftProximitySensor) * DISTANCE_BIAS, 0.5, -NATURAL - 1)
+	light = cut(rightLightSensor, 0, LIGHT_CUT, (LIGHT_CUT - rightLightSensor) * LIGHT_BIAS)
+	sound = cut(rightSoundSensor, 0, SOUND_CUT, (SOUND_CUT - rightSoundSensor) * SOUND_BIAS)
 
 	return VELOCITY*(prox + light + sound + NATURAL)
 
@@ -106,15 +106,15 @@ class FemaleVehicle(breve.BraitenbergVehicle):
 		self.leftSoundSensor  = breve.createInstances(SoundSensor, 1, 'leftSoundSensor', color.GREEN, HALF_SOUND)
 		self.rightSoundSensor  = breve.createInstances(SoundSensor, 1, 'rightSoundSensor', color.GREEN, HALF_SOUND)
 		
-		self.addSensor(self.leftSoundSensor,  breve.vector(1.1, 0.0, -1.3), dir.LEFT)
-		self.addSensor(self.rightSoundSensor,  breve.vector(1.1, 0.0, 1.3), dir.RIGHT)
+		self.addSensor(self.leftSoundSensor,  breve.vector(1.0, 0.0, -1.0), dir.FRONT + dir.LEFT)
+		self.addSensor(self.rightSoundSensor,  breve.vector(1.0, 0.0, 1.0), dir.FRONT + dir.RIGHT)
 
 		# Activator
 		self.leftActivator = BraitenbergActivator(self, self.leftWheel, [self.rightProximitySensor, self.leftLightSensor, self.leftSoundSensor], leftActivator)
-		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftProximitySensor, self.rightLightSensor, self.rightSoundSensor], rightActivator)
+		self.rightActivator = BraitenbergActivator(self, self.rightWheel, [self.leftProximitySensor, self.rightLightSensor, self.rightSoundSensor, self.leftSoundSensor], rightActivator)
 
 		self.cry = breve.createInstances(SoundSource, 1, 1.0, color.GREEN, True)
-		self.attach(self.cry, breve.vector(1.1, 0, 0))  
+		self.attach(self.cry, breve.vector(0, 0, 0))  
 
 		self.hormone = breve.createInstances(SmellSource, 1, 0.0, color.PINK, True)
 		self.attach(self.hormone, breve.vector(-1.5,0.7,0))
@@ -134,7 +134,7 @@ class FemaleVehicle(breve.BraitenbergVehicle):
 
 
 		self.hormone.setIntensity(self.sexuality*0.2)
-		self.cry.setIntensity(max(1-self.maturity, 0.2))
+		self.cry.setIntensity(max(0.5, 1 - self.maturity))
 
 	def iterate(self):
 		self.age = self.getAge()

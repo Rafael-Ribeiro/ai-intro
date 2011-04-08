@@ -26,17 +26,20 @@ class PopulationController(breve.BraitenbergControl):
 			sphere = breve.createInstances(SphereStationary, 1).move(breve.vector(-20*D, 1, (i-20)*D))
 			sphere = breve.createInstances(SphereStationary, 1).move(breve.vector(20*D, 1, (i-20)*D))
 
-		male = breve.createInstances(MaleVehicle, 1)
-		female = breve.createInstances(FemaleVehicle, 1)
+		#male = breve.createInstances(MaleVehicle, 1)
+		#female = breve.createInstances(FemaleVehicle, 1)
 
-		male.move(breve.vector(-10, 2, 10))
-		female.move(breve.vector(10, 2, 10)).rotate(d.UP, 0.1)
-		female.move(breve.vector(10, 2, 10)).rotate(d.UP, math.pi)
+		#male.move(breve.vector(-10, 2, 10))
+		#female.move(breve.vector(10, 2, 10)).rotate(d.UP, math.pi)
 
-		egg = breve.createInstances(Egg, 1).move(breve.vector(0, -1, 10)) #breve.vector(0, 0, 10)
+		eggs = breve.createInstances(Egg, 4)
+		eggs[0].move(breve.vector(10, -1, 10)) #breve.vector(0, 0, 10)
+		eggs[1].move(breve.vector(-10, -1, 10)) #breve.vector(0, 0, 10)
+		eggs[2].move(breve.vector(10, -1, -10)) #breve.vector(0, 0, 10)
+		eggs[3].move(breve.vector(-10, -1, -10)) #breve.vector(0, 0, 10)
 
-		self.watch(male)
-		self.target = male
+		#self.watch(male)
+		self.watch(eggs[0])
 
 	def unwatch(self, obj): # return whether the object was the target or not
 		if obj == self.watchObject:
