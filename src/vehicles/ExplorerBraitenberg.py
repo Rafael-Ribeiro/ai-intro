@@ -16,7 +16,7 @@ from lib.Activator import BraitenbergActivator
 from custom.functions import *
 
 VELOCITY = 10.0	 	# Natural velocity
-BIAS = 2.0			# Try to maintain a 2 meter distance
+HALF_DIST = 2.0		# Try to maintain a 2 meter distance
 D = 3.0				# Distance between spheres
 
 def leftActivator(vehicle, rightProximitySensor):
@@ -34,8 +34,8 @@ class ExplorerVehicle(breve.BraitenbergVehicle):
 		self.addWheel(self.leftWheel, breve.vector(-0, 0, -1.500000))
 		self.addWheel(self.rightWheel, breve.vector(-0, 0, 1.500000))
 
-		self.leftProximitySensor = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/2.0, [SphereMobile], BIAS)
-		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/2.0, [SphereMobile], BIAS)
+		self.leftProximitySensor = breve.createInstances(ProximitySensor, 1, 'leftProximitySensor', math.pi/2.0, [SphereMobile], HALF_DIST)
+		self.rightProximitySensor = breve.createInstances(ProximitySensor, 1, 'rightProximitySensor', math.pi/2.0, [SphereMobile], HALF_DIST)
 
 		self.addSensor(self.leftProximitySensor,  breve.vector(1.5, 0.4,-1.5), breve.vector(1,0,0))
 		self.addSensor(self.rightProximitySensor, breve.vector(1.5, 0.4, 1.5), breve.vector(1,0,0))
