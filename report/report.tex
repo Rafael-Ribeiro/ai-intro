@@ -246,7 +246,7 @@ Este sensor é omni-direcional, ao contrário de todos os outros sensores; como 
 \end{figure}
 
 \indent Este sensor permite obter a intensidade de luz captada. Tal como no sensor de cheiro, a intensidade transmitida
-é comulativa e inversamente proporcional ao quadrado da distância. No entanto, este sensor é direcionado (i.e. fontes
+é cumulativa e inversamente proporcional ao quadrado da distância. No entanto, este sensor é direcionado (i.e. fontes
 directamente à frente do sensor influenciam mais que os existentes na periferia). Assim, a intensidade total do sensor é:
 \[
 	I = \displaystyle\sum\limits_{l \in lights} \frac{l_{i}}{1 + (\frac{l_{d}}{d})^{2}*cos(\frac{2\pi}{\alpha}*l_{\alpha})}
@@ -456,8 +456,8 @@ Após procriação, o macho tende a proteger o ovo até ao seu eclodir; fá-lo p
 \end{figure}
 
 \indent Este veículo possui uma velocidade natural de 2*\texttt{VELOCITY\_FACTOR} $m/s$.
-Uma vez que este factor influência de igual forma todos os sentidos pode ser desprezado na análise das funções de activação. 
-Assim quando quando a soma das funções atinge o simétrico deste valor o veículo pára, podendo mesmo recuar quando atinge valores inferiores.
+Uma vez que este factor influencia de igual forma todos os sentidos pode ser desprezado na análise das funções de activação. 
+Assim quando a soma das funções atinge o simétrico deste valor o veículo pára, podendo mesmo recuar quando atinge valores inferiores.
 
 \indent Para evitar o efeito cumulativo dos sensores, todas as funções possuem um corte a 0.2 que define uma distância mínima para a influência dos sensores.
 O declive de cada função determina o ponto em que atinge o valor -2 e consequentemente a distância a que se tenta manter. 
@@ -473,10 +473,10 @@ O declive de cada função determina o ponto em que atinge o valor -2 e conseque
 \end{figure}
 
 \indent A análise das funções de activação para a luz e para a distância procede-se da mesma forma que para a fêmea.
-No entanto ao contrário desta, as restantes funções de activação do macho Valentinum não procedem deste modo.
+No entanto, ao contrário desta, as restantes funções de activação do macho Valentinum não procedem deste modo.
 
 \indent Uma vez que se pretende que o macho fuja de fontes de som, a função de activação cresce de forma linear com a
-intensidade (uma vez que esta é inversamente porporcional ao quadrado da distância).
+intensidade (uma vez que esta é inversamente proporcional ao quadrado da distância).
 
 \indent A análise do comportamento relativo ao som é mais complexa. Cada \emph{activator} tem acesso a ambos os sensores de 
 som. Desta forma é capaz de calcular tanto a soma como a diferença, valores que utiliza numa função de duas dimensões.
