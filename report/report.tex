@@ -19,6 +19,7 @@
 	,pdfborder = {0 0 0}
 }
 
+\usepackage{subfig}
 \usepackage{amsmath}
 \usepackage{wrapfig}
 \usepackage{array}
@@ -46,16 +47,21 @@
 \cleardoublepage
 \section{Breve Libraries}
 % TODO
-Como referenciado na documentação da biblioteca Breve, o código Python fornecido é obtido através da compilação de código Steve.
+\indent \indent Como referenciado na documentação da biblioteca Breve, o código Python fornecido é obtido através da compilação de código Steve.
 Assim, esta biblioteca está pouco optimizada na medida em que não utiliza todas as potencialidades da linguagem. 
-Por isso decidimos efectuar algumas alterações
+Por isso decidimos efectuar algumas alterações.
 
 \subsection{Constructors with parameters}
+\indent \indent Uma das funcionalidades não utilizadas pelo Breve é a construção de objectos com parâmetros.
+Desta forma para criar um objecto é necessária uma chamada extra a uma função \emph{init}.
+Isto aumenta desnecessáriamente o tamanho do código e dá azo a erros (utilização de objectos não inicializados).
+Uma vez que todas as instâncias de objectos têm que ser criadas através da função \emph{createInstances}, decidimos altera-la de forma transmitir os parâmetros utilizados para a criação dos objectos. 
+Consequentemente é possível alterar directamente os utilizados na construção de veículos e cenários.
 
 \subsection{Object distance}
 \indent \indent Para implementar correctamente os sensores, é necessário calcular a distância entre dois objectos.
-Para o cálculo desta distância as bibliotecas originais apenas teem em conta a distância euclidiana entre os centros.
-No entanto esta aproximação não é suficiente quando os objectos teem dimensões elevadas.
+Para o cálculo desta distância as bibliotecas originais apenas têm em conta a distância euclidiana entre os centros.
+No entanto esta aproximação não é suficiente quando os objectos têm dimensões elevadas.
 
 \subsubsection{Point - Sphere}
 \indent \indent Por definição todos os pontos da superficie esférica estão à mesma distância do centro.
@@ -94,9 +100,13 @@ Onde $x, y, z$ são os versores do referencial $B$ em relação ao referencial $
 
 \cleardoublepage
 \subsection{Activators}
-\indent \indent O veiculos de Braitenberg como definidos na literatura apenas permitem relacionar um sensor directamente com uma roda.
-Esta abordagem necessita a replicação de sensores quando se pretende que tenha influência em mais que uma roda.
+\indent \indent Os veículos de Braitenberg como definidos na literatura apenas permitem relacionar um sensor directamente com uma única roda.
+Esta abordagem implica a replicação de sensores quando se pretende que estes tenham influências diferentes para cada roda.
 Para evitar esta duplicação introduzimos o conceito de \emph{Activador}. 
+
+Um \emph{Activador} é um bloco conceptual introduzido entre vários sensores e uma roda.
+Este é responsável pelo cálculo das funções de activação de cada sensor e posterior agregação dos resultados, enviando depois o sinal correspondente para a roda.  
+Desta forma, o veículo continua a ser um veículo de Braitenberg desde que a agregação dos resultados seja efectuada com apenas operações elementares (i.e: adição). 
 
 %TODO
 
@@ -108,79 +118,187 @@ Para evitar esta duplicação introduzimos o conceito de \emph{Activador}.
 
 \cleardoublepage
 \section{Sensors}
+\indent \indent Uma das partes que compõem um veículo de Braitenberg (e agentes reactivos na sua generalidade) são os sensores.
+Estes comportam toda a entrada de dados fornecidos ao agente e podem apresentar diferentes complexidades.
+Quanto mais realistas os sensores forem melhor é a qualidade máxima teorica dos agentes uma vez que estes possuem mais informação.
+No entanto, mais complexidade necessita de mais poder computacional e e torna-se mais difícil analisar (um fenómeno denominado por \emph{information overloading}).
+Desta forma é necessario efectuar \emph{trade-offs} de forma a encontrar um equilibrio adequado.
 
-\subsection{Light}
+\cleardoublepage
+\subsection{Laser}
 
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\vspace{-30pt}
+\begin{figure}[h]
+	\vspace{-20pt}
 	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/light.png}
+		\includegraphics[width=0.6\textwidth]{graphs/sensors/laser.png}
 	\end{center}
-	\vspace{-30pt}
-	\caption{Light: $bias=50$, $\alpha=\pi/2$}
-\end{wrapfigure}
+	\vspace{-20pt}
+	\caption{Laser: $\alpha=\frac{\pi}{20}$}
+\end{figure}
 
+TODO
+
+\cleardoublepage
 \subsection{Distance}
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\vspace{-30pt}
-	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/distance.png}
-	\end{center}
-	\vspace{-30pt}
-	\caption{Distance: $\alpha=\pi/4$}
-\end{wrapfigure}
 
+\begin{figure}[h]
+	\vspace{-20pt}
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{graphs/sensors/distance.png}
+	\end{center}
+	\vspace{-20pt}
+	\caption{Distance: $\alpha=\frac{\pi}{4}$}
+\end{figure}
+
+TODO
+
+\cleardoublepage
 \subsection{Proximity}
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\vspace{-30pt}
-	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/proximity.png}
-	\end{center}
-	\vspace{-30pt}
-	\caption{Proximity: $bias=50$, $\alpha=\pi/4$}
-\end{wrapfigure}
 
+\begin{figure}[h]
+	\vspace{-20pt}
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{graphs/sensors/proximity.png}
+	\end{center}
+	\vspace{-20pt}
+	\caption{Proximity: $bias=50$ $\alpha=\frac{\pi}{4}$}
+\end{figure}
+
+TODO
+
+\cleardoublepage
 \subsection{Smell}
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\vspace{-30pt}
+\begin{figure}[h]
+	\vspace{-20pt}
 	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/smell.png}
+		\includegraphics[width=0.6\textwidth]{graphs/sensors/smell.png}
 	\end{center}
-	\vspace{-30pt}
+	\vspace{-20pt}
 	\caption{Smell: $bias=50$}
-\end{wrapfigure}
+\end{figure}
 
-\subsection{Sound}
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\vspace{-30pt}
+TODO
+
+\cleardoublepage
+\subsection{Light}
+\begin{figure}[h]
+	\vspace{-20pt}
 	\begin{center}
-		\includegraphics[width=0.48\textwidth]{graphs/cardioid.png}
+		\includegraphics[width=0.6\textwidth]{graphs/sensors/light.png}
 	\end{center}
-	\vspace{-30pt}
-	\caption{Sound: $bias=50$}
-\end{wrapfigure}
+	\vspace{-20pt}
+	\caption{Light: $bias=50$ $\alpha=\frac{\pi}{2}$}
+\end{figure}
 
-% TODO \subsection{Beam}
+\indent Este sensor permite obter a intensidade de luz captada. Tal como no sensor de cheiro a intensidade transmitida
+é comulativa e inversamente proporsional ao quadrado da distância. No entanto este sensor é direcionado (i.e. fontes
+directamente á frente do sensor influenciam mais que os existentes na periferia. Assim a intensidade total do sensor é:
+\[
+	I = \displaystyle\sum\limits_{l \in lights} \frac{l_{i}}{1 + (\frac{l_{d}}{d})^{2}*cos(\frac{2\pi}{\alpha}*l_{\alpha})}
+\]
+
+onde $l_{i}$, $l_{d}$, $l_{\alpha}$ são a intensidade, a distância e o ângulo de visão para cada luz;
+$\alpha$ é a abertura do sensor ($rad$);
+e $d$ é a distância á qual uma luz com intensidade 1 situada em frente ao sensor produz uma saida no sensor de 0.5.
+
+\cleardoublepage
+\subsection{Sound}
+\begin{figure}[h]
+	\vspace{-20pt}
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{graphs/sensors/cardioid.png}
+	\end{center}
+	\vspace{-20pt}
+	\caption{Sound: $bias=50$}
+\end{figure}
+
+\indent Este sensor indica a intensidade de som captado e pretende simular o
+comportamento do ouvido humano. Desta forma fontes de som em frente ao sensor têm mais impacto
+mas fontes atrás deste também o influenciam. Este comportamento foi bastante estudado e é aproximado pela função \emph{cardioide} definida em $\theta \in [0..2\pi]$:
+\[
+	cardioid(\theta) = \frac{1 + cos(\theta)}{2}
+\]
+
+\indent Extendendo esta função para 3 dimensões obtemos uma fórmula fechada para a superficie cardioidal
+que utilizamos para construir o sensor de som cuja intensidade é
+\[
+	I = \displaystyle\sum\limits_{s \in sounds}\frac{1+cos(s_{\alpha})}{2}*\frac{s_{i}}{\frac{s_{d}}{d}+1}
+\] 
+
+onde $s_{i}$, $s_{d}$, $s_{\alpha}$ são a intensidade, a distância e o ângulo de fonte de som;
+e $d$ é a distância à qual uma uma fonte com intensidade 1 situada em frente ao sensor produz uma saída no sensor de 0.5.
+Note-se que o resultado deste sensor é semelhante ao do sensor de luz quando $\alpha=\pi$,
+mas decresce mais rapidamente quando o ângulo aumenta.
 
 \cleardoublepage
 \section{Vehicles}
+%TODO
+
 \subsection{Eight}
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\begin{center}
-		\includegraphics[width=0.48\textwidth]{trail/eight.png}
-	\end{center}
-	\caption{Trail of the eight vehicle}
-\end{wrapfigure}
+\begin{figure}[h]
+	\centering
 
+	\subfloat[Trail]{\includegraphics[width=0.2\textwidth]{trail/eight.png}}
+	\subfloat[Left activator]{\includegraphics[width=0.4\textwidth]{graphs/activators/eight_l.png}}
+	\subfloat[Right activator]{\includegraphics[width=0.4\textwidth]{graphs/activators/eight_r.png}}
+	
+	\caption{The eight vehicle}
+\end{figure}
+
+
+\cleardoublepage
 \subsection{Ellipse}
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\begin{center}
-		\includegraphics[width=0.48\textwidth]{trail/ellipse.png}
-	\end{center}
-	\caption{Trail of the ellipse vehicle}
-\end{wrapfigure}
+\begin{figure}[h]
+	\centering
+	\subfloat[Trail]{\includegraphics[width=0.2\textwidth]{trail/ellipse.png}}
+	\subfloat[Left activator]{\includegraphics[width=0.4\textwidth]{graphs/activators/ellipse_l.png}}
+	\subfloat[Right activator]{\includegraphics[width=0.4\textwidth]{graphs/activators/ellipse_r.png}}
+	
+	\caption{The ellipse vehicle}
+\end{figure}
 
+\cleardoublepage
+\subsection{Aggressor Explorer}
+\begin{figure}[h]
+	\centering
+	\subfloat[Left activator]{\includegraphics[width=0.4\textwidth]{graphs/activators/aggr_expl_l.png}}
+	\subfloat[Right activator]{\includegraphics[width=0.4\textwidth]{graphs/activators/aggr_expl_r.png}}
+	
+	\caption{The Aggressor/Explorer vehicle}
+\end{figure}
+
+Este veículo vive num mundo com dois tipos de objectos: luzes e obstáculos.
+O seu objectivo é explorar-lo, desviando-se dos obstáculos e explorando as luzes, i.e.
+aproxima-se delas como se estivesse curioso e assim que perde o interesse segue à procura de novas.
+
+Para se observar este comportamento a função de activação em relação aos obstáculos é decrescente até 0.5 (momento em que atinge \emph{HALF\_DISTANCE}).
+Após este valor assume-se que o veículo está preso e precisa de voltar para trás (rodar) e por isso aplica-se uma intensidade simétrica em cada roda.
+
+Quanto às luzes a função de activação cresce até 0.25 (o veículo vê uma luz e tenta se aproximar rapidamente) e decresce até 0.5 (abranda para poder observar).
+Após este valor a função assume valores cada vez mais negativos de forma a se afastar (uma vez que este sensor se encontra ligado de forma cruzada).
+
+\cleardoublepage
 \subsection{Braitenberg 3c}
+\begin{figure}[h]
+	\centering
+	\subfloat[Left activator]{\includegraphics[width=0.5\textwidth]{graphs/activators/3c_l.png}}
+	\subfloat[Right activator]{\includegraphics[width=0.5\textwidth]{graphs/activators/3c_r.png}}
+	
+	\caption{The Braitenberg 3c vehicle}
+\end{figure}
+Apesar do veículo sugerido possuir na mesma 4 sensores este não é o Braitenberg 3c tal como definido na sua obra.
+No entanto, da mesma forma que Valentino Braitenberg avaliou a psicologia sintética dos seus veículos (regidos apenas por reações),
+podemos avalia-lo sob a mesma prespectiva:
+
+Este veículo apresenta um comportamento bastante complexo. Pretende explorar todo o ambiente (luzes e obstáculos), gosta de 
+correr no meio de flores (fontes de cheiro) e tem medo dos seus predadores (fontes de som). 
+
+Para garantir este comportamento foram utilizadas funções de corte que inibidoras quando as intensidades do sensores são pequenas.
+Este corte evita que a soma dos vários comportamentos se acumule e o veículo se comporte de forma errática.
+No entanto, quando 2 ou mais sensores apresentam intensidades superiores ao corte o comportamento corresponde à sua sobreposição.
+Neste caso o resultado final pode não ser o melhor.
+
+% TODO Strenghts, weaknesses, reasons behind the functions, behaviour
 
 \cleardoublepage
 \section{Project}

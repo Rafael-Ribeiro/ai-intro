@@ -1,28 +1,24 @@
 Improvements to the breve library:
-	OBB Sphere distance
+X	OBB Sphere distance
 	Activators
 	Constructors with parameters
 	Sensor rotation/initialization
 	Multibody collision handlers (Proxies, and Real's parents )
 
-Custom Sensors:
-	Light
-	Distance
-	Proximity
-	Smell
-	Sound
-	Beam*
-
-	Graphs
+SUP X Custom Sensors:
+SUP	X	Light
+ZE		Distance
+ZE		Proximity
+ZE		Smell
+SUP X	Sound
+ZE		Laser
 
 Vehicles:
-	8 maker
-	Elipsoid
-	3c
+SUP	Eight
+ZE	Ellipse
+SUP	Braitenberg 3c
 
-Project
-	Controller
-	Male
-	Female
-
-
+ZE	Project
+		Controller
+		Male
+		Female
