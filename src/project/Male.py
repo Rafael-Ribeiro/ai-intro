@@ -23,8 +23,8 @@ from custom.functions import cut,gaussian
 
 from lib.Activator import BraitenbergActivator
 
-MATURITY 		= 60.0 / 3
-PROCRIATION 	= 30.0 / 3
+MATURITY 		= 60.0
+PROCRIATION 	= 30.0
 LIFESPAN 		= 250.0
 VELOCITY 		= 4.0
 NATURAL			= 2.0

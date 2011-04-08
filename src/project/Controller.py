@@ -20,26 +20,17 @@ class PopulationController(breve.BraitenbergControl):
 	def __init__(self):
 		breve.BraitenbergControl.__init__(self)
 		
-		for i in xrange(40):
-			sphere = breve.createInstances(SphereStationary, 1).move(breve.vector((i-20)*D, 1, -20*D))
-			sphere = breve.createInstances(SphereStationary, 1).move(breve.vector((i-20)*D, 1, 20*D))
-			sphere = breve.createInstances(SphereStationary, 1).move(breve.vector(-20*D, 1, (i-20)*D))
-			sphere = breve.createInstances(SphereStationary, 1).move(breve.vector(20*D, 1, (i-20)*D))
-
-		#male = breve.createInstances(MaleVehicle, 1)
-		#female = breve.createInstances(FemaleVehicle, 1)
-
-		#male.move(breve.vector(-10, 2, 10))
-		#female.move(breve.vector(10, 2, 10)).rotate(d.UP, math.pi)
-
-		eggs = breve.createInstances(Egg, 4)
-		eggs[0].move(breve.vector(10, -1, 10)) #breve.vector(0, 0, 10)
-		eggs[1].move(breve.vector(-10, -1, 10)) #breve.vector(0, 0, 10)
-		eggs[2].move(breve.vector(10, -1, -10)) #breve.vector(0, 0, 10)
-		eggs[3].move(breve.vector(-10, -1, -10)) #breve.vector(0, 0, 10)
-
-		#self.watch(male)
-		self.watch(eggs[0])
+		f = open('map', 'r')
+		lines = f.readlines()
+		for i in xrange(len(lines)):
+			for j in xrange(len(lines[i])):
+				if lines[i][j] == '*':
+					breve.createInstances(SphereStationary, 1, 1.0).move(breve.vector(i*D, 1.0, j*D))
+				if lines[i][j] == 'E':
+					breve.createInstances(Egg, 1).move(breve.vector(i*D, -1.0, j*D))
+		f.close()
+		
+		self.watch(breve.allInstances(Egg)[0])
 
 	def unwatch(self, obj): # return whether the object was the target or not
 		if obj == self.watchObject:
@@ -58,6 +49,3 @@ class PopulationController(breve.BraitenbergControl):
 
 if __name__ == '__main__':
 	population = PopulationController()
-
-	global asd
-	asd = population

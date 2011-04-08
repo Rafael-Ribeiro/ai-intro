@@ -24,8 +24,8 @@ from custom.functions import cut
 
 from lib.Activator import BraitenbergActivator
 
-MATURITY 		= 50.0 / 3
-PROCRIATION 	= 40.0 / 3
+MATURITY 		= 50.0
+PROCRIATION 	= 40.0
 LIFESPAN 		= 300.0
 VELOCITY 		= 3.0
 NATURAL			= 2.0
@@ -34,9 +34,9 @@ HALF_DISTANCE = 3
 HALF_LIGHT = 7.0
 HALF_SOUND = 7.0
 
-DISTANCE_BIAS = 1.0
+DISTANCE_BIAS = 2.0
 LIGHT_BIAS = 4.0
-SOUND_BIAS = 3.0
+SOUND_BIAS = 8.0
 
 DISTANCE_CUT	= 0.2
 LIGHT_CUT		= DISTANCE_CUT
@@ -67,7 +67,7 @@ class FemaleVehicle(breve.BraitenbergVehicle):
 		breve.BraitenbergVehicle.__init__(self, breve.vector(3, 0.7, 3))
 		self.setColor(color.PINK)
 
-		self.handleCollisions("MaleVehicle", "reproduce", ["Link", "LightSensor"])
+		self.handleCollisions("MaleVehicle", "reproduce", ["Link", "LightSensor", "ProximitySensor", "SmellSensor", "SmellSource", "BraitenbergWheel"])
 
 		self.age = 0.0
 		self.last = 0.0
@@ -86,14 +86,6 @@ class FemaleVehicle(breve.BraitenbergVehicle):
 		
 		self.addSensor(self.leftProximitySensor,  breve.vector(1.5, 0.21, -1.2), dir.FRONT)
 		self.addSensor(self.rightProximitySensor,  breve.vector(1.5, 0.21, 1.2), dir.FRONT)
-		
-		# Smell
-		#self.leftSmellSensor  = breve.createInstances(SmellSensor, 1, 'leftSmellSensor', color.RED, HALF_SMELL)
-		#self.rightSmellSensor  = breve.createInstances(SmellSensor, 1, 'rightSmellSensor', color.RED, HALF_SMELL)
-
-		#self.addSensor(self.leftSmellSensor,  breve.vector(2, -0.3, -1.5), dir.FRONT)
-		#self.addSensor(self.rightSmellSensor,  breve.vector(2, -0.3, 1.5), dir.FRONT)
-
 
 		# Light
 		self.leftLightSensor  = breve.createInstances(LightSensor, 1, 'leftLightSensor', math.pi/2, color.EGG, HALF_LIGHT, [Egg])
