@@ -46,7 +46,6 @@
 
 \cleardoublepage
 \section{Breve Libraries}
-% TODO
 \indent \indent Como referenciado na documentação da biblioteca Breve, o código Python fornecido é obtido através da compilação de código Steve.
 Assim, esta biblioteca está pouco optimizada na medida em que não utiliza todas as potencialidades da linguagem.
 Como tal, foram efectuadas algumas alterações no sentido de promover uma maior modularidade do código e flexibilidade.
@@ -166,7 +165,6 @@ TODO
 
 \cleardoublepage
 \subsection{Proximity}
-
 \begin{figure}[h]
 	\vspace{-20pt}
 	\begin{center}
@@ -176,7 +174,16 @@ TODO
 	\caption{Proximity: $bias=50$ $\alpha=\frac{\pi}{4}$}
 \end{figure}
 
-TODO
+\indent O resultado deste sensor é inversamente proporcional à distância ao objecto mais próximo dentro do seu ângulo de visão.
+O nível de decrescimento desta função é definido por \emph{half-distance} que indica a distância à qual se obtém o valor 0.5.
+Desta forma a saida do sensor é:
+
+\[
+	I = \frac{1}{\frac{d_{min}}{d}+1}, d_{min} = \min\{\}
+\]
+
+onde $o_{d}$ é a distância do sensor ao objecto e $d$ é a \emp{half-distance}.
+Note-se que a função está deslocada uma unidade de forma a garantir valores no intervalo \[0..1\].
 
 \cleardoublepage
 \subsection{Smell}
@@ -310,10 +317,30 @@ Este corte evita que a soma dos vários comportamentos se acumule e o veículo s
 No entanto, quando 2 ou mais sensores apresentam intensidades superiores ao corte o comportamento corresponde à sua sobreposição.
 Neste caso o resultado final pode não ser o melhor.
 
-% TODO Strengths, weaknesses, reasons behind the functions, behaviour
 
 \cleardoublepage
-\section{Project}
+\section{Project - Braitenberg Population}
+\begin{figure}[h]
+	\centering
+	\subfloat[Group behaviour]{\includegraphics[width=0.3\textwidth]{screenshots/gossiping.png}}
+	\hspace{5px}
+	\subfloat[Sexual Opportunism]{\includegraphics[width=0.3\textwidth]{screenshots/opportunism.png}}
+	\hspace{5px}
+	\subfloat[Protective instinct]{\includegraphics[width=0.3\textwidth]{screenshots/protective.png}}
 
+	\caption{Braitenberg Population}
+\end{figure}
+
+% Both
+Instinto protector
+
+% Females
+Instinto Maternal
+Aptidao social
+Comportamento de grupo 
+
+% Males
+Comportamento individual
+Comportamento sexual
 
 \end{document}
