@@ -27,7 +27,7 @@ class Egg(LightSource):
 		if self.age >= BIRTH_TIME:
 			sex = random()
 
-			if sex < 0.0: #TODO restore 0.5
+			if sex < 0.5: #TODO restore 0.5
 				from Male import MaleVehicle
 				child = breve.createInstances(MaleVehicle, 1)
 

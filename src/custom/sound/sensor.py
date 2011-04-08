@@ -11,7 +11,7 @@ class SoundSensor(breve.BraitenbergSensor):
 	LEFT_BALANCE = 0
 	RIGHT_BALANCE = 1
 
-	def __init__( self, name, type = breve.vector(0,0,1), bias = 5.0, balance = 0.5):
+	def __init__( self, name, type = breve.vector(0,0,1), bias = 5.0, balance = 0.5, playSound = True):
 		breve.BraitenbergSensor.__init__(self,name)
 
 		self.bias = bias
@@ -25,7 +25,9 @@ class SoundSensor(breve.BraitenbergSensor):
 
 		self.frequency = type.x*3900 + type.y*6000 + type.z*10000 + 100 # Minimum frequency = 100Hz, maximum frequency = 20000Hz
 		self.balance = balance
-		self.tone = breve.createInstances(breve.Tone, 1, self.frequency, self.balance)
+		self.playSound = playSound
+		if self.playSound:
+			self.tone = breve.createInstances(breve.Tone, 1, self.frequency, self.balance)
 
 	def iterate(self):
 		total = 0
@@ -46,7 +48,8 @@ class SoundSensor(breve.BraitenbergSensor):
 	
 		total = min(total, 1.0)
 
-		self.tone.setVolume(min(total,0.5)) # Total ranges from 0 to 1, the same as volume
+		if self.playSound:
+			self.tone.setVolume(min(total,0.5)) # Total ranges from 0 to 1, the same as volume
 
 		self.activators.activate(total, self)
 
