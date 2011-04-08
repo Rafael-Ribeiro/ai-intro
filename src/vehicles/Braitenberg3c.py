@@ -34,7 +34,7 @@ from custom.constants import color,direction as dir
 from custom.functions import *
 
 #Simulation constants
-VELOCITY = 5.0 			# Natural velocity
+VELOCITY = 3.0 			# Natural velocity
 D = 3.0 				# distance between objects on the grid
 
 # Distance where the intensity of the sensor is 0.5
@@ -59,16 +59,16 @@ NATURAL = 2.0
 C = 0.2
 CSOUND = 0.3
 def leftActivator(vehicle, rightLightSensor, rightProximitySensor,rightSmellSensor,leftSoundSensor):
-	a = cut(rightProximitySensor, 0, C, (C-rightProximitySensor)*PROXIMITY_BIAS, 0.5, (NATURAL-1)) # 
-	b = cut(rightLightSensor, 0, C, (C-rightLightSensor)*LIGHT_BIAS, 0.5, -(NATURAL+1))
+	a = cut(rightProximitySensor, 0, C, (C-rightProximitySensor)*PROXIMITY_BIAS, 0.5, -NATURAL-1) # 
+	b = cut(rightLightSensor, 0, C, (C-rightLightSensor)*LIGHT_BIAS, 0.5, -NATURAL-1)
 	c = cut(rightSmellSensor, 0, C, (rightSmellSensor-C)*SMELL_BIAS)
 	d = cut(leftSoundSensor, 0, CSOUND, (leftSoundSensor-CSOUND)*SOUND_BIAS)
 
 	return VELOCITY*(a + b + c + d + NATURAL)
 
 def rightActivator(vehicle, leftLightSensor, leftProximitySensor,leftSmellSensor,rightSoundSensor):
-	a = cut(leftProximitySensor, 0, C, (C-leftProximitySensor)*PROXIMITY_BIAS, 0.5, -(NATURAL+1))
-	b = cut(leftLightSensor, 0, C, (C-leftLightSensor)*LIGHT_BIAS, 0.5, (NATURAL-1))
+	a = cut(leftProximitySensor, 0, C, (C-leftProximitySensor)*PROXIMITY_BIAS, 0.5, -NATURAL+1)
+	b = cut(leftLightSensor, 0, C, (C-leftLightSensor)*LIGHT_BIAS, 0.5, -NATURAL+1)
 	c = cut(leftSmellSensor, 0, C, (leftSmellSensor-C)*SMELL_BIAS)
 	d = cut(rightSoundSensor, 0, CSOUND, (rightSoundSensor-CSOUND)*SOUND_BIAS)
 
@@ -131,7 +131,7 @@ class Braitenberg3cController(breve.BraitenbergControl):
 		for i in xrange(len(lines)):
 			for j in xrange(len(lines[i])):
 				if lines[i][j] == '*': #objects
-					breve.createInstances(SphereStationary, 1, b1.0).move(breve.vector(i*D, 1.0, j*D))
+					breve.createInstances(SphereStationary, 1, 1.0).move(breve.vector(i*D, 1.0, j*D))
 				elif lines[i][j] == 'l': #<L>ight
 					breve.createInstances(LightSource, 1, 1.0, LIGHT_TYPE, False).move(breve.vector(i*D, 1.0, j*D))
 				elif lines[i][j] == 's': #<S>mell
