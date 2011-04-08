@@ -49,9 +49,14 @@
 % TODO
 \indent \indent Como referenciado na documentação da biblioteca Breve, o código Python fornecido é obtido através da compilação de código Steve.
 Assim, esta biblioteca está pouco optimizada na medida em que não utiliza todas as potencialidades da linguagem. 
-Por isso decidimos efectuar algumas alterações
+Por isso decidimos efectuar algumas alterações.
 
 \subsection{Constructors with parameters}
+\indent \indent Uma das funcionalidades não utilizadas pelo Breve é a construção de objectos com parâmetros.
+Desta forma para criar um objecto é necessária uma chamada extra a uma função \emph{init}.
+Isto aumenta desnecessáriamente o tamanho do código e dá azo a erros (utilização de objectos não inicializados).
+Uma vez que todas as instâncias de objectos têm que ser criadas através da função \emph{createInstances}, decidimos altera-la de forma transmitir os parâmetros utilizados para a criação dos objectos. 
+Consequentemente é possível alterar directamente os utilizados na construção de v																																																							eículos e cenários.
 
 \subsection{Object distance}
 \indent \indent Para implementar correctamente os sensores, é necessário calcular a distância entre dois objectos.
@@ -253,6 +258,26 @@ mas decresce mais rapidamente quando o ângulo aumenta.
 \end{figure}
 
 \cleardoublepage
+\subsection{Aggressor Explorer}
+\begin{figure}[h]
+	\centering
+	\subfloat[Left activator]{\includegraphics[width=0.4\textwidth]{graphs/activators/aggr_expl_l.png}}
+	\subfloat[Right activator]{\includegraphics[width=0.4\textwidth]{graphs/activators/aggr_expl_r.png}}
+	
+	\caption{The Aggressor/Explorer vehicle}
+\end{figure}
+
+Este veículo vive num mundo com dois tipos de objectos: luzes e obstáculos.
+O seu objectivo é explorar-lo, desviando-se dos obstáculos e explorando as luzes, i.e.
+aproxima-se delas como se estivesse curioso e assim que perde o interesse segue à procura de novas.
+
+Para se observar este comportamento a função de activação em relação aos obstáculos é decrescente até 0.5 (momento em que atinge \emph{HALF\_DISTANCE}).
+Após este valor assume-se que o veículo está preso e precisa de voltar para trás (rodar) e por isso aplica-se uma intensidade simétrica em cada roda.
+
+Quanto às luzes a função de activação cresce até 0.25 (o veículo vê uma luz e tenta se aproximar rapidamente) e decresce até 0.5 (abranda para poder observar).
+Após este valor a função assume valores cada vez mais negativos de forma a se afastar (uma vez que este sensor se encontra ligado de forma cruzada).
+
+\cleardoublepage
 \subsection{Braitenberg 3c}
 \begin{figure}[h]
 	\centering
@@ -261,20 +286,19 @@ mas decresce mais rapidamente quando o ângulo aumenta.
 	
 	\caption{The Braitenberg 3c vehicle}
 \end{figure}
+Apesar do veículo sugerido possuir na mesma 4 sensores este não é o Braitenberg 3c tal como definido na sua obra.
+No entanto, da mesma forma que Valentino Braitenberg avaliou a psicologia sintética dos seus veículos (regidos apenas por reações),
+podemos avalia-lo sob a mesma prespectiva:
 
-%\begin{wrapfigure}{r}{0.5\textwidth}
-%	\begin{center}
-%		\includegraphics[width=0.48\textwidth]{graphs/activators/3c_l.png}
-%	\end{center}
-%	\caption{Left wheel activator functions}
-%\end{wrapfigure}
+Este veículo apresenta um comportamento bastante complexo. Pretende explorar todo o ambiente (luzes e obstáculos), gosta de 
+correr no meio de flores (fontes de cheiro) e tem medo dos seus predadores (fontes de som). 
 
-%\begin{wrapfigure}{r}{0.5\textwidth}
-%	\begin{center}
-%		\includegraphics[width=0.48\textwidth]{graphs/activators/3c_r.png}
-%	\end{center}
-%	\caption{Right wheel activator functions}
-%\end{wrapfigure}
+Para garantir este comportamento foram utilizadas funções de corte que inibidoras quando as intensidades do sensores são pequenas.
+Este corte evita que a soma dos vários comportamentos se acumule e o veículo se comporte de forma errática.
+No entanto, quando 2 ou mais sensores apresentam intensidades superiores ao corte o comportamento corresponde à sua sobreposição.
+Neste caso o resultado final pode não ser o melhor.
+
+% TODO Strenghts, weaknesses, reasons behind the functions, behaviour
 
 \cleardoublepage
 \section{Project}
