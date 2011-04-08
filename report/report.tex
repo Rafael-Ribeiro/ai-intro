@@ -5,7 +5,7 @@
 \usepackage[T1]{fontenc}
 
 \newcommand{\documentTitle}{Braitenberg Vehicles} %Macro definition
-\newcommand{\documentAuthors}{João Rafael (2008111876) \and José Ribeiro (2008112181)} %Macro definition
+\newcommand{\documentAuthors}{João Rafael (2008111876, jprafael@student.dei.uc.pt) \and José Ribeiro (2008112181, jbaia@student.dei.uc.pt)} %Macro definition
 
 \title{\documentTitle}
 \author{\documentAuthors{}}
@@ -55,9 +55,9 @@ Como tal, foram efectuadas algumas alterações no sentido de promover uma maior
 
 \subsection{Constructors with parameters}
 \indent \indent Uma das funcionalidades não utilizadas pelo Breve é a construção de objectos com parâmetros.
-Desta forma, para criar um objecto é necessária uma chamada extra a uma função (\emph{init}).
+Desta forma, para criar um objecto é necessária uma chamada extra a uma função (\texttt{init}).
 Isto aumenta desnecessariamente o tamanho do código e dá azo a erros (utilização de objectos não inicializados).
-Uma vez que todas as instâncias de objectos têm que ser criadas através da função \emph{createInstances} decidimos alterá-la de forma a transmitir os parâmetros utilizados durante a sua criação.
+Uma vez que todas as instâncias de objectos têm que ser criadas através da função \texttt{createInstances} decidimos alterá-la de forma a transmitir os parâmetros utilizados durante a sua criação.
 Consequentemente, é possível especificá-los directamente aquando da construção de veículos e cenários.
 
 \subsection{Object distance}
@@ -103,9 +103,9 @@ Onde $x, y, z$ são os versores do referencial $B$ em relação ao referencial $
 \subsection{Activators}
 \indent \indent Os veículos de Braitenberg, como definidos na literatura apenas permitem relacionar um sensor directamente com uma única roda.
 Esta abordagem implica a replicação de sensores quando se pretende que estes tenham influências diferentes para cada roda.
-Para evitar esta duplicação introduzimos o conceito de \emph{Activador}. 
+Para evitar esta duplicação introduzimos o conceito de \texttt{Activator}. 
 
-Um \emph{Activador} é um bloco conceptual introduzido entre vários sensores e uma roda.
+Um \texttt{Activator} é um bloco conceptual introduzido entre vários sensores e uma roda.
 Este é responsável pelo cálculo das funções de activação de cada sensor e posterior agregação dos resultados, enviando depois o sinal correspondente para a roda. Desta forma, o veículo continua a ser um veículo de Braitenberg desde que a agregação dos resultados seja efectuada apenas com operações elementares (i.e: adição). 
 
 %TODO
@@ -114,8 +114,8 @@ Este é responsável pelo cálculo das funções de activação de cada sensor e
 \indent \indent 
 
 \subsection{Multibody collision handlers (Proxies, and Real's parents )}
-\indent \indent A biblioteca do Breve apenas permite a detecção de colisões entre \emph{Shapes}. 
-No entanto durante a execução do nosso projecto deparámo-nos com a necessidade de detectar a colisão entre dois objectos \emph{MultiBody}.
+\indent \indent A biblioteca do Breve apenas permite a detecção de colisões entre \texttt{Shapes}. 
+No entanto durante a execução do nosso projecto deparámo-nos com a necessidade de detectar a colisão entre dois objectos \texttt{MultiBody}.
 Para este efeito são colocados \emph{handlers} específicos para cada componente, que por sua vez efectuam \emph{event bubbling} para o objecto desejado.
 
 \cleardoublepage
@@ -368,17 +368,35 @@ Após procriação, o macho tende a proteger o ovo até ao seu eclodir; fá-lo p
 
 \indent \indent As fêmeas da espécie Valentinum, ao contrário dos machos Valentinum, exibem comportamentos de grupo que podem ser vistos como parte da sua aptidão social. Estas comunicam através de sons entre si, sendo também atraídas pelo choro de crias, onde manifestam o seu instinto maternal e protector (dada a ausência de machos junto destas).
 
-Assim, as fêmeas agrupam-se por forma a combater eventuais agressões externas e são elas o elo de ligação entre indivíduos Valentinae, podendo até dizer-se que estas criam o conceito de comunidade dentro desta espécie.
-
-% Both:
-% Instinto protector
+Assim, as fêmeas agrupam-se por forma a combater eventuais agressões externas e são elas o elo de ligação entre indivíduos Valentin\ae, podendo até dizer-se que estas criam o conceito de comunidade dentro desta espécie.
 
 \subsection{Implementation}
-\subsubsection{Activation functions}
+\subsubsection{Architecture}
+\begin{tabular}{| c | c | c | c | c | c |}
+ \hline
+  \textbf{Gender} & \textbf{Sensor} & \textbf{Connection} & \textbf{Bias} & \textbf{Behaviour} & \textbf{Explanation} \\
+ \hline
+  & Light & Uncrossed & $-$ & Lover & Cares for its eggs \\
+  Male & Proximity & Crossed & $-$ & Explorer &  \\
+  & Smell & Crossed & $+$ & Aggressor & Tries to procriate \\
+  & Sound & Uncrossed & $+$ & Coward & Runs away from babies \\
+ \hline
+  \textbf{Gender} & \textbf{Sensor} & \textbf{Connection} & \textbf{Bias} & \textbf{Behaviour} & \textbf{Explanation} \\
+ \hline
+  & Light & Uncrossed & $-$ & Lover & Cares for its eggs \\
+  Female & Proximity & Crossed & $-$ & Explorer &  \\
+  & Sound & Uncrossed & $-$ & Lover & Cares for its babies \\
+ \hline
+\end{tabular}
 
+\subsubsection{Activation functions}
+%%% TODO
+%%% TODO
+%%% TODO
 
 \subsubsection{Limitations}
-% Bumping against walls; dumb behaviour
+\indent \indent Por causa do efeito de \emph{information overloading} já referido anteriormente, torna-se complexo codificar de forma exacta vários instintos. Mais difícil que codificá-los, torna-se complexo fazer o veículo, de forma puramente reactiva, obedecer a todos eles correctamente podendo, tendencialmente, falhar vários instintos por essa mesma tentativa de os satisfazer a todos eles.
 
+Um exemplo disso pode verificar-se na seguinte situação: um macho perfeitamente alinhado com uma fêmea localizada atrás dele, estando este virado para uma parede. Dado o alinhamento, o diferencial entre os sensores de hormonas será mínimo (nulo no caso de alinhamento perfeito). Como tal, este agirá no sentido de fazer uma investida na fêmea, ainda que esta se encontre por trás de si. Isto levará a que este indivíduo choque contra a parede. Este comportamento poderia ser corrigido com a colocação de outros sensores que permitissem a detecção do sentido do alinhamento (positivo ou negativo), com funções de activação mais complexa que fizessem uso de múltiplos sensores, com a utilização dos sensores de visão em conjunto com os de hormonas, entre outras soluções.
 
 \end{document}
