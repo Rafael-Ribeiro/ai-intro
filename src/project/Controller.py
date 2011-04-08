@@ -32,6 +32,13 @@ class PopulationController(breve.BraitenbergControl):
 		
 		self.watch(breve.allInstances(Egg)[0])
 
+		self.jazzMusic = breve.createInstances(breve.Sound, 1)
+		self.jazzMusic.load("sounds/jazzMusic.wav")
+		self.jazzMusic.play()
+
+	def playJazzMusic(self):
+		self.jazzMusic.play()
+
 	def unwatch(self, obj): # return whether the object was the target or not
 		if obj == self.watchObject:
 			targets = breve.allInstances(MaleVehicle) + breve.allInstances(FemaleVehicle) + breve.allInstances(Egg)

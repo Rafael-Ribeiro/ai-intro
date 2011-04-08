@@ -95,8 +95,8 @@ class FemaleVehicle(breve.BraitenbergVehicle):
 		self.addSensor(self.rightLightSensor,  breve.vector(1.2, 0.1, 1.3), dir.FRONT)
 
 		# Sound
-		self.leftSoundSensor  = breve.createInstances(SoundSensor, 1, 'leftSoundSensor', color.GREEN, HALF_SOUND)
-		self.rightSoundSensor  = breve.createInstances(SoundSensor, 1, 'rightSoundSensor', color.GREEN, HALF_SOUND)
+		self.leftSoundSensor  = breve.createInstances(SoundSensor, 1, 'leftSoundSensor', color.GREEN, HALF_SOUND, 0.5, False)
+		self.rightSoundSensor  = breve.createInstances(SoundSensor, 1, 'rightSoundSensor', color.GREEN, HALF_SOUND, 0.5, False)
 		
 		self.addSensor(self.leftSoundSensor,  breve.vector(1.0, 0.0, -1.0), dir.FRONT + dir.LEFT)
 		self.addSensor(self.rightSoundSensor,  breve.vector(1.0, 0.0, 1.0), dir.FRONT + dir.RIGHT)
@@ -143,6 +143,7 @@ class FemaleVehicle(breve.BraitenbergVehicle):
 			obj.hadSex(self)
 
 	def hadSex(self, obj):
+		self.getController().playJazzMusic()
 		self.last = self.getAge()
 		self.updateSexuality()
 
