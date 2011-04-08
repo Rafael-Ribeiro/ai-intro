@@ -108,10 +108,27 @@ Para evitar esta duplicação introduzimos o conceito de \texttt{Activator}.
 Um \texttt{Activator} é um bloco conceptual introduzido entre vários sensores e uma roda.
 Este é responsável pelo cálculo das funções de activação de cada sensor e posterior agregação dos resultados, enviando depois o sinal correspondente para a roda. Desta forma, o veículo continua a ser um veículo de Braitenberg desde que a agregação dos resultados seja efectuada apenas com operações elementares (i.e: adição). 
 
-%TODO
+\subsection{Sensor rotation and positioning}
+\indent \indent Após a criação de um sensor este fica orientado para cima (\texttt{dir.UP = (0,1,0)}).
+A colocação e rotação destes é realizada no momento de ligação ao veículo a que pertencem.
+De forma a facilitar a programação e leitura de código esta função recebe como parâmetro a direcção pretendida e calcula a rotação necessária para a obter.
 
-\subsection{Sensor rotation and initialization}
-\indent \indent 
+Num caso genérico, a transformação de um versor (direcção inicial: $\vec{i}$) noutro (direcção final $\vec{f}$) é efectuada através de uma rotação de ângulo $\alpha$ sobre um eixo $\vec{n}$ (normal).
+Estes podem ser calculados através de
+\[
+	\vec{n} = \vec{i}\ast\vec{f} \quad \text{(produto externo)}
+\]
+\[	
+	\alpha = \arccos{(\vec{i} \cdot \vec{f})} \quad \text{(produto interno)}
+\]
+
+Neste caso em particular, visto conheçermos o vector inicial podemos efectuar a expanção dos produtos e obtemos:
+\[
+	\vec{n} = (-\vec{i}_{z}, 0, \vec{i}_{x})
+\]
+\[	
+	\alpha = \arccos{(\vec{i}_{y})}
+\]
 
 \subsection{Multibody collision handlers (Proxies, and Real's parents )}
 \indent \indent A biblioteca do Breve apenas permite a detecção de colisões entre \texttt{Shapes}. 
@@ -126,7 +143,7 @@ Quanto mais realistas os sensores forem melhor é a qualidade máxima teórica d
 No entanto, mais complexidade necessita de mais poder computacional, tornando-se mais difícil de analisar (um fenómeno denominado por \emph{information overloading}).
 Desta forma, é necessario efectuar \emph{trade-offs} de forma a encontrar um equilíbrio adequado.
 
-\cleardoublepage
+%\cleardoublepage
 \subsection{Laser}
 
 \begin{figure}[h]
@@ -282,7 +299,19 @@ mas decresce mais rapidamente quando o ângulo aumenta.
 	
 	\caption{The eight vehicle}
 \end{figure}
+\indent O objectivo deste veículo é desenhar oitos à volta de duas esferas.
 
+\indent Para este efeito decidimos orientar os sensores para os lados (\texttt{dir.LEFT} e \texttt{dir.RIGHT}).
+Desta forma é possivel definir 3 regiões onde os comportamentos são diferentes: apenas vê a esfera direita e deve rodar sobre esta; vê ambas as esferas e deve seguir em frente; apenas vê a esfera da esquerda e deve rodar sobre esta.
+Assim os coeficientes das funções de activação correspondem às velocidades tangenciais em circunferências de raio $r$ e $r+$\emph{axis\_dist}
+\[
+	|\vec{v_{tan}}| = r * \omega 
+\]
+onde $r$ é o raio; e $\omega$ é a velocidade ângular.
+
+\indent Este veículo verifica o comportamento idealizado.
+No entanto apresenta algumas oscilações devido a erros de precisão (distância entre as esferas, raio das esferas, posição inicial, etc.).
+Apesar disto o seu comportamento é estável e mantém-se durante toda a simulação.
 
 \cleardoublepage
 \subsection{Ellipse}
