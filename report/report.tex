@@ -114,7 +114,9 @@ Desta forma, o veículo continua a ser um veículo de Braitenberg desde que a ag
 \indent \indent 
 
 \subsection{Multibody collision handlers (Proxies, and Real's parents )}
-\indent \indent
+\indent \indent A biblioteca do Breve apenas permite a detecção de colisões entre \emph{Shapes}. 
+No entanto durante a execução do nosso projecto deparámo-nos com a necessidade de detectar a colisão entre dois objectos \emph{MultiBody}.
+Para este efeito são colocados \emph{handlers} específicos para cada componente, que por sua vez efectuam \emph{event bubbling} para o objecto desejado.
 
 \cleardoublepage
 \section{Sensors}
