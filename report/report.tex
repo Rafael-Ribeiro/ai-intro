@@ -301,9 +301,9 @@ mas decresce mais rapidamente quando o ângulo aumenta.
 \end{figure}
 \indent O objectivo deste veículo é desenhar oitos à volta de duas esferas.
 
-\indent Para este efeito decidimos orientar os sensores para os lados (\texttt{dir.LEFT} e \texttt{dir.RIGHT}).
+\indent Para este efeito recorremos a dois Proximity Sensors orientados para os lados (\texttt{dir.LEFT} e \texttt{dir.RIGHT}).
 Desta forma é possivel definir 3 regiões onde os comportamentos são diferentes: apenas vê a esfera direita e deve rodar sobre esta; vê ambas as esferas e deve seguir em frente; apenas vê a esfera da esquerda e deve rodar sobre esta.
-Assim os coeficientes das funções de activação correspondem às velocidades tangenciais em circunferências de raio $r$ e $r+$\emph{axis\_dist}
+Assim, os coeficientes das funções de activação correspondem às velocidades tangenciais em circunferências de raio $r$ e $r+$\emph{axis\_dist}
 \[
 	|\vec{v_{tan}}| = r * \omega 
 \]
@@ -323,6 +323,13 @@ Apesar disto o seu comportamento é estável e mantém-se durante toda a simula�
 	
 	\caption{The ellipse vehicle}
 \end{figure}
+
+\indent O objectivo deste veículo é desenhar uma elipse entre duas esferas.
+
+Para este efeito recorremos a um Distance Sensor ($\alpha = \pi$) e a um Laser Sensor ($\alpha = \frac{\pi}{20}$).
+Para $RADIUS$ igual ao raio da circunferência a descrever na proximidade da esfera, $DIFFERENTIAL$ igual à velocidade tangencial para descrever uma circunferência de raio $RADIUS$ (quando somado à natural) e $OFFSET$ a constante do valor a somar à velocidade natural para converger a sua rota para a esfera mais distante; são possíveis de definir três regiões onde os comportamentos diferem: \textbf{(1)} quando o veículo se encontra a uma distância menor ou igual a $RADIUS * 2$ de uma esfera (onde deverá descrever aproximadamente meia circunferência para sensivelmente inverter o sentido da marcha); \textbf{(2)} quando se encontra a uma distância superior a $RADIUS * 2$ e o Laser Sensor não se encontra a "ver" a esfera (pelo que deverá rodar $OFFSET$ até a ver); \textbf{(3)} quando se encontra a uma distância superior a $RADIUS * 2$ e o Laser Sensor "vê" a esfera (pelo que deverá continuar em linha recta). Assim, os coeficientes das funções de activação são (para a roda esquerda e direita, respectivamente), $NATURAL$, \textbf{(1)} $NATURAL + DIFFERENTIAL$, \textbf{(2)} $NATURAL + OFFSET$ e \textbf{(3)} $NATURAL$.
+
+Este veículo verifica o comportamento idealizado. Descreve aproximadamente uma oval entre as esferas, ao curvar o suficiente para inverter a marcha e, gradualmente, converger para a segunda esfera; a partir do momento que a convergência é suficiente Laser Sensor corta essa convergência, de forma a garantir que o veículo não sai da rota esperada. Apesar de pequenas variações (derivadas da posição inicial e erros de precisão) o seu comportamento é estável e robusto; aquando de um desvio não esperado o veículo retoma a sua rota normal corrigindo o seu progresso (como demonstra a rota da figura). Pode-se mesmo variar as posições relativas das esferas (e até mesmo as distâncias) com alguma intensidade ao veículo usualmente responde correctamente.
 
 \cleardoublepage
 \subsection{Aggressor/Explorer}
@@ -419,7 +426,7 @@ Assim, as fêmeas agrupam-se por forma a combater eventuais agressões externas 
 \end{tabular}
 
 \subsubsection{Activation functions}
-\subsubsubsection{Male}
+\paragraph{Male}
 \begin{figure}[h]
 	\centering
 	\subfloat[Group behaviour]{\includegraphics[width=0.3\textwidth]{screenshots/gossiping.png}}
@@ -427,7 +434,7 @@ Assim, as fêmeas agrupam-se por forma a combater eventuais agressões externas 
 	\caption{Braitenberg Population}
 \end{figure}
 
-\subsubsubsection{Female}
+\paragraph{Female}
 
 \subsubsection{Limitations}
 \indent \indent Por causa do efeito de \emph{information overloading} já referido anteriormente, torna-se complexo codificar de forma exacta vários instintos. Mais difícil que codificá-los, torna-se complexo fazer o veículo, de forma puramente reactiva, obedecer a todos eles correctamente podendo, tendencialmente, falhar vários instintos por essa mesma tentativa de os satisfazer a todos eles.
