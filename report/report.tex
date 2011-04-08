@@ -104,14 +104,32 @@ Esta abordagem implica a replicação de sensores quando se pretende que estes t
 Para evitar esta duplicação introduzimos o conceito de \emph{Activador}. 
 
 Um \emph{Activador} é um bloco conceptual introduzido entre vários sensores e uma roda.
-Este é responsável pelo cálculo das funções de activação de cada sensor e posterior agregação dos resultados, enviando depois o sinal correspondente para a roda. Desta forma, o veículo continua a ser um veículo de Braitenberg desde que a agregação dos resultados seja efectuada apenas com operações elementares (i.e: adição). 
+Este é responsável pelo cálculo das funções de activação de cada sensor e posterior agregação dos resultados, enviando depois o sinal correspondente para a roda.
+Desta forma, o veículo continua a ser um veículo de Braitenberg desde que a agregação dos resultados seja efectuada apenas com operações elementares (i.e: adição). 
 
-%TODO
+\subsection{Sensor rotation and positioning}
+\indent \indent Após a criação de um sensor este fica orientado para cima (\texttt{dir.UP = (0,1,0)}).
+A colocação e rotação destes é realizada no momento de ligação ao veículo a que pertencem.
+De forma a facilitar a programação e leitura de código esta função recebe como parâmetro a direcção pretendida e calcula a rotação necessária para a obter.
 
-\subsection{Sensor rotation and initialization}
-\indent \indent 
+Num caso genérico, a transformação de um versor (direcção inicial: $\vec{i}$) noutro (direcção final $\vec{f}$) é efectuada através de uma rotação de ângulo $\alpha$ sobre um eixo $\vec{n}$ (normal).
+Estes podem ser calculados através de
+\[
+	\vec{n} = \vec{i}\ast\vec{f} \quad \text{(produto externo)}
+\]
+\[	
+	\alpha = \arccos{(\vec{i} \cdot \vec{f})} \quad \text{(produto interno)}
+\]
 
-\subsection{Multibody collision handlers (Proxies, and Real's parents )}
+Neste caso em particular, visto conheçermos o vector inicial podemos efectuar a expanção dos produtos e obtemos:
+\[
+	\vec{n} = (-\vec{i}_{z}, 0, \vec{i}_{x})
+\]
+\[	
+	\alpha = \arccos{(\vec{i}_{y})}
+\]
+
+\subsection{Multibody collision handlers}
 \indent \indent A biblioteca do Breve apenas permite a detecção de colisões entre \emph{Shapes}. 
 No entanto durante a execução do nosso projecto deparámo-nos com a necessidade de detectar a colisão entre dois objectos \emph{MultiBody}.
 Para este efeito são colocados \emph{handlers} específicos para cada componente, que por sua vez efectuam \emph{event bubbling} para o objecto desejado.
