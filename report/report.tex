@@ -144,7 +144,7 @@ Quanto mais realistas os sensores forem melhor é a qualidade máxima teórica d
 No entanto, mais complexidade necessita de mais poder computacional, tornando-se mais difícil de analisar (um fenómeno denominado por \emph{information overloading}).
 Desta forma, é necessario efectuar \emph{trade-offs} de forma a encontrar um equilíbrio adequado.
 
-\cleardoublepage
+%\cleardoublepage
 \subsection{Laser}
 
 \begin{figure}[h]
@@ -300,7 +300,19 @@ mas decresce mais rapidamente quando o ângulo aumenta.
 	
 	\caption{The eight vehicle}
 \end{figure}
+\indent O objectivo deste veículo é desenhar oitos à volta de duas esferas.
 
+\indent Para este efeito decidimos orientar os sensores para os lados (\texttt{dir.LEFT} e \texttt{dir.RIGHT}).
+Desta forma é possivel definir 3 regiões onde os comportamentos são diferentes: apenas vê a esfera direita e deve rodar sobre esta; vê ambas as esferas e deve seguir em frente; apenas vê a esfera da esquerda e deve rodar sobre esta.
+Assim os coeficientes das funções de activação correspondem às velocidades tangenciais em circunferências de raio $r$ e $r+$\emph{axis\_dist}
+\[
+	|\vec{v_{tan}}| = r * \omega 
+\]
+onde $r$ é o raio; e $\omega$ é a velocidade ângular.
+
+\indent Este veículo verifica o comportamento idealizado.
+No entanto apresenta algumas oscilações devido a erros de precisão (distância entre as esferas, raio das esferas, posição inicial, etc.).
+Apesar disto o seu comportamento é estável e mantém-se durante toda a simulação.
 
 \cleardoublepage
 \subsection{Ellipse}
