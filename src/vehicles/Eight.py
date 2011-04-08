@@ -24,7 +24,6 @@ def draw(vehicle):
 	drawing.drawLine(lastLocation,vehicle.getLocation())
 	lastLocation = vehicle.getLocation()
 
-
 def leftActivator(vehicle, leftSensor, rightSensor):
 	draw(vehicle)
 	# tangent velocity @ left wheel
