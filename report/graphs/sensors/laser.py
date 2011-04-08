@@ -10,7 +10,7 @@ X,Y = meshgrid(x,y)
 
 alpha = math.pi/20
 ANGLE = angle(X + Y*1j)
-Z = (abs(ANGLE) < alpha)
+Z = (abs(ANGLE) < alpha)*2 - 1
 
 fig = figure()
 pcolor(X,Y,Z)
