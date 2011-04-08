@@ -420,6 +420,17 @@ Após procriação, o macho tende a proteger o ovo até ao seu eclodir; fá-lo p
  \hline
 \end{tabular}
 
+\subsubsection{Sources and Sensors}
+\indent \indent Todos os veículos da espécie Valentin\ae apresentam uma estrutura semelhante:
+\begin{itemize}
+\item São quadrados;
+\item Têm os sensores de proximidade e luz orientados para a frente;
+\item Têm os sensores de som na diagonal, de forma a não ouvirem a eles próprios;
+\item Têm uma fonte de som no meio cuja intensidade depende do sexo e da maturidade;
+\item Têm uma fonte hormonal cuja intensidade depende da sua sexualidade.
+\item Os machos têm sensores de cheiro orientados também para a frente.  
+\end{itemize}
+
 \cleardoublepage
 \subsubsection{Activation functions}
 \paragraph{Female}
@@ -433,9 +444,11 @@ Após procriação, o macho tende a proteger o ovo até ao seu eclodir; fá-lo p
 \indent Este veículo possui uma velocidade natural de 2*\texttt{VELOCITY\_FACTOR} $m/s$.
 Uma vez que este factor influência de igual forma todos os sentidos pode ser desprezado na análise das funções de activação. 
 Assim quando quando a soma das funções atinge o simétrico deste valor o veículo pára, podendo mesmo recuar quando atinge valores inferiores.
-Para evitar o efeito cumulativo dos sensores, todas as funções possuem um corte a 0.2 que define uma distância mínima para a influência dos sensores.
+
+\indent Para evitar o efeito cumulativo dos sensores, todas as funções possuem um corte a 0.2 que define uma distância mínima para a influência dos sensores.
 O declive de cada função determina o ponto em que atinge o valor -2 e consequentemente a distância a que se tenta manter. 
 
+\cleardoublepage
 \paragraph{Male}
 \begin{figure}[ht]
 	\centering
@@ -459,12 +472,8 @@ Esta função aplica-se apenas caso o macho esteja sexualmente activo e tem dois
 Direcionar o veículo para a fêmea mais próxima. Para tal depende apenas da diferença dos sensores.
 \item
 Permitir ao macho tolerar o som emitido pela fêmea durante o acto da procriação.
-Este feito é obtido através da aplicação de uma velocidade com intensidade suficiente quanto o vehiculo encontra-se simultâneamente a uma pequena distância e orientado para a fêmea.
+Este feito é obtido através da aplicação de uma velocidade com intensidade suficiente quanto o veículo encontra-se simultâneamente a uma pequena distância e orientado para a fêmea.
 \end{enumerate}
-   
-\begin{description}
-	\item[]
-\end{description}
 
 \subsubsection{Limitations}
 \indent \indent Por causa do efeito de \emph{information overloading} já referido anteriormente, torna-se complexo codificar de forma exacta vários instintos. Mais difícil que codificá-los, torna-se complexo fazer o veículo, de forma puramente reactiva, obedecer a todos eles correctamente podendo, tendencialmente, falhar vários instintos por essa mesma tentativa de os satisfazer a todos eles.
