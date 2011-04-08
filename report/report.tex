@@ -51,6 +51,8 @@
 Assim, esta biblioteca está pouco optimizada na medida em que não utiliza todas as potencialidades da linguagem.
 Como tal, foram efectuadas algumas alterações no sentido de promover uma maior modularidade do código e flexibilidade.
 
+\cleardoublepage
+
 \subsection{Constructors with parameters}
 \indent \indent Uma das funcionalidades não utilizadas pelo Breve é a construção de objectos com parâmetros.
 Desta forma, para criar um objecto é necessária uma chamada extra a uma função (\emph{init}).
@@ -170,6 +172,8 @@ Assim, o \emph{output} do sensor é:
 
 onde $\alpha$ é a abertura do sensor ($rad$).
 
+Este é o único sensor a dar valores no intervalo [0 .. $+\infty$].
+
 \cleardoublepage
 \subsection{Proximity}
 \begin{figure}[h]
@@ -183,14 +187,14 @@ onde $\alpha$ é a abertura do sensor ($rad$).
 
 \indent O resultado deste sensor é inversamente proporcional à distância ao objecto mais próximo dentro do seu ângulo de visão.
 O nível de decrescimento desta função é definido por \emph{half-distance} que indica a distância à qual se obtém o valor 0.5.
-Desta forma a saida do sensor é:
+Desta forma a saída do sensor é:
 
 \[
 	I = \frac{1}{\frac{d_{min}}{d}+1},\quad d_{min} = \min\{o_{d},\quad o \in objects \land o_{\alpha} < \alpha\}
 \]
 
 onde $o_{d}$ é a distância do sensor ao objecto; $\alpha$ é o ângulo de visão do sensor e $d$ é a \emph{half-distance}.
-Note-se que a função está deslocada uma unidade de forma a garantir valores no intervalo \[0..1\].
+Note-se que a função está deslocada uma unidade de forma a garantir valores no intervalo [0..1].
 
 \cleardoublepage
 \subsection{Smell}
@@ -346,16 +350,35 @@ Neste caso o resultado final pode não ser o melhor.
 	\caption{Braitenberg Population}
 \end{figure}
 
-% Both
-Instinto protector
+As populações de dadas espécies caracterizam-se por indivíduos com comportamentos distintos dentro da própria sociedade da qual fazem parte.
+Esta experiência permite simular o comportamento de uma espécie fictícia (denominada Valentinum), com o objectivo de distinguir o papel dos indivíduos masculinos e femininos recorrendo apenas a simples reacções, com o objectivo de obter um comportamento emergente elaborado.
 
-% Females
-Instinto Maternal
-Aptidao social
-Comportamento de grupo 
+\subsection{Behaviours}
+\subsubsection{Male}
 
-% Males
-Comportamento individual
-Comportamento sexual
+\indent \indent Os machos da espécie Valentinum exibem um comportamento individual bastante demarcado do comportamento em grupo das fêmeas.
+
+Enquanto jovens mostram-se bastante agressivos perante outros machos, tentando afastar-se das fêmeas.
+
+Após atingirem a maturidade sexual, estes passam a evitar tensão com outros machos, concentrando o seu comportamento na reprodução e protecção da espécie. Usando o seu olfacto procuram parceiras sexuais, às quais se dirigem com maior intensidade consoante a sua proximidade. É atraído essencialmente para grandes grupos de fêmeas, onde a concentração de hormonas femininas é maior.
+
+Após procriação, o macho tende a proteger o ovo até ao seu eclodir; fá-lo para garantir a sobrevivência das suas crias. No entanto, apesar desse instinto protector ser mais acentuado que o das fêmeas, estes não suportam o barulho, emitido (para além das fêmeas) pelos recém-nascidos. Como tal, após a eclosão, estes abandonam as crias, que serão mais tarde protegidas pelas fêmeas até à idade adulta.
+
+\subsubsection{Female}
+
+\indent \indent As fêmeas da espécie Valentinum, ao contrário dos machos Valentinum, exibem comportamentos de grupo que podem ser vistos como parte da sua aptidão social. Estas comunicam através de sons entre si, sendo também atraídas pelo choro de crias, onde manifestam o seu instinto maternal e protector (dada a ausência de machos junto destas).
+
+Assim, as fêmeas agrupam-se por forma a combater eventuais agressões externas e são elas o elo de ligação entre indivíduos Valentinae, podendo até dizer-se que estas criam o conceito de comunidade dentro desta espécie.
+
+% Both:
+% Instinto protector
+
+\subsection{Implementation}
+\subsubsection{Activation functions}
+
+
+\subsubsection{Limitations}
+% Bumping against walls; dumb behaviour
+
 
 \end{document}
