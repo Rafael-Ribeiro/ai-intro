@@ -32,6 +32,7 @@
 \makeatletter
 
 \begin{document}
+\renewcommand{\figurename}{Figure}
 \maketitle
 \cleardoublepage
 
@@ -160,7 +161,13 @@ onde $\alpha$ é a abertura do sensor ($rad$).
 	\caption{Distance: $\alpha=\frac{\pi}{4}$}
 \end{figure}
 
-TODO
+\indent Este sensor permite obter a mínima distância do sensor aos objectos dentro do seu ângulo de visão.
+Assim, o \emph{output} do sensor é:
+\[
+	I = \min\{o_{d},\quad o \in objects \land o_{\alpha} < \alpha\}
+\] 
+
+onde $\alpha$ é a abertura do sensor ($rad$).
 
 \cleardoublepage
 \subsection{Proximity}
@@ -171,7 +178,7 @@ TODO
 		\includegraphics[width=0.6\textwidth]{graphs/sensors/proximity.png}
 	\end{center}
 	\vspace{-20pt}
-	\caption{Proximity: $bias=50$ $\alpha=\frac{\pi}{4}$}
+	\caption{Proximity: \emph{half-distance}$=50$, $\alpha=\frac{\pi}{4}$}
 \end{figure}
 
 TODO
@@ -184,10 +191,18 @@ TODO
 		\includegraphics[width=0.6\textwidth]{graphs/sensors/smell.png}
 	\end{center}
 	\vspace{-20pt}
-	\caption{Smell: $bias=50$}
+	\caption{Smell: \emph{half-distance}$=50$}
 \end{figure}
 
-TODO
+\indent Este sensor indica a intensidade de cheiro captada. Esta intensidade é dada por um somatório das intensidades de todas as fontes de cheiro que privilegia as mais próximas do sensor. O factor de importância corresponde ao inverso do quadrado da distância do sensor a cada uma das fontes.
+Assim, a intensidade deste sensor é:
+\[
+	I = \displaystyle\sum\limits_{s \in smell} \frac{s_{i}}{1 + (\frac{s_{d}}{d})^{2}}
+\] 
+
+onde $s_{i}$ e $s_{d}$ são a intensidade e a distância de cada fonte de cheiro, respectivamente; $d$ é a distância à qual uma fonte de cheiro com intensidade 1 situada em frente ao sensor produz uma saída no sensor de 0.5 (\emph{half-distance}).
+
+Este sensor é omni-direcional, ao contrário de todos os outros sensores; como tal este não possui ângulo de abertura. 
 
 \cleardoublepage
 \subsection{Light}
@@ -197,7 +212,7 @@ TODO
 		\includegraphics[width=0.6\textwidth]{graphs/sensors/light.png}
 	\end{center}
 	\vspace{-20pt}
-	\caption{Light: $bias=50$ $\alpha=\frac{\pi}{2}$}
+	\caption{Light: \emph{half-distance}$=50$, $\alpha=\frac{\pi}{2}$}
 \end{figure}
 
 \indent Este sensor permite obter a intensidade de luz captada. Tal como no sensor de cheiro, a intensidade transmitida
@@ -219,7 +234,7 @@ e $d$ é a distância à qual uma luz com intensidade 1 situada em frente ao sen
 		\includegraphics[width=0.6\textwidth]{graphs/sensors/cardioid.png}
 	\end{center}
 	\vspace{-20pt}
-	\caption{Sound: $bias=50$}
+	\caption{Sound: \emph{half-distance}$=50$}
 \end{figure}
 
 \indent Este sensor indica a intensidade de som captado e pretende simular o
