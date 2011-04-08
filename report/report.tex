@@ -186,10 +186,10 @@ O nível de decrescimento desta função é definido por \emph{half-distance} qu
 Desta forma a saida do sensor é:
 
 \[
-	I = \frac{1}{\frac{d_{min}}{d}+1}, d_{min} = \min\{\}
+	I = \frac{1}{\frac{d_{min}}{d}+1},\quad d_{min} = \min\{o_{d},\quad o \in objects \land o_{\alpha} < \alpha\}
 \]
 
-onde $o_{d}$ é a distância do sensor ao objecto e $d$ é a \emp{half-distance}.
+onde $o_{d}$ é a distância do sensor ao objecto; $\alpha$ é o ângulo de visão do sensor e $d$ é a \emph{half-distance}.
 Note-se que a função está deslocada uma unidade de forma a garantir valores no intervalo \[0..1\].
 
 \cleardoublepage
@@ -305,7 +305,7 @@ Este veículo vive num mundo com dois tipos de objectos: luzes e obstáculos.
 O seu objectivo é explorá-lo, desviando-se dos obstáculos e explorando as luzes, i.e.,
 aproxima-se delas como se estivesse curioso, após o qual perde o interesse seguindo à procura de novas.
 
-Para se observar este comportamento a função de activação em relação aos obstáculos é decrescente até 0.5 (momento em que atinge \emph{HALF\_DISTANCE}).
+Para se observar este comportamento a função de activação em relação aos obstáculos é decrescente até 0.5 (momento em que atinge \emph{half-distance}).
 Após este valor assume-se que o veículo está preso e precisa de voltar para trás (rodar), pelo que se aplica uma intensidade simétrica em cada roda.
 
 Quanto às luzes a função de activação cresce até 0.25 (o veículo vê uma luz e tenta aproximar-se rapidamente) e decresce até 0.5 (abranda para poder observar).
