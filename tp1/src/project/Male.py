@@ -47,7 +47,7 @@ SOUND_CUT		= DISTANCE_CUT
 
 #	Sensor Pair	|	Connection	|	Bias		|	Behaviour				|	Explanation	         		#
 #---------------+---------------+---------------+---------------------------+-------------------------------#
-#	Light		|	Uncrossed	|	Negative	|	Lover of light			| 	Cares for "its" eggs		#
+#	Light		|	Uncrossed	|	Negative	|	Lover towards light			| 	Cares for "its" eggs		#
 #	Proximity	|	Crossed 	|	Negative	|	Explorer of objects		|	                    		#
 #	Smell		|	Crossed		|	Positive	|	Aggressor towards smell	|	Tries to procriate 			#
 #	Sound		|	Uncrossed	|	Positive	|	Coward towards sound	|	Runs away from noisy babies #
