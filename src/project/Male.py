@@ -26,7 +26,7 @@ from lib.Activator import BraitenbergActivator
 MATURITY 		= 60.0
 PROCRIATION 	= 30.0
 LIFESPAN 		= 250.0
-VELOCITY 		= 4.0
+VELOCITY_FACTOR 		= 4.0
 NATURAL			= 2.0
 CURVING_FACTOR	= 25
 
@@ -61,7 +61,7 @@ def leftActivator(vehicle, rightProximitySensor, leftLightSensor, leftSmellSenso
 	smell_sum = rightSmellSensor + leftSmellSensor
 	smell = ((smell_diff * CURVING_FACTOR) + cut(smell_sum, 0, 0.20, cut(abs(smell_diff)/(max(smell_sum,0.0001)/2.0), -sound + 1, 0.05, 0))) * vehicle.sexuality * SMELL_BIAS
 
-	return VELOCITY*(prox + light + smell + sound + NATURAL)
+	return VELOCITY_FACTOR*(prox + light + smell + sound + NATURAL)
 
 def rightActivator(vehicle, leftProximitySensor, rightLightSensor, leftSmellSensor, rightSmellSensor, rightSoundSensor):
 	prox = cut(leftProximitySensor, 0, DISTANCE_CUT, (DISTANCE_CUT - leftProximitySensor) * DISTANCE_BIAS, 0.5, -NATURAL - 1)
@@ -72,7 +72,7 @@ def rightActivator(vehicle, leftProximitySensor, rightLightSensor, leftSmellSens
 	smell_sum = leftSmellSensor + rightSmellSensor
 	smell = ((smell_diff * CURVING_FACTOR) + cut(smell_sum, 0, 0.20, cut(abs(smell_diff)/(max(smell_sum,0.0001)/2.0), -sound + 1, 0.05, 0))) * vehicle.sexuality * SMELL_BIAS
 
-	return VELOCITY*(prox + light + smell + sound + NATURAL)
+	return VELOCITY_FACTOR*(prox + light + smell + sound + NATURAL)
 
 class MaleVehicle(breve.BraitenbergVehicle):
 	def __init__(self):

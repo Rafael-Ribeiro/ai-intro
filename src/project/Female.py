@@ -27,7 +27,7 @@ from lib.Activator import BraitenbergActivator
 MATURITY 		= 50.0
 PROCRIATION 	= 40.0
 LIFESPAN 		= 300.0
-VELOCITY 		= 3.0
+VELOCITY_FACTOR	= 3.0
 NATURAL			= 2.0
 
 HALF_DISTANCE = 3
@@ -53,14 +53,14 @@ def leftActivator(vehicle, rightProximitySensor, leftLightSensor, leftSoundSenso
 	light = cut(leftLightSensor, 0, LIGHT_CUT, (LIGHT_CUT - leftLightSensor) * LIGHT_BIAS)
 	sound = cut(leftSoundSensor, 0, SOUND_CUT, (SOUND_CUT - leftSoundSensor) * SOUND_BIAS)
 
-	return VELOCITY*(prox + light + sound + NATURAL)
+	return VELOCITY_FACTOR*(prox + light + sound + NATURAL)
 
 def rightActivator(vehicle, leftProximitySensor, rightLightSensor, rightSoundSensor, leftSoundSensor):
 	prox = cut(leftProximitySensor, 0, DISTANCE_CUT, (DISTANCE_CUT - leftProximitySensor) * DISTANCE_BIAS, 0.5, -NATURAL - 1)
 	light = cut(rightLightSensor, 0, LIGHT_CUT, (LIGHT_CUT - rightLightSensor) * LIGHT_BIAS)
 	sound = cut(rightSoundSensor, 0, SOUND_CUT, (SOUND_CUT - rightSoundSensor) * SOUND_BIAS)
 
-	return VELOCITY*(prox + light + sound + NATURAL)
+	return VELOCITY_FACTOR*(prox + light + sound + NATURAL)
 
 class FemaleVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
