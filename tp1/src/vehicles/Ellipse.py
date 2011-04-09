@@ -20,10 +20,10 @@ from custom.constants import color, direction as dir
 # http://en.wikipedia.org/wiki/Angular_frequency
 DISTANCE = 20.0
 RADIUS = 13.0
-VELOCITY = 5.0
+NATURAL = 5.0
 AXIS_DIST = 4.0
 
-ANGULAR_FREQUENCY = VELOCITY / RADIUS
+ANGULAR_FREQUENCY = NATURAL / RADIUS
 
 OFFSET = 0.6 #4/math.sqrt(distanceSensor)
 DIFFERENTIAL = ANGULAR_FREQUENCY * AXIS_DIST
@@ -37,7 +37,7 @@ def draw(vehicle):
 	lastLocation = vehicle.getLocation()
 
 def leftActivator(vehicle, distanceSensor,laserSensor):
-	return VELOCITY
+	return NATURAL
 
 def rightActivator(vehicle, distanceSensor,laserSensor):
 	a = cut(laserSensor, OFFSET, 0, 0)
@@ -45,7 +45,7 @@ def rightActivator(vehicle, distanceSensor,laserSensor):
 
 	draw(vehicle)
 
-	return VELOCITY + limit(a + b, 0, DIFFERENTIAL)
+	return NATURAL + limit(a + b, 0, DIFFERENTIAL)
 
 class EllipseVehicle(breve.BraitenbergVehicle):
 	def __init__(self):
