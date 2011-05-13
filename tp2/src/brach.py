@@ -1,7 +1,19 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*- 
 
+try:
+	import	gtk
+	import	gtk.glade
+except:
+	print	"You	need	to	install	pyGTK	or	GTK"
+	sys.exit(1)
+
+GUI_FILENAME = "gui.xml"
+
 ITERATIONS = 1000		# number of iterations
+
+POPULATION_MAX = 500	# size of population, must be pair
+SELECTION_TYPE = "TOURNAMENT" # "ROULETTE"
 
 POINTS_MAX = 500		# max number of points per individual
 ELITISM = 0.1			# percentage
@@ -10,8 +22,6 @@ CROSSOVER_MAX = 0.25	# 1 quarter of the individual is cut
 MUTATION_X = 0.01		# probability
 MUTATION_Y = 0.01		# probability
 
-SELECTION_TYPE = "TOURNAMENT" # "ROULETTE"
-POPULATION_MAX = 500	# size of population, must be pair
 
 class Individual:
 	def new(npoints, A, B):
@@ -60,5 +70,14 @@ class Population:
 	def save(self, fileout):
 		pass
 
+class BrachGUI:
+	def __init__(self):
+		self.builder = gtk.Builder()
+		self.builder.add_from_file(filename)
+	
+		self.builder.connect_signals(self)
+		self.builder.get_object('window_main').show()
+
 if __name__ == '__main__':
-	gtk()
+	app=SimulatorGUI()
+	gtk.main()
