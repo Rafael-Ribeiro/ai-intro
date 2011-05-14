@@ -12,7 +12,7 @@ dx = float(B[0] - A[0])
 dy = float(B[1] - A[1])
 
 POPULATION_MAX = 500			# size of population, must be pair
-SELECTION_TYPE = "TOURNAMENT" 	# "ROULETTE"
+SELECTION_TYPE = "Tournament" 	# "Roulette"
 
 POINTS_INIT = 500				# max number of points per individual
 ELITISM = 0.1					# percentage
