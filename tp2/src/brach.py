@@ -6,12 +6,14 @@ import math
 DEBUG_MODE = True				# console prints
 
 POPULATION_MAX = 500			# size of population, must be pair
-SELECTION_TYPE = "TOURNAMENT" 	# "ROULETTE"
+SELECTION_TYPE = "Tournament" 	# "Roulette"
 
 POINTS_MAX = 500				# max number of points per individual
 ELITISM = 0.1					# percentage
 CROSSOVER = 0.05				# probability
-CROSSOVER_MAX = 0.25			# 1 quarter of the individual is cut
+CROSSOVER_LEN_MAX = 0.25		# 1 quarter of the individual is cut
+
+MUTATION_BURST = 0.50			# probability
 MUTATION_X = 0.01				# probability
 MUTATION_Y = 0.01				# probability
 
