@@ -3,6 +3,7 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="window_main">
+    <property name="border_width">3</property>
     <child>
       <object class="GtkHBox" id="hbox_main">
         <property name="visible">True</property>
@@ -13,11 +14,32 @@
               <placeholder/>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkScrolledWindow" id="graph_evolution">
+                <property name="width_request">500</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="vscrollbar_policy">never</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
           <packing>
             <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkVSeparator" id="vseparator1">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="padding">5</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -28,6 +50,7 @@
                 <property name="visible">True</property>
                 <property name="n_rows">9</property>
                 <property name="n_columns">2</property>
+                <property name="row_spacing">3</property>
                 <child>
                   <object class="GtkLabel" id="label_population_size">
                     <property name="visible">True</property>
@@ -41,10 +64,14 @@
                 </child>
                 <child>
                   <object class="GtkSpinButton" id="input_population_size">
+                    <property name="width_request">200</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="invisible_char">&#x25CF;</property>
                     <property name="adjustment">adjust_population_size</property>
+                    <property name="climb_rate">0.10000000000000001</property>
+                    <property name="numeric">True</property>
+                    <signal name="value_changed" handler="on_input_population_size_value_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -79,6 +106,7 @@
                 </child>
                 <child>
                   <object class="GtkHScale" id="input_elitism">
+                    <property name="width_request">100</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="adjustment">adjust_elitism</property>
@@ -94,11 +122,13 @@
                 </child>
                 <child>
                   <object class="GtkHScale" id="input_crossover">
+                    <property name="width_request">200</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="adjustment">adjust_crossover</property>
                     <property name="digits">3</property>
                     <property name="value_pos">left</property>
+                    <signal name="value_changed" handler="on_input_crossover_value_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -109,10 +139,14 @@
                 </child>
                 <child>
                   <object class="GtkSpinButton" id="input_points_max">
+                    <property name="width_request">200</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="invisible_char">&#x25CF;</property>
                     <property name="adjustment">adjust_points_max</property>
+                    <property name="climb_rate">0.10000000000000001</property>
+                    <property name="numeric">True</property>
+                    <signal name="value_changed" handler="on_input_points_max_value_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -162,6 +196,7 @@
                 </child>
                 <child>
                   <object class="GtkHSeparator" id="hseparator1">
+                    <property name="height_request">10</property>
                     <property name="visible">True</property>
                   </object>
                   <packing>
@@ -171,6 +206,7 @@
                 </child>
                 <child>
                   <object class="GtkHSeparator" id="hseparator2">
+                    <property name="height_request">10</property>
                     <property name="visible">True</property>
                   </object>
                   <packing>
@@ -182,11 +218,13 @@
                 </child>
                 <child>
                   <object class="GtkHScale" id="input_crossover_size">
+                    <property name="width_request">200</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="adjustment">adjust_crossover_size</property>
                     <property name="digits">3</property>
                     <property name="value_pos">left</property>
+                    <signal name="value_changed" handler="on_input_crossover_size_value_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -197,11 +235,13 @@
                 </child>
                 <child>
                   <object class="GtkHScale" id="input_mutation_x">
+                    <property name="width_request">200</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="adjustment">adjust_mutation_x</property>
                     <property name="digits">3</property>
                     <property name="value_pos">left</property>
+                    <signal name="value_changed" handler="on_input_mutation_x_value_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -212,11 +252,13 @@
                 </child>
                 <child>
                   <object class="GtkHScale" id="input_mutation_y">
+                    <property name="width_request">200</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="adjustment">adjust_mutation_y</property>
                     <property name="digits">3</property>
                     <property name="value_pos">left</property>
+                    <signal name="value_changed" handler="on_input_mutation_y_value_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -253,8 +295,10 @@
                 </child>
                 <child>
                   <object class="GtkComboBox" id="input_selection_type">
+                    <property name="width_request">200</property>
                     <property name="visible">True</property>
                     <property name="model">model_selection</property>
+                    <signal name="changed" handler="on_input_selection_type_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -278,17 +322,19 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <signal name="activate" handler="on_button_save_activate"/>
                   </object>
                   <packing>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="button_start-stop">
+                  <object class="GtkButton" id="button_start_stop">
                     <property name="label" translatable="yes">START</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <signal name="activate" handler="on_button_start_stop_activate"/>
                   </object>
                   <packing>
                     <property name="position">1</property>
@@ -303,7 +349,7 @@
             </child>
           </object>
           <packing>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
@@ -319,49 +365,36 @@
     <property name="value">500</property>
     <property name="upper">500</property>
     <property name="step_increment">10</property>
-    <property name="page_increment">100</property>
-    <property name="page_size">100</property>
   </object>
   <object class="GtkAdjustment" id="adjust_elitism">
     <property name="value">10</property>
     <property name="upper">100</property>
     <property name="step_increment">0.5</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">10</property>
   </object>
   <object class="GtkAdjustment" id="adjust_points_max">
     <property name="value">100</property>
     <property name="upper">500</property>
     <property name="step_increment">10</property>
-    <property name="page_increment">50</property>
-    <property name="page_size">10</property>
   </object>
   <object class="GtkAdjustment" id="adjust_crossover">
     <property name="value">5</property>
     <property name="upper">100</property>
     <property name="step_increment">0.5</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">10</property>
   </object>
   <object class="GtkAdjustment" id="adjust_crossover_size">
     <property name="value">25</property>
     <property name="upper">100</property>
     <property name="step_increment">0.5</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">10</property>
   </object>
   <object class="GtkAdjustment" id="adjust_mutation_x">
     <property name="value">0.5</property>
     <property name="upper">100</property>
     <property name="step_increment">0.10000000000000001</property>
     <property name="page_increment">5</property>
-    <property name="page_size">5</property>
   </object>
   <object class="GtkAdjustment" id="adjust_mutation_y">
     <property name="value">0.5</property>
     <property name="upper">100</property>
     <property name="step_increment">0.10000000000000001</property>
-    <property name="page_increment">5</property>
-    <property name="page_size">5</property>
   </object>
 </interface>
