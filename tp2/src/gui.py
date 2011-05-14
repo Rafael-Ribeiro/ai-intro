@@ -60,32 +60,32 @@ class BrachGUI:
 	def on_adjust_Ax_value_changed(self, widget, data=None):
 		brach.A[0] = widget.get_value()
 
-		if branch.A[0] >= branch.B[0]:
-			widget.set_value(branch.A[0]-0.1)
+		if brach.A[0] >= brach.B[0]:
+			widget.set_value(brach.A[0]-0.1)
 
 		return True
 
 	def on_adjust_Ay_value_changed(self, widget, data=None):
 		brach.A[1] = widget.get_value()
 
-		if branch.A[1] < branch.B[1]:
-			widget.set_value(branch.A[1] + 0.1)
+		if brach.A[1] < brach.B[1]:
+			widget.set_value(brach.A[1] + 0.1)
 
 		return True
 
 	def on_adjust_Bx_value_changed(self, widget, data=None):
 		brach.B[0] = widget.get_value()
 
-		if branch.B[0] <= branch.A[0]:
-			widget.set_value(branch.B[0] + 0.1)
+		if brach.B[0] <= brach.A[0]:
+			widget.set_value(brach.B[0] + 0.1)
 
 		return True
 
 	def on_adjust_By_value_changed(self, widget, data=None):
 		brach.A[1] = widget.get_value()
 
-		if branch.B[1] > branch.A[1]:
-			widget.set_value(branch.B[1] - 0.1)
+		if brach.B[1] > brach.A[1]:
+			widget.set_value(brach.B[1] - 0.1)
 
 		return True
 
