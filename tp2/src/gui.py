@@ -3,6 +3,7 @@
 
 import brach
 import sys
+from threading import Thread
 
 # program constants
 GUI_FILENAME = "gui.xml"
@@ -125,6 +126,8 @@ class BrachGUI:
 		return True
 
 	def on_button_save_clicked(self, widget, data=None):
+		# TODO: http://www.pygtk.org/pygtk2tutorial/sec-FileChoosers.html
+		# chooser.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
 		return True
 
 	def on_button_start_stop_clicked(self, widget, data=None):
@@ -150,6 +153,11 @@ class BrachGUI:
 			self.builder.get_object("input_mutation_burst").set_sensitive(False)
 			
 			self.builder.get_object("button_save").set_sensitive(False)
+
+			self.population = brach.Population.new(brach.POPULATION_MAX)
+
+			self.thread = Thread(target=self.evolve)
+			self.thread.start()
 
 		else:
 			widget.set_label("START")
@@ -177,6 +185,12 @@ class BrachGUI:
 	def on_window_main_destroy(self, widget, data=None):
 		sys.exit(0)
 
+	def evolve():
+		while self.running:
+			self.population.evolve()
+			
+			# TODO: update GUI
+	
 if __name__ == '__main__':
 	gtk.gdk.threads_init()
 
