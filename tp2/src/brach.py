@@ -29,8 +29,9 @@ MUTATION_Y = 0.01				# probability
 G_ACC = 9.80655
 
 class Individual:
+	@staticmethod
 	def new(nPoints):
-		return Individual([[dx/nPoints, (random.random() - 0.5) * 2 * dy + B[1]] for i in xrange(nPoints)])
+		return Individual([[dx/nPoints, (random.random() - 0.5) * 2 * dy + B[1]] for i in xrange(nPoints - 1)])
 
 	# List of n points (2 sized arrays: [dx, abs y])
 	def __init__(self, points):
@@ -94,16 +95,33 @@ class Individual:
 		
 		return time
 
-	def _findXCoord(self, x):
-		pass
+	def _findXCoord(self, x): # returns a tuple (index, split_needed)
+		x_acc = 0.0
+
+		for i in xrange(len(self.points)):
+			x_acc += self.points[i][0]
+
+			if x_acc > x:
+				return i, x_acc == x
+
+		return len(self.points) - 1, False
 
 	def _splitXCoord(self, x):
-		pass
+		xIndex, split_needed = self._findXCoord(x)
 
-	def crossoverSegment(self, x, crossoverLen):
+		if not split_needed:
+			return xIndex
+
+		# TODO
+
+	def crossoverSegment(self, xInit, xEnd):
 		pass # return a (i,j) tuple
+
+	def crossover(self, other, xInit, xEnd):
+		pass
 	
 class Population:
+	@staticmethod
 	def new(nIndividuals):
 		individuals = [Individual.new(POINTS_INIT, A, B) for i in xrange(nIndividuals)]
 
@@ -118,18 +136,20 @@ class Population:
 		# reproduce (with cross-over)
 		random.shuffle(self.individuals)
 		for i in xrange(len(self.individuals)/2):
-			individual1 = self.individuals[i*2]
-			individual2 = self.individuals[(i*2)+1]
+			individual1 = copy.deepcopy(self.individuals[i*2])
+			individual2 = copy.deepcopy(self.individuals[(i*2)+1])
 
 			prob = random.random()
-			if prob <= CROSSOVER: # crossover
+			if prob <= CROSSOVER: # crossover both individuals (else: clone them)
 				crossoverMaxLen = random.random() * CROSSOVER_LEN_MAX * dx
 
 				startingCrossoverPoint = random.random() * (dx - crossoverMaxLen)
-				
-			else: # individuals cloned
-				individuals.push(copy.deepcopy(individual1))
-				individuals.push(copy.deepcopy(individual2))
+				endingCrossoverPoint = startingCrossoverPoint + crossoverMaxLen
+
+				indivual1.crossover(individual2, startingCrossoverPoint, endingCrossoverPoint)
+
+			individuals.push(individual1)
+			individuals.push(individual2)
 
 		if len(self.individuals) % 2 != 0: # forever alone: survives without change
 			individuals.push(copy.deepcopy(self.individuals[-1]))
