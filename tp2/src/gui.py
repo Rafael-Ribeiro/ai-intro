@@ -185,11 +185,13 @@ class BrachGUI:
 	def on_window_main_destroy(self, widget, data=None):
 		sys.exit(0)
 
-	def evolve():
+	def evolve(self):
+		i = 0
 		while self.running:
 			self.population.evolve()
-			
-			# TODO: update GUI
+	
+			print "Iteration", i, self.population.getStatistics()
+			i += 1
 	
 if __name__ == '__main__':
 	gtk.gdk.threads_init()
