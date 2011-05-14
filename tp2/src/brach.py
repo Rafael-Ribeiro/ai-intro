@@ -95,7 +95,7 @@ class Individual:
 		
 		return time
 
-	def _findXCoord(self, x): # returns a tuple (index, split_needed)
+	def _findXCoord(self, x): # returns a tuple (index, splitNeeded)
 		x_acc = 0.0
 
 		for i in xrange(len(self.points)):
@@ -107,9 +107,9 @@ class Individual:
 		return len(self.points) - 1, False
 
 	def _splitXCoord(self, x):
-		xIndex, split_needed = self._findXCoord(x)
+		xIndex, splitNeeded = self._findXCoord(x)
 
-		if not split_needed:
+		if not splitNeeded:
 			return xIndex
 
 		# TODO
@@ -123,7 +123,7 @@ class Individual:
 class Population:
 	@staticmethod
 	def new(nIndividuals):
-		individuals = [Individual.new(POINTS_INIT, A, B) for i in xrange(nIndividuals)]
+		individuals = [Individual.new(POINTS_INIT) for i in xrange(nIndividuals)]
 
 		return Population(individuals)
 
