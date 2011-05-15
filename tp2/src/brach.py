@@ -24,7 +24,8 @@ CROSSOVER = 0.05				# probability
 CROSSOVER_LEN_MAX = 0.25		# 1 quarter of the individual is cut
 
 MUTATION_BURST = 0.50			# probability
-MUTATION = 0.1					# probability
+MUTATION = 0.1					# percentage
+MUTATION_PROB = 0.01			# probability
 MUTATION_Y = 0.2				# percentage of Y mutation
 
 # physical constants
@@ -138,7 +139,7 @@ class Individual:
 
 	def mutate(self):
 		# dont mutate first and last
-		k = int(MUTATION * (len(self.points) - 2))
+		k = random.randint(1,max(1,int(MUTATION * (len(self.points) - 2))))
 
 		mutations = random.sample(range(1, len(self.points)-1), k)
 
@@ -187,7 +188,8 @@ class Population:
 
 		# mutate childs
 		for individual in individuals:
-			individual.mutate()
+			if random.random() <= MUTATION_PROB:
+				individual.mutate()
 
 		# join parents and childs
 		individuals += self.individuals
