@@ -182,12 +182,14 @@ class Population:
 
 		# join parents and childs
 		individuals += self.individuals
+		individuals.sort(key = Individual.fitness)
 
 		# elitism selection
+
 		# tournament/roulette selection
 
 		self.individuals = individuals[:POPULATION_MAX] # TODO: its here just while there is no selection
-		self.individuals.sort(key = Individual.fitness)
+		
 
 	def getBest(self):
 		return self.individuals[0]
