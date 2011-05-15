@@ -17,14 +17,14 @@ DY_MIN = DX_MIN
 POPULATION_MAX = 500			# size of population, must be pair
 SELECTION_TYPE = "Tournament" 	# "Roulette"
 
-POINTS_INIT = 100				# max number of points per individual
+POINTS_INIT = 30				# max number of points per individual
 ELITISM = 0.1					# percentage
 
 CROSSOVER = 0.05				# probability
 CROSSOVER_LEN_MAX = 0.25		# 1 quarter of the individual is cut
 
 MUTATION_BURST = 0.50			# probability
-MUTATION = 0.05					# probability
+MUTATION = 0.1					# probability
 MUTATION_Y = 0.2				# percentage of Y mutation
 
 # physical constants
