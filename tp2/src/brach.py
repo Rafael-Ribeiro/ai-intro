@@ -80,6 +80,7 @@ class Individual:
 		if self.fitness_val:
 			return self.fitness_val
 
+		x_i = A[0]
 		y_i = maxHeight = A[1]
 		v_i = time = 0.0
 		
@@ -94,7 +95,7 @@ class Individual:
 			
 			#Calculate acceleration based on segment slope. Open question - would be using cos() faster?
 			#Since the angle had to be calculated beforehand, I don't think so
-			dx = self.points[i][0]
+			dx = self.points[i][0] - x_i
 			dy = self.points[i][1] - y_i
 			li = math.sqrt(dx*dx + dy*dy)
 			ai = -G_ACC*dy/float(li)
@@ -131,23 +132,20 @@ class Individual:
 		return time
 
 	def getPlotData(self):
-		x = [A[0]]
-		y = [A[1]]
+		x = [i[0] for i in self.points]
+		y = [i[1] for i in self.points]
 
-		for i in self.points:
-			x.append(x[-1]+i[0])
-			y.append(i[1])
 		return x, y
 
 	def mutate(self):
-		mutations = random.sample(range(len(self.points)-1), int(MUTATION * len(self.points) - 1))
+		# dont mutate first and last
+		mutations = random.sample(range(len(self.points)-2)+1, int(MUTATION * len(self.points) - 1))
+
 		for mutIndex in mutations:
-			dx = self.points[mutIndex][0] + self.points[mutIndex + 1][0]
-			randX = random.random() * (dx - 2 * DX_MIN) + DX_MIN
-			self.points[mutIndex][0] = randX
-			self.points[mutIndex+1][0] = dx - randX
+			self.points[mutIndex][0] = self.points[mutIndex-1][0] + random.random()*(self.points[mutIndex+1][0]-self.points[mutIndex-1][0])
+			
 			self.points[mutIndex][1] += (random.random() - 0.5) * 2 * MUTATION_Y * DY
-			self.points[mutIndex][1] = min(self.points[mutIndex][1],A[1] - DY_MIN)
+			self.points[mutIndex][1] = min(self.points[mutIndex][1], A[1] - DY_MIN)
 
 		self.fitness_val = None
 
