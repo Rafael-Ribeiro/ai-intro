@@ -1,9 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import signal, os
+
 import brach
 import sys
 from threading import Thread
+
+import matplotlib.pyplot as plot
+from matplotlib.backends.backend_gtk import FigureCanvasGTK
 
 # program constants
 GUI_FILENAME = "gui.xml"
@@ -17,6 +22,11 @@ except:
 
 class BrachGUI:
 	def __init__(self):
+		self.thread = None
+		self.canvasBest = None
+		self.canvasHist = None
+		self.lastBest = None
+
 		self.builder = gtk.Builder()
 		self.builder.add_from_file(GUI_FILENAME)
 
@@ -113,7 +123,7 @@ class BrachGUI:
 		brach.CROSSOVER_LEN_MAX = widget.get_value()/100
 		return True
 
-	def on_input_mutation_x_value_changed(self, widget, data=None):
+	def on_input_mutation_value_changed(self, widget, data=None):
 		brach.MUTATION_X = widget.get_value()/100
 		return True
 
@@ -179,6 +189,7 @@ class BrachGUI:
 			self.builder.get_object("input_mutation_burst").set_sensitive(True)
 
 			self.builder.get_object("button_save").set_sensitive(True)
+			self.lastBest = None
 
 		return True
 
@@ -191,10 +202,41 @@ class BrachGUI:
 			self.population.evolve()
 	
 			print "Iteration", i, self.population.getStatistics()
+
+			if self.lastBest == None or self.population.getBest().fitness() != self.lastBest.fitness():
+				self.lastBest = self.population.getBest()
+				points = self.lastBest.getPlotData()
+			
+				figureBest = plot.Figure(figsize=(400,400), dpi=72)
+				graphBest = figureBest.add_subplot(111)
+				graphBest.axis([0, brach.B[0], 0, brach.A[1]])
+				graphBest.fill_between(points[0], points[1], color = 'r')
+
+				vbox = self.builder.get_object("vbox_graphs")  
+
+				if self.canvasBest != None:
+					vbox.remove(self.canvasBest)
+			
+				self.canvasBest = FigureCanvasGTK(figureBest) 
+				self.canvasBest.show()
+				 
+				vbox.pack_start(self.canvasBest, True, True)
+
+			if self.canvasHist != None:
+				vbox.remove(self.canvasHist)
+
 			i += 1
-	
+
 if __name__ == '__main__':
 	gtk.gdk.threads_init()
 
 	app = BrachGUI()
-	gtk.main()
+
+	try:
+		gtk.main()
+
+	except KeyboardInterrupt:
+		app.running = False
+		if app.thread != None:
+			app.thread.join()
+		sys.exit(0)
