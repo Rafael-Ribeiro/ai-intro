@@ -12,6 +12,7 @@ DX = float(B[0] - A[0])
 DY = float(B[1] - A[1])
 
 DX_MIN = 0.0001
+DY_MIN = DX_MIN
 
 POPULATION_MAX = 500			# size of population, must be pair
 SELECTION_TYPE = "Tournament" 	# "Roulette"
@@ -136,11 +137,14 @@ class Individual:
 		mutations = random.sample(range(len(self.points)-1), int(MUTATION * len(self.points) - 1))
 		for mutIndex in mutations:
 			dx = self.points[mutIndex][0] + self.points[mutIndex + 1][0]
-			randX = (random.random() - 2 * DX_MIN) * dx + DX_MIN
+			randX = random.random() * (dx - 2 * DX_MIN) + DX_MIN
 			self.points[mutIndex][0] = randX
 			self.points[mutIndex+1][0] = dx - randX
-			self.points[mutIndex][1] *= (random.random() - 0.5) * MUTATION_Y
-			self.points[mutIndex][1] = min(self.points[mutIndex][1],A[1])
+			self.points[mutIndex][1] += (random.random() - 0.5) * 2 * MUTATION_Y * DY
+			self.points[mutIndex][1] = min(self.points[mutIndex][1],A[1] - DY_MIN)
+
+			if self.points[mutIndex][1] == self.points[mutIndex+1][1]:
+				self.points[mutIndex][1] -= DY_MIN
 
 		self.fitness_val = None
 

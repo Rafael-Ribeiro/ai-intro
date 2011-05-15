@@ -34,7 +34,7 @@ class BrachGUI:
 		self.builder.get_object("input_Ax").set_value(brach.A[0])
 		self.builder.get_object("input_Ay").set_value(brach.A[1])
 		self.builder.get_object("input_Bx").set_value(brach.B[0])
-		self.builder.get_object("input_By").set_value(brach.A[1])
+		self.builder.get_object("input_By").set_value(brach.B[1])
 
 		self.builder.get_object("input_population_size").set_value(brach.POPULATION_MAX)
 		self.builder.get_object("input_elitism").set_value(brach.ELITISM*100)
@@ -212,17 +212,17 @@ class BrachGUI:
 			
 				figureBest = plot.Figure(figsize=(400,400), dpi=72)
 				graphBest = figureBest.add_subplot(111)
-				graphBest.axis([0, brach.B[0], 0, brach.A[1]])
 				graphBest.fill_between(points[0], points[1], color = 'r')
-
+				graphBest.axis([0, brach.B[0], 0, brach.A[1]])
+				
 				vbox = self.builder.get_object("vbox_graphs")  
 
 				if self.canvasBest != None:
 					vbox.remove(self.canvasBest)
 			
-				self.canvasBest = FigureCanvasGTK(figureBest) 
+				self.canvasBest = FigureCanvasGTK(figureBest)
 				self.canvasBest.show()
-				 
+
 				vbox.pack_start(self.canvasBest, True, True)
 
 			if self.canvasHist != None:
