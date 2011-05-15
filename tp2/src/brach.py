@@ -104,14 +104,14 @@ class Individual:
 			#If speed is less than 0, forget about it. This actually never happens thanks to our checks.
 			#But you never know what magic lies in wait...
 
-			if v_j < 0.0:
+			if v_j <= 0.0:
 				sys.exit(-1)
 				return -1
 
 			dv = v_j - v_i
 			
 			#The speed variation over the acceleration gives us the time. Voila
-			time += dv/ai if ai != 0 else v_j*li
+			time += dv/ai if ai != 0 else li/v_j
 
 			#Debugging, ignore
 			if DEBUG_MODE:
@@ -138,7 +138,7 @@ class Individual:
 
 	def mutate(self):
 		# dont mutate first and last
-		k = int(MUTATION * (len(self.points) - 2))
+		k = random.randint(1,max(1,int(MUTATION * (len(self.points) - 2))))
 
 		mutations = random.sample(range(1, len(self.points)-1), k)
 
