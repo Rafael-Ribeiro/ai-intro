@@ -36,7 +36,7 @@ class Individual:
 		# return Individual([[DX/(nPoints-1)*i, (random.random() - 0.5) * 2 * DY + B[1]] for i in xrange(nPoints - 2)] + [[DX/(nPoints-1), B[1]]])
 		return Individual([A] + [[A[0] + DX*i/(nPoints-1), (random.random() - 0.5) * 2 * DY + B[1]] for i in xrange(1,nPoints-1)] + [B])
 
-	# List of n points (2 sized arrays: [dx, abs y])
+	# List of n points (2 sized arrays: [abs x, abs y])
 	def __init__(self, points):
 		self.points = points
 		print len(self.points)
