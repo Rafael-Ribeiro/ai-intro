@@ -221,6 +221,3 @@ class Population:
 
 		dev_fitness = math.sqrt(sqr_sum/POPULATION_MAX)
 		return max_fitness, avg_fitness, min_fitness, dev_fitness
-
-	def save(self, fileout):
-		pass
