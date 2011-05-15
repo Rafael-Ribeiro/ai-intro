@@ -39,18 +39,32 @@ class Individual:
 		self.points = points
 		self.fitness_val = None
 
-	def mutate(self):
-		# TODO Bursts
-		mutations = random.sample(range(len(self.points)-1), int(MUTATIONS * len(self.points) - 1))
-		for mutIndex in mutations:
-			dx = self.points[mutIndex][0] + self.points[mutIndex + 1][0]
-			randX = (random.random() - 2 * DX_MIN) * dx + DX_MIN
-			self.points[mutIndex][0] = randX
-			self.points[mutIndex+1][0] = dx - randX
-			self.points[mutIndex][1] *= (random.random() - 0.5) * MUTATION_Y
-			self.points[mutIndex][1] = min(self.points[mutIndex][1],A[1])
+	def _findXCoord(self, x): # returns a tuple (index, splitNeeded)
+		x_acc = 0.0
 
+		for i in xrange(len(self.points)):
+			x_acc += self.points[i][0]
+
+			if x_acc > x:
+				return i, x_acc == x
+
+		return len(self.points) - 1, False
+
+	def _splitXCoord(self, x):
+		xIndex, splitNeeded = self._findXCoord(x)
+
+		if not splitNeeded:
+			return xIndex
+
+		# TODO
+
+	def crossover(self, other, xInit, xEnd):
 		self.fitness_val = None
+		other.fitness_val = None
+		pass
+	
+	def crossoverSegment(self, xInit, xEnd):
+		pass # return a (i,j) tuple
 
 	def fitness(self):
 		if self.fitness_val:
@@ -106,33 +120,6 @@ class Individual:
 		self.fitness_val = time
 		return time
 
-	def _findXCoord(self, x): # returns a tuple (index, splitNeeded)
-		x_acc = 0.0
-
-		for i in xrange(len(self.points)):
-			x_acc += self.points[i][0]
-
-			if x_acc > x:
-				return i, x_acc == x
-
-		return len(self.points) - 1, False
-
-	def _splitXCoord(self, x):
-		xIndex, splitNeeded = self._findXCoord(x)
-
-		if not splitNeeded:
-			return xIndex
-
-		# TODO
-
-	def crossoverSegment(self, xInit, xEnd):
-		pass # return a (i,j) tuple
-
-	def crossover(self, other, xInit, xEnd):
-		self.fitness_val = None
-		other.fitness_val = None
-		pass
-	
 	def getPlotData(self):
 		x = [A[0]]
 		y = [A[1]]
@@ -141,6 +128,19 @@ class Individual:
 			x.append(x[-1]+i[0])
 			y.append(i[1])
 		return x, y
+
+	def mutate(self):
+		# TODO Bursts
+		mutations = random.sample(range(len(self.points)-1), int(MUTATION * len(self.points) - 1))
+		for mutIndex in mutations:
+			dx = self.points[mutIndex][0] + self.points[mutIndex + 1][0]
+			randX = (random.random() - 2 * DX_MIN) * dx + DX_MIN
+			self.points[mutIndex][0] = randX
+			self.points[mutIndex+1][0] = dx - randX
+			self.points[mutIndex][1] *= (random.random() - 0.5) * MUTATION_Y
+			self.points[mutIndex][1] = min(self.points[mutIndex][1],A[1])
+
+		self.fitness_val = None
 
 class Population:
 	@staticmethod
