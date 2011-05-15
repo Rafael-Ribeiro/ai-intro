@@ -33,13 +33,7 @@ G_ACC = 9.80655
 class Individual:
 	@staticmethod
 	def new(nPoints):
-		intervals = [[DX/(nPoints-1), 0.0] for i in xrange(nPoints - 2)] + [[DX/(nPoints-1), B[1]]]
-
-		intervals[0][1] = min(A[1] + (random.random() - 0.5) * 2 * DY/nPoints,A[1] - DY_MIN)
-		for i in xrange(1,nPoints - 1):
-			intervals[i][1] = min(intervals[i-1][1] + (random.random() - 0.5) * 2 * DY/nPoints,A[1] - DY_MIN)
-
-		return Individual(intervals)
+		return Individual([[DX/(nPoints-1), (random.random() - 0.5) * 2 * DY + B[1]] for i in xrange(nPoints - 2)] + [[DX/(nPoints-1), B[1]]])
 
 	# List of n points (2 sized arrays: [dx, abs y])
 	def __init__(self, points):
