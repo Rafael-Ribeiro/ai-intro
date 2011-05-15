@@ -140,9 +140,6 @@ class Individual:
 			self.points[mutIndex][1] += (random.random() - 0.5) * 2 * MUTATION_Y * DY
 			self.points[mutIndex][1] = min(self.points[mutIndex][1],A[1] - DY_MIN)
 
-			if self.points[mutIndex][1] == self.points[mutIndex+1][1]:
-				self.points[mutIndex][1] -= DY_MIN
-
 		self.fitness_val = None
 
 class Population:
@@ -188,10 +185,14 @@ class Population:
 		individuals.sort(key = Individual.fitness)
 
 		# elitism selection
+		cutoff = int(ELITISM * len(individuals))
+
+		self.individuals = individuals[:cutoff]
+		individuals = individuals[cutoff:]
 
 		# tournament/roulette selection
 
-		self.individuals = individuals[:POPULATION_MAX] # TODO: its here just while there is no selection
+		self.individuals += individuals[len(self.individuals):POPULATION_MAX] # TODO: its here just while there is no selection
 		
 	def getBest(self):
 		return self.individuals[0]
