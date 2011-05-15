@@ -46,26 +46,35 @@ class Individual:
 		for i in xrange(len(self.points)):
 			x_acc += self.points[i][0]
 
-			if x_acc > x:
-				return i, x_acc == x
+			if x_acc >= x:
+				return i, x_acc - x, x_acc == x
 
-		return len(self.points) - 1, False
+		return len(self.points) - 1, x_acc - x, False
 
 	def _splitXCoord(self, x):
-		xIndex, splitNeeded = self._findXCoord(x)
+		xIndex, dx, splitNeeded = self._findXCoord(x)
 
 		if not splitNeeded:
 			return xIndex
 
-		# TODO
+		self.points.insert(xIndex,[self.points[xIndex][0] - dx, self.points[xIndex][1]])
+		self.points[xIndex + 1][0] = dx
+
+		return xIndex
 
 	def crossover(self, other, xInit, xEnd):
+		xi1, xj1 = self.crossoverSegment(xInit, xEnd)
+		xi2, xj2 = other.crossoverSegment(xInit, xEnd)
+
+		tempPoints = self.points[:xi1] + other.points[xi2:xj2] + self.points[xj1:]
+		other.points = other.points[:xi2] + self.points[xi1:xj1] + other.points[xj2:]
+		self.points = tempPoints
+
 		self.fitness_val = None
 		other.fitness_val = None
-		pass
 	
 	def crossoverSegment(self, xInit, xEnd):
-		pass # return a (i,j) tuple
+		return self._splitXCoord(xInit), self._splitXCoord(xEnd)
 
 	def fitness(self):
 		if self.fitness_val:
