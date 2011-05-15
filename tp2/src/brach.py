@@ -39,7 +39,6 @@ class Individual:
 	# List of n points (2 sized arrays: [abs x, abs y])
 	def __init__(self, points):
 		self.points = points
-		print len(self.points)
 		self.fitness_val = None
 
 	def _findXCoord(self, x): # returns a tuple (index, splitNeeded)
