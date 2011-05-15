@@ -9,7 +9,6 @@ from threading import Thread
 
 from datetime import datetime, timedelta
 
-import matplotlib.pyplot as plot
 from matplotlib.backends.backend_gtk import Figure, FigureCanvasGTK
 
 # program constants
@@ -152,10 +151,7 @@ class BrachGUI:
 		return True
 
 	def on_button_save_clicked(self, widget, data=None):
-		# TODO: http://www.pygtk.org/pygtk2tutorial/sec-FileChoosers.html
-		# chooser.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
-
-		dialog = gtk.FileChooserDialog("Choose a folder..",
+		dialog = gtk.FileChooserDialog("Choose a folder...",
 			None,
 			gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
 			(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)
@@ -175,7 +171,7 @@ class BrachGUI:
 			f.write(str(points)+"\n")
 			f.close()
 
-			figureBest = plot.Figure(figsize=(400,400), dpi=72)
+			figureBest = Figure(figsize=(400,400), dpi=72)
 			graphBest = figureBest.add_subplot(111)
 			graphBest.plot(points[0], points[1], 'r-*')
 			graphBest.axis([0, brach.B[0], 0, brach.A[1]])
@@ -263,10 +259,9 @@ class BrachGUI:
 			self.stddev_list.append(stats[3])
 			self.iteration_list.append(i)
 
-			if datetime.now() > self.lastUpdate + timedelta(seconds=1):
+			if datetime.now() > self.lastUpdate + timedelta(seconds=5):
 				self.lastUpdate = datetime.now()
 
-				# best solution
 				points = self.population.getBest().getPlotData()
 
 				self.fig_best.clf()
@@ -278,6 +273,7 @@ class BrachGUI:
 
 				graph_hist = self.fig_hist.add_subplot(111)
 				graph_hist.plot(self.iteration_list[-100:], self.best_list[-100:], 'b', self.iteration_list[-100:], self.avg_list[-100:], 'g', self.iteration_list[-100:], self.worst_list[-100:], 'r')
+				graph_hist.axis([max(0, self.iteration_list[-1]-100), self.iteration_list[-1], 0, 4.0])
 
 				self.fig_best.canvas.draw()
 				self.fig_hist.canvas.draw()
