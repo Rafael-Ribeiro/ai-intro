@@ -230,35 +230,37 @@ class BrachGUI:
 
 			if datetime.now() > self.lastUpdate + timedelta(seconds=2):
 				self.lastUpdate = datetime.now()
-				vbox = self.builder.get_object("vbox_graphs")
-
+				hbox_best = self.builder.get_object("hbox_graph_best")
 				# best solution
 				points = self.population.getBest().getPlotData()
 			
 				figureBest = plot.Figure(figsize=(400,400), dpi=72)
 				graphBest = figureBest.add_subplot(111)
-				graphBest.fill_between(points[0], points[1], color = 'r')
+				#graphBest.fill_between(points[0], points[1], color = 'r', hatch='*')
+				graphBest.plot(points[0], points[1], 'r-*')
 				graphBest.axis([0, brach.B[0], 0, brach.A[1]])
 				
 				if self.canvasBest != None:
-					vbox.remove(self.canvasBest)
+					hbox_best.remove(self.canvasBest)
 			
 				self.canvasBest = FigureCanvasGTK(figureBest)
 				self.canvasBest.show()
-				vbox.pack_start(self.canvasBest)
+				hbox_best.pack_start(self.canvasBest)
 
 				# histogram
+				hbox_hist = self.builder.get_object("hbox_graph_hist")
+
 				figureHist = plot.Figure(figsize=(400,200), dpi=72)
 				graphHist = figureHist.add_subplot(111)
 				graphHist.plot(self.iteration_list, self.best_list, 'b', self.iteration_list, self.avg_list, 'g', self.iteration_list, self.worst_list, 'r')
 				#graphBest.axis([0, brach.B[0], 0, brach.A[1]])
 
 				if self.canvasHist != None:
-					vbox.remove(self.canvasHist)
+					hbox_hist.remove(self.canvasHist)
 
 				self.canvasHist = FigureCanvasGTK(figureHist)
 				self.canvasHist.show()
-				vbox.pack_end(self.canvasHist)
+				hbox_hist.pack_end(self.canvasHist)
 
 			i += 1
 
