@@ -39,7 +39,6 @@ class Individual:
 	# List of n points (2 sized arrays: [dx, abs y])
 	def __init__(self, points):
 		self.points = points
-		print len(self.points)
 		self.fitness_val = None
 
 	def _findXCoord(self, x): # returns a tuple (index, splitNeeded)
@@ -139,7 +138,9 @@ class Individual:
 
 	def mutate(self):
 		# dont mutate first and last
-		mutations = random.sample(range(1, len(self.points)-1), int(MUTATION * len(self.points) - 2))
+		k = int(MUTATION * (len(self.points) - 2))
+
+		mutations = random.sample(range(1, len(self.points)-1), k)
 
 		for mutIndex in mutations:
 			window = self.points[mutIndex+1][0] - self.points[mutIndex-1][0] - 2*DX_MIN

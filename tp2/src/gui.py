@@ -30,12 +30,6 @@ class BrachGUI:
 		self.canvasHist = None
 		self.lastBest = None
 
-		self.best_list = []
-		self.avg_list = []
-		self.worst_list = []
-		self.stddev_list = []
-		self.iteration_list = []
-
 		self.builder = gtk.Builder()
 		self.builder.add_from_file(GUI_FILENAME)
 
@@ -155,6 +149,12 @@ class BrachGUI:
 		if self.running:
 			widget.set_label("STOP")
 			
+			self.best_list = []
+			self.avg_list = []
+			self.worst_list = []
+			self.stddev_list = []
+			self.iteration_list = []
+
 			self.builder.get_object("input_Ax").set_sensitive(False)
 			self.builder.get_object("input_Ay").set_sensitive(False)
 			self.builder.get_object("input_Bx").set_sensitive(False)
@@ -222,12 +222,6 @@ class BrachGUI:
 			self.stddev_list.append(stats[3])
 			self.iteration_list.append(i)
 
-			self.best_list = self.best_list[-100:]
-			self.avg_list = self.avg_list[-100:]
-			self.worst_list = self.worst_list[-100:]
-			self.stddev_list = self.stddev_list[-100:]
-			self.iteration_list = self.iteration_list[-100:]
-
 			if datetime.now() > self.lastUpdate + timedelta(seconds=2):
 				self.lastUpdate = datetime.now()
 				hbox_best = self.builder.get_object("hbox_graph_best")
@@ -252,7 +246,7 @@ class BrachGUI:
 
 				figureHist = plot.Figure(figsize=(400,200), dpi=72)
 				graphHist = figureHist.add_subplot(111)
-				graphHist.plot(self.iteration_list, self.best_list, 'b', self.iteration_list, self.avg_list, 'g', self.iteration_list, self.worst_list, 'r')
+				graphHist.plot(self.iteration_list[-100:], self.best_list[-100:], 'b', self.iteration_list[-100:], self.avg_list[-100:], 'g', self.iteration_list[-100:], self.worst_list[-100:], 'r')
 				#graphBest.axis([0, brach.B[0], 0, brach.A[1]])
 
 				if self.canvasHist != None:
