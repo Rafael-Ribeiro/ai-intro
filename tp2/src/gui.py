@@ -7,6 +7,8 @@ import brach
 import sys
 from threading import Thread
 
+from datetime import datetime, timedelta
+
 import matplotlib.pyplot as plot
 from matplotlib.backends.backend_gtk import FigureCanvasGTK
 
@@ -22,10 +24,17 @@ except:
 
 class BrachGUI:
 	def __init__(self):
+		self.lastUpdate = datetime.now()
 		self.thread = None
 		self.canvasBest = None
 		self.canvasHist = None
 		self.lastBest = None
+
+		self.best_list = []
+		self.avg_list = []
+		self.worst_list = []
+		self.stddev_list = []
+		self.iteration_list = []
 
 		self.builder = gtk.Builder()
 		self.builder.add_from_file(GUI_FILENAME)
@@ -204,29 +213,52 @@ class BrachGUI:
 		while self.running:
 			self.population.evolve()
 	
-			print "Iteration", i, self.population.getStatistics()
+			stats = self.population.getStatistics()
+			print "Iteration", i, stats
 
-			if self.lastBest == None or self.population.getBest().fitness() != self.lastBest.fitness():
-				self.lastBest = self.population.getBest()
-				points = self.lastBest.getPlotData()
+			self.best_list.append(stats[0])
+			self.avg_list.append(stats[1])
+			self.worst_list.append(stats[2])
+			self.stddev_list.append(stats[3])
+			self.iteration_list.append(i)
+
+			self.best_list = self.best_list[-100:]
+			self.avg_list = self.avg_list[-100:]
+			self.worst_list = self.worst_list[-100:]
+			self.stddev_list = self.stddev_list[-100:]
+			self.iteration_list = self.iteration_list[-100:]
+
+			if datetime.now() > self.lastUpdate + timedelta(seconds=2):
+				self.lastUpdate = datetime.now()
+				vbox = self.builder.get_object("vbox_graphs")
+
+				# best solution
+				points = self.population.getBest().getPlotData()
 			
 				figureBest = plot.Figure(figsize=(400,400), dpi=72)
 				graphBest = figureBest.add_subplot(111)
 				graphBest.fill_between(points[0], points[1], color = 'r')
 				graphBest.axis([0, brach.B[0], 0, brach.A[1]])
 				
-				vbox = self.builder.get_object("vbox_graphs")  
-
 				if self.canvasBest != None:
 					vbox.remove(self.canvasBest)
 			
 				self.canvasBest = FigureCanvasGTK(figureBest)
 				self.canvasBest.show()
+				vbox.pack_start(self.canvasBest)
 
-				vbox.pack_start(self.canvasBest, True, True)
+				# histogram
+				figureHist = plot.Figure(figsize=(400,200), dpi=72)
+				graphHist = figureHist.add_subplot(111)
+				graphHist.plot(self.iteration_list, self.best_list, 'b', self.iteration_list, self.avg_list, 'g', self.iteration_list, self.worst_list, 'r')
+				#graphBest.axis([0, brach.B[0], 0, brach.A[1]])
 
-			if self.canvasHist != None:
-				vbox.remove(self.canvasHist)
+				if self.canvasHist != None:
+					vbox.remove(self.canvasHist)
+
+				self.canvasHist = FigureCanvasGTK(figureHist)
+				self.canvasHist.show()
+				vbox.pack_end(self.canvasHist)
 
 			i += 1
 

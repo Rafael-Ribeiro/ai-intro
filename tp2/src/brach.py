@@ -17,14 +17,14 @@ DY_MIN = DX_MIN
 POPULATION_MAX = 500			# size of population, must be pair
 SELECTION_TYPE = "Tournament" 	# "Roulette"
 
-POINTS_INIT = 100				# max number of points per individual
+POINTS_INIT = 30				# max number of points per individual
 ELITISM = 0.1					# percentage
 
 CROSSOVER = 0.05				# probability
 CROSSOVER_LEN_MAX = 0.25		# 1 quarter of the individual is cut
 
 MUTATION_BURST = 0.50			# probability
-MUTATION = 0.05					# probability
+MUTATION = 0.1					# probability
 MUTATION_Y = 0.2				# percentage of Y mutation
 
 # physical constants
@@ -126,7 +126,7 @@ class Individual:
 				print "Distance Travelled: " + str(li)
 				print "Gained velocity: " + str(dv)
 				print "Acceleration: " + str(ai)
-				print "Time to travel: " + str(dv/ai) +"\n"
+				print "Time to travel: " + time +"\n"
 			
 			#Update the positions and current speed
 			v_i = v_j
@@ -209,7 +209,6 @@ class Population:
 
 		self.individuals += individuals[len(self.individuals):POPULATION_MAX] # TODO: its here just while there is no selection
 		
-
 	def getBest(self):
 		return self.individuals[0]
 
