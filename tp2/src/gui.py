@@ -263,24 +263,24 @@ class BrachGUI:
 			self.stddev_list.append(stats[3])
 			self.iteration_list.append(i)
 
-			#if datetime.now() > self.lastUpdate + timedelta(seconds=1):
-			self.lastUpdate = datetime.now()
+			if datetime.now() > self.lastUpdate + timedelta(seconds=5):
+				self.lastUpdate = datetime.now()
 
-			# best solution
-			points = self.population.getBest().getPlotData()
+				# best solution
+				points = self.population.getBest().getPlotData()
 
-			self.fig_best.clf()
-			self.fig_hist.clf()
+				self.fig_best.clf()
+				self.fig_hist.clf()
 
-			graph_best = self.fig_best.add_subplot(111)
-			graph_best.plot(points[0], points[1], 'r-*')
-			graph_best.axis([0, brach.B[0], 0, brach.A[1]])
+				graph_best = self.fig_best.add_subplot(111)
+				graph_best.plot(points[0], points[1], 'r-*')
+				graph_best.axis([0, brach.B[0], 0, brach.A[1]])
 
-			graph_hist = self.fig_hist.add_subplot(111)
-			graph_hist.plot(self.iteration_list[-100:], self.best_list[-100:], 'b', self.iteration_list[-100:], self.avg_list[-100:], 'g', self.iteration_list[-100:], self.worst_list[-100:], 'r')
+				graph_hist = self.fig_hist.add_subplot(111)
+				graph_hist.plot(self.iteration_list[-100:], self.best_list[-100:], 'b', self.iteration_list[-100:], self.avg_list[-100:], 'g', self.iteration_list[-100:], self.worst_list[-100:], 'r')
 
-			self.fig_best.canvas.draw()
-			self.fig_hist.canvas.draw()
+				self.fig_best.canvas.draw()
+				self.fig_hist.canvas.draw()
 
 			i += 1
 
