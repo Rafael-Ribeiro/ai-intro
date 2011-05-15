@@ -43,11 +43,17 @@ class Individual:
 	def _findXCoord(self, x): # returns a tuple (index, splitNeeded)
 		x_acc = 0.0
 
+		for i in self.points:
+			x_acc += i[0]
+
+		print x_acc
+
+		x_acc = 0.0
 		for i in xrange(len(self.points)):
 			x_acc += self.points[i][0]
 
 			if x_acc >= x:
-				return i, x_acc - x, x_acc == x
+				return i, x_acc - x, x_acc != x
 
 		return len(self.points) - 1, x_acc - x, False
 
@@ -74,7 +80,7 @@ class Individual:
 		other.fitness_val = None
 	
 	def crossoverSegment(self, xInit, xEnd):
-		return self._splitXCoord(xInit), self._splitXCoord(xEnd)
+		return self._splitXCoord(xInit), self._splitXCoord(xEnd) + 1
 
 	def fitness(self):
 		if self.fitness_val:
