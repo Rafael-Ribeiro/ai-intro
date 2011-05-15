@@ -35,9 +35,9 @@ class Individual:
 	def new(nPoints):
 		intervals = [[DX/(nPoints-1), 0.0] for i in xrange(nPoints - 2)] + [[DX/(nPoints-1), B[1]]]
 
-		intervals[0][1] = min(A[1] + (random.random() - 0.5) * 2 * DY/nPoints,A[1] - DY_MIN)
+		intervals[0][1] = min(A[1] + (random.random() - 0.5) * DY,A[1] - DY_MIN)
 		for i in xrange(1,nPoints - 1):
-			intervals[i][1] = min(intervals[i-1][1] + (random.random() - 0.5) * 2 * DY/nPoints,A[1] - DY_MIN)
+			intervals[i][1] = min(intervals[i-1][1] + (random.random() - 0.5) * DY,A[1] - DY_MIN)
 
 		return Individual(intervals)
 
@@ -117,7 +117,7 @@ class Individual:
 				print "Distance Travelled: " + str(li)
 				print "Gained velocity: " + str(dv)
 				print "Acceleration: " + str(ai)
-				print "Time to travel: " + str(dv/ai) +"\n"
+				print "Time to travel: " + time +"\n"
 			
 			#Update the positions and current speed
 			v_i = v_j
@@ -199,7 +199,6 @@ class Population:
 
 		self.individuals = individuals[:POPULATION_MAX] # TODO: its here just while there is no selection
 		
-
 	def getBest(self):
 		return self.individuals[0]
 

@@ -222,7 +222,8 @@ class BrachGUI:
 			
 				self.canvasBest = FigureCanvasGTK(figureBest)
 				self.canvasBest.show()
-
+				import time
+				time.sleep(0.01)
 				vbox.pack_start(self.canvasBest, True, True)
 
 			if self.canvasHist != None:
