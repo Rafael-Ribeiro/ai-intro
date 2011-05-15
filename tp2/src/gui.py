@@ -41,7 +41,7 @@ class BrachGUI:
 		self.builder.get_object("input_points").set_value(brach.POINTS_INIT)
 		self.builder.get_object("input_crossover").set_value(brach.CROSSOVER*100)
 		self.builder.get_object("input_crossover_len").set_value(brach.CROSSOVER_LEN_MAX*100)
-		self.builder.get_object("input_mutation_x").set_value(brach.MUTATION_X*100)
+		self.builder.get_object("input_mutation").set_value(brach.MUTATION*100)
 		self.builder.get_object("input_mutation_y").set_value(brach.MUTATION_Y*100)
 		self.builder.get_object("input_mutation_burst").set_value(brach.MUTATION_BURST*100)
 
@@ -124,7 +124,7 @@ class BrachGUI:
 		return True
 
 	def on_input_mutation_value_changed(self, widget, data=None):
-		brach.MUTATION_X = widget.get_value()/100
+		brach.MUTATION = widget.get_value()/100
 		return True
 
 	def on_input_mutation_y_value_changed(self, widget, data=None):
@@ -158,7 +158,7 @@ class BrachGUI:
 			self.builder.get_object("input_points").set_sensitive(False)
 			self.builder.get_object("input_crossover").set_sensitive(False)
 			self.builder.get_object("input_crossover_len").set_sensitive(False)
-			self.builder.get_object("input_mutation_x").set_sensitive(False)
+			self.builder.get_object("input_mutation").set_sensitive(False)
 			self.builder.get_object("input_mutation_y").set_sensitive(False)
 			self.builder.get_object("input_mutation_burst").set_sensitive(False)
 			
@@ -184,7 +184,7 @@ class BrachGUI:
 			self.builder.get_object("input_points").set_sensitive(True)
 			self.builder.get_object("input_crossover").set_sensitive(True)
 			self.builder.get_object("input_crossover_len").set_sensitive(True)
-			self.builder.get_object("input_mutation_x").set_sensitive(True)
+			self.builder.get_object("input_mutation").set_sensitive(True)
 			self.builder.get_object("input_mutation_y").set_sensitive(True)
 			self.builder.get_object("input_mutation_burst").set_sensitive(True)
 
