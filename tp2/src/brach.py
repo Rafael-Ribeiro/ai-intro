@@ -102,11 +102,8 @@ class Individual:
 			dv = v_j - v_i
 			
 			#The speed variation over the acceleration gives us the time. Voila
-			if ai == 0:
-				time += v_j*li
-			else:
-				time += dv/ai
-			
+			time += dv/ai if ai != 0 else v_j*li
+
 			#Debugging, ignore
 			if DEBUG_MODE:
 				print "Segment " + str(i/2)
