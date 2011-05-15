@@ -139,10 +139,11 @@ class Individual:
 
 	def mutate(self):
 		# dont mutate first and last
-		mutations = random.sample(range(len(self.points)-2)+1, int(MUTATION * len(self.points) - 1))
+		mutations = random.sample(range(1, len(self.points)-1), int(MUTATION * len(self.points) - 2))
 
 		for mutIndex in mutations:
-			self.points[mutIndex][0] = self.points[mutIndex-1][0] + random.random()*(self.points[mutIndex+1][0]-self.points[mutIndex-1][0])
+			window = self.points[mutIndex+1][0] - self.points[mutIndex-1][0] - 2*DX_MIN
+			self.points[mutIndex][0] = self.points[mutIndex-1][0] + DX_MIN + random.random()*window
 			
 			self.points[mutIndex][1] += (random.random() - 0.5) * 2 * MUTATION_Y * DY
 			self.points[mutIndex][1] = min(self.points[mutIndex][1], A[1] - DY_MIN)
