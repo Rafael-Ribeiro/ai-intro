@@ -11,6 +11,8 @@ B = [1.0, 2.0] # end point
 DX = float(B[0] - A[0])
 DY = float(B[1] - A[1])
 
+DX_MIN = 0.0001
+
 POPULATION_MAX = 500			# size of population, must be pair
 SELECTION_TYPE = "Tournament" 	# "Roulette"
 
@@ -21,9 +23,8 @@ CROSSOVER = 0.05				# probability
 CROSSOVER_LEN_MAX = 0.25		# 1 quarter of the individual is cut
 
 MUTATION_BURST = 0.50			# probability
-MUTATION_X = 0.01				# probability
-MUTATION_Y = 0.01				# probability
-
+MUTATION = 0.01					# probability
+MUTATION_Y = 0.05				# percentage of Y mutation
 
 # physical constants
 G_ACC = 9.80655
@@ -31,7 +32,7 @@ G_ACC = 9.80655
 class Individual:
 	@staticmethod
 	def new(nPoints):
-		return Individual([[DX/(nPoints-1), (random.random() - 0.5) * 2 * DY + B[1]] for i in xrange(nPoints - 2)])
+		return Individual([[DX/(nPoints-1), (random.random() - 0.5) * 2 * DY + B[1]] for i in xrange(nPoints - 2)] + [DX/(nPoints-1), B[1]])
 
 	# List of n points (2 sized arrays: [dx, abs y])
 	def __init__(self, points):
@@ -39,8 +40,17 @@ class Individual:
 		self.fitness_val = None
 
 	def mutate(self):
+		# TODO Bursts
+		mutations = random.sample(range(len(self.points)-1), int(MUTATIONS * len(self.points) - 1))
+		for mutIndex in mutations:
+			dx = self.points[mutIndex][0] + self.points[mutIndex + 1][0]
+			randX = (random.random() - 2 * DX_MIN) * dx + DX_MIN
+			self.points[mutIndex][0] = randX
+			self.points[mutIndex+1][0] = dx - randX
+			self.points[mutIndex][1] *= (random.random() - 0.5) * MUTATION_Y
+			self.points[mutIndex][1] = min(self.points[mutIndex][1],A[1])
+
 		self.fitness_val = None
-		pass
 
 	def fitness(self):
 		if self.fitness_val:
@@ -167,6 +177,8 @@ class Population:
 			individuals.push(copy.deepcopy(self.individuals[-1]))
 
 		# mutate childs
+		for i in xrange(len(individuals)):
+			individuals[i].mutate()
 
 		# join parents and childs
 		individuals += self.individuals
