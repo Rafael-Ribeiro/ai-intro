@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import math, random, copy
+import math, random, copy, sys
 
 DEBUG_MODE = False				# console prints
 
@@ -33,38 +33,32 @@ G_ACC = 9.80655
 class Individual:
 	@staticmethod
 	def new(nPoints):
-		return Individual([[DX/(nPoints-1), (random.random() - 0.5) * 2 * DY + B[1]] for i in xrange(nPoints - 2)] + [[DX/(nPoints-1), B[1]]])
+		# return Individual([[DX/(nPoints-1)*i, (random.random() - 0.5) * 2 * DY + B[1]] for i in xrange(nPoints - 2)] + [[DX/(nPoints-1), B[1]]])
+		return Individual([A] + [[A[0] + DX*i/(nPoints-1), (random.random() - 0.5) * 2 * DY + B[1]] for i in xrange(1,nPoints-1)] + [B])
 
 	# List of n points (2 sized arrays: [dx, abs y])
 	def __init__(self, points):
 		self.points = points
+		print len(self.points)
 		self.fitness_val = None
 
 	def _findXCoord(self, x): # returns a tuple (index, splitNeeded)
-		x_acc = 0.0
-
-		for i in self.points:
-			x_acc += i[0]
-
-		print x_acc
-
-		x_acc = 0.0
 		for i in xrange(len(self.points)):
-			x_acc += self.points[i][0]
+			if self.points[i][0] >= x:
+				return i, self.points[i][0] != x
 
-			if x_acc >= x:
-				return i, x_acc - x, x_acc != x
+		print "_findXCoord Error: %f exceeds boundaries (%f)" %(x, self.points[-1][0])
+		sys.exit(-1)
 
-		return len(self.points) - 1, x_acc - x, False
+		return -1
 
 	def _splitXCoord(self, x):
-		xIndex, dx, splitNeeded = self._findXCoord(x)
+		xIndex, splitNeeded = self._findXCoord(x)
 
 		if not splitNeeded:
 			return xIndex
 
-		self.points.insert(xIndex,[self.points[xIndex][0] - dx, self.points[xIndex][1]])
-		self.points[xIndex + 1][0] = dx
+		self.points.insert(xIndex,[x, self.points[xIndex][1]])
 
 		return xIndex
 
