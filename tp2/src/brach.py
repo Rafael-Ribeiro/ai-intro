@@ -23,8 +23,8 @@ CROSSOVER = 0.05				# probability
 CROSSOVER_LEN_MAX = 0.25		# 1 quarter of the individual is cut
 
 MUTATION_BURST = 0.50			# probability
-MUTATION = 0.01					# probability
-MUTATION_Y = 0.05				# percentage of Y mutation
+MUTATION = 0.05					# probability
+MUTATION_Y = 0.2				# percentage of Y mutation
 
 # physical constants
 G_ACC = 9.80655
@@ -32,7 +32,7 @@ G_ACC = 9.80655
 class Individual:
 	@staticmethod
 	def new(nPoints):
-		return Individual([[DX/(nPoints-1), (random.random() - 0.5) * 2 * DY + B[1]] for i in xrange(nPoints - 2)] + [DX/(nPoints-1), B[1]])
+		return Individual([[DX/(nPoints-1), (random.random() - 0.5) * 2 * DY + B[1]] for i in xrange(nPoints - 2)] + [[DX/(nPoints-1), B[1]]])
 
 	# List of n points (2 sized arrays: [dx, abs y])
 	def __init__(self, points):
@@ -101,7 +101,10 @@ class Individual:
 			dv = v_j - v_i
 			
 			#The speed variation over the acceleration gives us the time. Voila
-			time += dv/ai
+			if ai == 0:
+				time += v_j*li
+			else:
+				time += dv/ai
 			
 			#Debugging, ignore
 			if DEBUG_MODE:
@@ -130,7 +133,6 @@ class Individual:
 		return x, y
 
 	def mutate(self):
-		# TODO Bursts
 		mutations = random.sample(range(len(self.points)-1), int(MUTATION * len(self.points) - 1))
 		for mutIndex in mutations:
 			dx = self.points[mutIndex][0] + self.points[mutIndex + 1][0]
@@ -177,8 +179,8 @@ class Population:
 			individuals.push(copy.deepcopy(self.individuals[-1]))
 
 		# mutate childs
-		for i in xrange(len(individuals)):
-			individuals[i].mutate()
+		for individual in individuals:
+			individual.mutate()
 
 		# join parents and childs
 		individuals += self.individuals

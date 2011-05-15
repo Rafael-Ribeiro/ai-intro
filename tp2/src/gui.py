@@ -194,6 +194,9 @@ class BrachGUI:
 		return True
 
 	def on_window_main_destroy(self, widget, data=None):
+		app.running = False
+		if app.thread != None:
+			app.thread.join()
 		sys.exit(0)
 
 	def evolve(self):
