@@ -10,7 +10,7 @@ from threading import Thread
 from datetime import datetime, timedelta
 
 import matplotlib.pyplot as plot
-from matplotlib.backends.backend_gtk import FigureCanvasGTK
+from matplotlib.backends.backend_gtk import Figure, FigureCanvasGTK
 
 # program constants
 GUI_FILENAME = "gui.xml"
@@ -26,8 +26,6 @@ class BrachGUI:
 	def __init__(self):
 		self.lastUpdate = datetime.now()
 		self.thread = None
-		self.canvasBest = None
-		self.canvasHist = None
 		self.lastBest = None
 
 		self.builder = gtk.Builder()
@@ -63,6 +61,21 @@ class BrachGUI:
 
 		self.builder.get_object("button_save").set_sensitive(False)
 		self.running = False
+
+		# init graphs
+		self.fig_best = Figure(figsize=(400, 400))
+		self.fig_hist = Figure(figsize=(400, 200))
+		
+		self.canvas_best = FigureCanvasGTK(self.fig_best)
+		self.canvas_hist = FigureCanvasGTK(self.fig_hist)
+		self.canvas_best.show()
+		self.canvas_hist.show()
+
+		self.hbox_best = self.builder.get_object("hbox_graph_best")
+		self.hbox_hist = self.builder.get_object("hbox_graph_hist")
+
+		self.hbox_best.pack_start(self.canvas_best, True, True)
+		self.hbox_hist.pack_start(self.canvas_hist, True, True)
 
 		# show window
 		self.builder.connect_signals(self)
@@ -141,6 +154,34 @@ class BrachGUI:
 	def on_button_save_clicked(self, widget, data=None):
 		# TODO: http://www.pygtk.org/pygtk2tutorial/sec-FileChoosers.html
 		# chooser.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
+
+		dialog = gtk.FileChooserDialog("Choose a folder..",
+			None,
+			gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
+			(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)
+		)
+		dialog.set_default_response(gtk.RESPONSE_OK)
+
+		response = dialog.run()
+		if response == gtk.RESPONSE_OK:
+			points = self.population.getBest().getPlotData()
+
+			f = open(dialog.get_filename() + '/data', 'w')
+			f.write(str(self.iteration_list[-1])+"\n")
+			f.write(str(self.best_list)+"\n")
+			f.write(str(self.avg_list)+"\n")
+			f.write(str(self.worst_list)+"\n")
+			f.write(str(self.stddev_list)+"\n")
+			f.write(str(points)+"\n")
+			f.close()
+
+			figureBest = plot.Figure(figsize=(400,400), dpi=72)
+			graphBest = figureBest.add_subplot(111)
+			graphBest.plot(points[0], points[1], 'r-*')
+			graphBest.axis([0, brach.B[0], 0, brach.A[1]])
+			figureBest.savefig(dialog.get_filename() + '/best.png')
+
+		dialog.destroy()
 		return True
 
 	def on_button_start_stop_clicked(self, widget, data=None):
@@ -222,39 +263,24 @@ class BrachGUI:
 			self.stddev_list.append(stats[3])
 			self.iteration_list.append(i)
 
-			if datetime.now() > self.lastUpdate + timedelta(seconds=2):
-				self.lastUpdate = datetime.now()
-				hbox_best = self.builder.get_object("hbox_graph_best")
-				# best solution
-				points = self.population.getBest().getPlotData()
-			
-				figureBest = plot.Figure(figsize=(400,400), dpi=72)
-				graphBest = figureBest.add_subplot(111)
-				#graphBest.fill_between(points[0], points[1], color = 'r', hatch='*')
-				graphBest.plot(points[0], points[1], 'r-*')
-				graphBest.axis([0, brach.B[0], 0, brach.A[1]])
-				
-				if self.canvasBest != None:
-					hbox_best.remove(self.canvasBest)
-			
-				self.canvasBest = FigureCanvasGTK(figureBest)
-				self.canvasBest.show()
-				hbox_best.pack_start(self.canvasBest)
+			#if datetime.now() > self.lastUpdate + timedelta(seconds=1):
+			self.lastUpdate = datetime.now()
 
-				# histogram
-				hbox_hist = self.builder.get_object("hbox_graph_hist")
+			# best solution
+			points = self.population.getBest().getPlotData()
 
-				figureHist = plot.Figure(figsize=(400,200), dpi=72)
-				graphHist = figureHist.add_subplot(111)
-				graphHist.plot(self.iteration_list[-100:], self.best_list[-100:], 'b', self.iteration_list[-100:], self.avg_list[-100:], 'g', self.iteration_list[-100:], self.worst_list[-100:], 'r')
-				#graphBest.axis([0, brach.B[0], 0, brach.A[1]])
+			self.fig_best.clf()
+			self.fig_hist.clf()
 
-				if self.canvasHist != None:
-					hbox_hist.remove(self.canvasHist)
+			graph_best = self.fig_best.add_subplot(111)
+			graph_best.plot(points[0], points[1], 'r-*')
+			graph_best.axis([0, brach.B[0], 0, brach.A[1]])
 
-				self.canvasHist = FigureCanvasGTK(figureHist)
-				self.canvasHist.show()
-				hbox_hist.pack_end(self.canvasHist)
+			graph_hist = self.fig_hist.add_subplot(111)
+			graph_hist.plot(self.iteration_list[-100:], self.best_list[-100:], 'b', self.iteration_list[-100:], self.avg_list[-100:], 'g', self.iteration_list[-100:], self.worst_list[-100:], 'r')
+
+			self.fig_best.canvas.draw()
+			self.fig_hist.canvas.draw()
 
 			i += 1
 
