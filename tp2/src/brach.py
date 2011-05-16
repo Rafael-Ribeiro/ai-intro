@@ -25,7 +25,7 @@ CROSSOVER_LEN_MAX = 0.25		# 1 quarter of the individual is cut
 
 MUTATION_BURST = 0.50			# probability
 MUTATION = 0.1					# percentage
-MUTATION_PROB = 0.01			# probability
+MUTATION_PROB = 1				# probability	### TODO: Put a spinner on GUI
 MUTATION_Y = 0.2				# percentage of Y mutation
 
 # physical constants
