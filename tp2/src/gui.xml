@@ -274,21 +274,8 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
-                    <property name="top_attach">5</property>
-                    <property name="bottom_attach">6</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="label_mutation_y">
-                    <property name="visible">True</property>
-                    <property name="xalign">0</property>
-                    <property name="xpad">10</property>
-                    <property name="label" translatable="yes">Mutation Y increase (%)</property>
-                  </object>
-                  <packing>
-                    <property name="top_attach">8</property>
-                    <property name="bottom_attach">9</property>
-                    <property name="x_options">GTK_FILL</property>
+                    <property name="top_attach">6</property>
+                    <property name="bottom_attach">7</property>
                   </packing>
                 </child>
                 <child>
@@ -296,11 +283,11 @@
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
                     <property name="xpad">10</property>
-                    <property name="label" translatable="yes">Mutation (%)</property>
+                    <property name="label" translatable="yes">Mutation probability (%)</property>
                   </object>
                   <packing>
-                    <property name="top_attach">7</property>
-                    <property name="bottom_attach">8</property>
+                    <property name="top_attach">8</property>
+                    <property name="bottom_attach">9</property>
                     <property name="x_options">GTK_FILL</property>
                   </packing>
                 </child>
@@ -312,8 +299,8 @@
                     <property name="label" translatable="yes">Max. crossover size (%)</property>
                   </object>
                   <packing>
-                    <property name="top_attach">6</property>
-                    <property name="bottom_attach">7</property>
+                    <property name="top_attach">7</property>
+                    <property name="bottom_attach">8</property>
                     <property name="x_options">GTK_FILL</property>
                   </packing>
                 </child>
@@ -323,8 +310,8 @@
                     <property name="visible">True</property>
                   </object>
                   <packing>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
                   </packing>
                 </child>
                 <child>
@@ -335,8 +322,8 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
                   </packing>
                 </child>
                 <child>
@@ -352,8 +339,8 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
-                    <property name="top_attach">6</property>
-                    <property name="bottom_attach">7</property>
+                    <property name="top_attach">7</property>
+                    <property name="bottom_attach">8</property>
                   </packing>
                 </child>
                 <child>
@@ -365,23 +352,6 @@
                     <property name="digits">3</property>
                     <property name="value_pos">left</property>
                     <signal name="value_changed" handler="on_input_mutation_value_changed"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="top_attach">7</property>
-                    <property name="bottom_attach">8</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkHScale" id="input_mutation_y">
-                    <property name="width_request">200</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="adjustment">adjust_mutation_y</property>
-                    <property name="digits">3</property>
-                    <property name="value_pos">left</property>
-                    <signal name="value_changed" handler="on_input_mutation_y_value_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -398,8 +368,8 @@
                     <property name="label" translatable="yes">Crossover (%)</property>
                   </object>
                   <packing>
-                    <property name="top_attach">5</property>
-                    <property name="bottom_attach">6</property>
+                    <property name="top_attach">6</property>
+                    <property name="bottom_attach">7</property>
                     <property name="x_options">GTK_FILL</property>
                   </packing>
                 </child>
@@ -415,6 +385,38 @@
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
                     <property name="y_options"></property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinButton" id="input_points">
+                    <property name="width_request">200</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="adjustment">adjust_points</property>
+                    <property name="climb_rate">0.10000000000000001</property>
+                    <property name="digits">1</property>
+                    <property name="numeric">True</property>
+                    <signal name="value_changed" handler="on_input_points_value_changed"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">5</property>
+                    <property name="bottom_attach">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label_points">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="xpad">10</property>
+                    <property name="label" translatable="yes">Initial points p/ individual</property>
+                  </object>
+                  <packing>
+                    <property name="top_attach">5</property>
+                    <property name="bottom_attach">6</property>
+                    <property name="x_options">GTK_FILL</property>
                   </packing>
                 </child>
                 <child>
@@ -447,35 +449,30 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkSpinButton" id="input_points">
+                  <object class="GtkLabel" id="label_model">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="xpad">10</property>
+                    <property name="label" translatable="yes">Representation model</property>
+                  </object>
+                  <packing>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                    <property name="x_options">GTK_FILL</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkComboBox" id="input_representation">
                     <property name="width_request">200</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="invisible_char">&#x25CF;</property>
-                    <property name="adjustment">adjust_points</property>
-                    <property name="climb_rate">0.10000000000000001</property>
-                    <property name="digits">1</property>
-                    <property name="numeric">True</property>
-                    <signal name="value_changed" handler="on_input_points_value_changed"/>
+                    <signal name="changed" handler="on_input_representation_changed"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
-                    <property name="top_attach">4</property>
-                    <property name="bottom_attach">5</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="label_points">
-                    <property name="visible">True</property>
-                    <property name="xalign">0</property>
-                    <property name="xpad">10</property>
-                    <property name="label" translatable="yes">Initial points p/ individual</property>
-                  </object>
-                  <packing>
-                    <property name="top_attach">4</property>
-                    <property name="bottom_attach">5</property>
-                    <property name="x_options">GTK_FILL</property>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                    <property name="y_options"></property>
                   </packing>
                 </child>
               </object>

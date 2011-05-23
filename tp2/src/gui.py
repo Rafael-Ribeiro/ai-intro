@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import signal, os
+from population import *
 
-import brach
 import sys
 from threading import Thread
 
@@ -31,19 +31,21 @@ class BrachGUI:
 		self.builder.add_from_file(GUI_FILENAME)
 
 		# init default values (due to Glade 3.7 bug)
-		self.builder.get_object("input_Ax").set_value(brach.A[0])
-		self.builder.get_object("input_Ay").set_value(brach.A[1])
-		self.builder.get_object("input_Bx").set_value(brach.B[0])
-		self.builder.get_object("input_By").set_value(brach.B[1])
+		self.builder.get_object("input_Ax").set_value(config.A[0])
+		self.builder.get_object("input_Ay").set_value(config.A[1])
+		self.builder.get_object("input_Bx").set_value(config.B[0])
+		self.builder.get_object("input_By").set_value(config.B[1])
 
-		self.builder.get_object("input_population_size").set_value(brach.POPULATION_MAX)
-		self.builder.get_object("input_elitism").set_value(brach.ELITISM*100)
-		self.builder.get_object("input_points").set_value(brach.POINTS_INIT)
-		self.builder.get_object("input_crossover").set_value(brach.CROSSOVER*100)
-		self.builder.get_object("input_crossover_len").set_value(brach.CROSSOVER_LEN_MAX*100)
-		self.builder.get_object("input_mutation").set_value(brach.MUTATION*100)
-		self.builder.get_object("input_mutation_y").set_value(brach.MUTATION_Y*100)
-		self.builder.get_object("input_mutation_burst").set_value(brach.MUTATION_BURST*100)
+		self.builder.get_object("input_population_size").set_value(config.POPULATION_MAX)
+		self.builder.get_object("input_elitism").set_value(config.ELITISM*100)
+		self.builder.get_object("input_points").set_value(config.POINTS_INIT)
+		self.builder.get_object("input_crossover").set_value(config.CROSSOVER*100)
+		self.builder.get_object("input_crossover_len").set_value(config.CROSSOVER_LEN_MAX*100)
+		self.builder.get_object("input_mutation").set_value(config.MUTATION_PROB*100)
+		self.builder.get_object("input_mutation_burst").set_value(config.MUTATION_BURST*100)
+
+		self.builder.get_object("button_save").set_sensitive(False)
+		self.running = False
 
 		# init the input_selection_type
 		selection_model = gtk.ListStore(str)
@@ -58,8 +60,18 @@ class BrachGUI:
 		selection_box.add_attribute(cell,'text',0)
 		selection_box.set_active(0)
 
-		self.builder.get_object("button_save").set_sensitive(False)
-		self.running = False
+		# init the input_representation
+		representation_model = gtk.ListStore(str)
+		representation_model.append(["Even spacing"])
+		representation_model.append(["Dynamic spacing"])
+
+		representation_box = self.builder.get_object("input_representation")
+		representation_box.set_model(representation_model)
+
+		cell = gtk.CellRendererText()
+		representation_box.pack_start(cell)
+		representation_box.add_attribute(cell,'text',0)
+		representation_box.set_active(0)
 
 		# init graphs
 		self.fig_best = Figure(figsize=(400, 400))
@@ -83,71 +95,79 @@ class BrachGUI:
 		window.show()
 
 	def on_adjust_Ax_value_changed(self, widget, data=None):
-		brach.A[0] = widget.get_value()
+		config.A[0] = widget.get_value()
 
-		if brach.A[0] >= brach.B[0]:
-			widget.set_value(brach.A[0]-0.1)
+		if config.A[0] >= config.B[0]:
+			widget.set_value(config.A[0]-0.1)
 
 		return True
 
 	def on_adjust_Ay_value_changed(self, widget, data=None):
-		brach.A[1] = widget.get_value()
+		config.A[1] = widget.get_value()
 
-		if brach.A[1] < brach.B[1]:
-			widget.set_value(brach.A[1] + 0.1)
+		if config.A[1] < config.B[1]:
+			widget.set_value(config.A[1] + 0.1)
 
 		return True
 
 	def on_adjust_Bx_value_changed(self, widget, data=None):
-		brach.B[0] = widget.get_value()
+		config.B[0] = widget.get_value()
 
-		if brach.B[0] <= brach.A[0]:
-			widget.set_value(brach.B[0] + 0.1)
+		if config.B[0] <= config.A[0]:
+			widget.set_value(config.B[0] + 0.1)
 
 		return True
 
 	def on_adjust_By_value_changed(self, widget, data=None):
-		brach.A[1] = widget.get_value()
+		config.A[1] = widget.get_value()
 
-		if brach.B[1] > brach.A[1]:
-			widget.set_value(brach.B[1] - 0.1)
+		if config.B[1] > config.A[1]:
+			widget.set_value(config.B[1] - 0.1)
 
 		return True
 
 	def on_input_population_size_value_changed(self, widget, data=None):
-		brach.POPULATION_MAX = widget.get_value_as_int()
+		config.POPULATION_MAX = widget.get_value_as_int()
 		return True
 
 	def on_input_elitism_value_changed(self, widget, data=None):
-		brach.ELITISM = widget.get_value()/100
+		config.ELITISM = widget.get_value()/100
 		return True
 
 	def on_input_selection_type_changed(self, widget, data=None):
-		brach.SELECTION_TYPE = widget.get_active_text()
+		config.SELECTION_TYPE = widget.get_active_text()
+		return True
+
+	def on_input_representation_changed(self, widget, data=None):
+		config.REPRESENTATION = widget.get_active_text()
 		return True
 
 	def on_input_points_value_changed(self, widget, data=None):
-		brach.POINTS_INIT = widget.get_value_as_int()
+		config.POINTS_INIT = widget.get_value_as_int()
 		return True
 
 	def on_input_crossover_value_changed(self, widget, data=None):
-		brach.CROSSOVER = widget.get_value()/100
+		config.CROSSOVER = widget.get_value()/100
 		return True
 
 	def on_input_crossover_len_value_changed(self, widget, data=None):
-		brach.CROSSOVER_LEN_MAX = widget.get_value()/100
+		config.CROSSOVER_LEN_MAX = widget.get_value()/100
 		return True
 
 	def on_input_mutation_value_changed(self, widget, data=None):
-		brach.MUTATION = widget.get_value()/100
-		return True
+		config.MUTATION_PROB = widget.get_value()/100
 
-	def on_input_mutation_y_value_changed(self, widget, data=None):
-		brach.MUTATION_Y = widget.get_value()/100
+		burst = self.builder.get_object("input_mutation_burst")
+		m = 100-config.MUTATION_PROB*100
+
+		if burst.get_value() > m:
+			burst.set_value(m)
+
+		burst.get_adjustment().set_upper(m)
 		return True
 
 	def on_input_mutation_burst_value_changed(self, widget, data=None):
-		brach.MUTATION_BURST = widget.get_value()/100
+		config.MUTATION_BURST = widget.get_value()/100
 		return True
 
 	def on_button_save_clicked(self, widget, data=None):
@@ -160,7 +180,7 @@ class BrachGUI:
 
 		response = dialog.run()
 		if response == gtk.RESPONSE_OK:
-			points = self.population.getBest().getPlotData()
+			points = self.population.getBest().getPoints()
 
 			f = open(dialog.get_filename() + '/data', 'w')
 			f.write(str(self.iteration_list[-1])+"\n")
@@ -174,7 +194,7 @@ class BrachGUI:
 			figureBest = Figure(figsize=(400,400), dpi=72)
 			graphBest = figureBest.add_subplot(111)
 			graphBest.plot(points[0], points[1], 'r-*')
-			graphBest.axis([0, brach.B[0], 0, brach.A[1]])
+			graphBest.axis([0, config.B[0], 0, config.A[1]])
 			figureBest.savefig(dialog.get_filename() + '/best.png')
 
 		dialog.destroy()
@@ -205,12 +225,11 @@ class BrachGUI:
 			self.builder.get_object("input_crossover").set_sensitive(False)
 			self.builder.get_object("input_crossover_len").set_sensitive(False)
 			self.builder.get_object("input_mutation").set_sensitive(False)
-			self.builder.get_object("input_mutation_y").set_sensitive(False)
 			self.builder.get_object("input_mutation_burst").set_sensitive(False)
 			
 			self.builder.get_object("button_save").set_sensitive(False)
 
-			self.population = brach.Population.new(brach.POPULATION_MAX)
+			self.population = Population.new(config.POPULATION_MAX, config.REPRESENTATION)
 
 			self.thread = Thread(target=self.evolve)
 			self.thread.start()
@@ -231,7 +250,6 @@ class BrachGUI:
 			self.builder.get_object("input_crossover").set_sensitive(True)
 			self.builder.get_object("input_crossover_len").set_sensitive(True)
 			self.builder.get_object("input_mutation").set_sensitive(True)
-			self.builder.get_object("input_mutation_y").set_sensitive(True)
 			self.builder.get_object("input_mutation_burst").set_sensitive(True)
 
 			self.builder.get_object("button_save").set_sensitive(True)
@@ -262,14 +280,14 @@ class BrachGUI:
 			if datetime.now() > self.lastUpdate + timedelta(seconds=5):
 				self.lastUpdate = datetime.now()
 
-				points = self.population.getBest().getPlotData()
+				points = self.population.getBest().getPoints()
 
 				self.fig_best.clf()
 				self.fig_hist.clf()
 
 				graph_best = self.fig_best.add_subplot(111)
 				graph_best.plot(points[0], points[1], 'r-*')
-				graph_best.axis([0, brach.B[0], 0, brach.A[1]])
+				graph_best.axis([0, config.B[0], 0, config.A[1]])
 
 				graph_hist = self.fig_hist.add_subplot(111)
 				graph_hist.plot(self.iteration_list[-100:], self.best_list[-100:], 'b', self.iteration_list[-100:], self.avg_list[-100:], 'g', self.iteration_list[-100:], self.worst_list[-100:], 'r')

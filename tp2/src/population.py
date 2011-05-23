@@ -7,14 +7,17 @@ from individuals import *
 
 class Population:
 	@staticmethod
-	def new(nIndividuals):
-		individuals = [Individual.new(config.POINTS_INIT) for i in xrange(nIndividuals)]
-		individuals.sort(key = Individual.fitness) # guarantee they are sorted for the first iteration
+	def new(nIndividuals, representation):
+		if representation == "Even spacing":
+			individuals = [EvenSpacing.new(config.POINTS_INIT) for i in xrange(nIndividuals)]
+		else:
+			individuals = [DynamicSpacing.new(config.POINTS_INIT) for i in xrange(nIndividuals)]
 
 		return Population(individuals)
 
 	def __init__(self, individuals):
 		self.individuals = individuals
+		self.individuals.sort(key = Individual.fitness) # guarantee they are sorted for the first iteration
 
 	def evolve(self):
 		individuals = [] # next population
