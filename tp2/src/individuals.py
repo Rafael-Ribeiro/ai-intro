@@ -37,7 +37,12 @@ class Individual:
 
 		return xIndex
 
-	def crossover(self, other, xInit, xEnd):
+	def crossover(self, other):
+		crossoverMaxLen = random.random() * config.CROSSOVER_LEN_MAX * config.DX
+
+		xInit = random.random() * (config.DX - crossoverMaxLen)
+		xEnd = startingCrossoverPoint + crossoverMaxLen
+
 		xi1, xj1 = self.crossoverSegment(xInit, xEnd)
 		xi2, xj2 = other.crossoverSegment(xInit, xEnd)
 
@@ -113,16 +118,18 @@ class Individual:
 		return x, y
 
 	def mutate(self):
-		# dont mutate first and last
-		k = random.randint(1,max(1,int(config.MUTATION * (len(self.points) - 2))))
+		prob = config.MUTATION_PROB
 
-		mutations = random.sample(range(1, len(self.points)-1), k)
+		for i in xrange(1,len(self.points)-1):
+			if random.random() <= prob:
+				window = self.points[i+1][0] - self.points[i-1][0] - 2 * config.DX_MIN
+				self.points[i][0] = self.points[i-1][0] + config.DX_MIN + random.random() * window
 
-		for mutIndex in mutations:
-			window = self.points[mutIndex+1][0] - self.points[mutIndex-1][0] - 2*config.DX_MIN
-			self.points[mutIndex][0] = self.points[mutIndex-1][0] + config.DX_MIN + random.random()*window
-			
-			self.points[mutIndex][1] += (random.random() - 0.5) * 2 * config.MUTATION_Y * config.DY
-			self.points[mutIndex][1] = min(self.points[mutIndex][1], config.A[1] - config.DY_MIN)
+				self.points[i][1] += (random.random() - 0.5) * 2 * config.MUTATION_Y * config.DY
+				self.points[i][1] = min(self.points[i][1], config.A[1] - config.DY_MIN)
+
+				prob = config.MUTATION_BURST
+			else:
+				prob = config.MUTATION_PROB
 
 		self.fitness_val = None
