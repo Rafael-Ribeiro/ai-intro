@@ -108,7 +108,6 @@ class Population:
 			
 			self.individuals = individuals[:cutoff] + selected	
 		
-			print "size: ", len(self.individuals)
 			self.individuals.sort(key = Individual.fitness) # guarantee that self.individuals are sorted for the next iteration
 
 
