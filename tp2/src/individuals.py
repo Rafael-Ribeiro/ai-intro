@@ -3,6 +3,7 @@
 
 import config
 import random
+import math
 
 # physical constants
 G_ACC = 9.80655
@@ -18,9 +19,9 @@ class Individual:
 
 		points = self.getPoints()
 	
-		for i in range(1, len(self.points)):
-			if self.points[i][1] > maxHeight or (self.points[i][1] == maxHeight and i != len(self.points)):
-				print "c", i, maxHeight, self.points[i][1]
+		for i in range(1, len(points)):
+			if points[i][1] > maxHeight or (points[i][1] == maxHeight and i != len(self.points)):
+				print "c", i, maxHeight, points[i][1]
 				return -1
 			
 			#Calculate acceleration based on segment slope. Open question - would be using cos() faster?
@@ -55,8 +56,8 @@ class Individual:
 			
 			#Update the positions and current speed
 			v_i = v_j
-			x_i = self.points[0][i]
-			y_i = self.points[1][i]
+			x_i = points[0][i]
+			y_i = points[1][i]
 		
 		self.fitness_val = time
 		return time
@@ -65,7 +66,7 @@ class EvenSpacing(Individual):
 	@staticmethod
 	def new(n):
 		genes = [(random.random() - 0.5) * 2 * config.DY + config.B[1] for i in xrange(n-2)]
-		return EvenlySpaced([config.A[1]] + genes + [config.B[1]])
+		return EvenSpacing([config.A[1]] + genes + [config.B[1]])
 
 	# List of n points (2 sized arrays: [abs x, abs y])
 	def __init__(self, points):
@@ -86,8 +87,8 @@ class EvenSpacing(Individual):
 		other.fitness_val = None
 	
 	def getPoints(self):
-		dx = (B[0]-A[0])/(len(self.n)-1)
-		x = [A[0]+i*dx for i in xrange(self.n-1)] + [B[0]]
+		dx = (config.B[0]-config.A[0])/(self.n-1)
+		x = [config.A[0]+i*dx for i in xrange(self.n-1)] + [config.B[0]]
 
 		return x, self.points
 
