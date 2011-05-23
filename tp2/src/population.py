@@ -87,12 +87,13 @@ class Population:
 			individuals.sort(key = Individual.fitness)
 
 			# elitism selection
-			cutoff = int(config.ELITISM * len(individuals))
+			cutoff = int(config.ELITISM * config.POPULATION_SIZE) # FIX: este elitismo afeta a todos os elementos mas é em relação á população 
 
 			self.individuals = individuals[cutoff:]
 
 			selected = []
 			needed = config.POPULATION_SIZE - cutoff
+
 			while needed > 1:
 				a,b = self.tournament(config.TOURNAMENT_SIZE)
 

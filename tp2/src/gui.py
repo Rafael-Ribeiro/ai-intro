@@ -274,7 +274,7 @@ class BrachGUI:
 
 	def evolve(self):
 		i = 0
-		while self.running:
+		while self.running and i < 1001:
 			self.population.evolve()
 
 			stats = self.population.getStatistics()
@@ -285,8 +285,9 @@ class BrachGUI:
 			self.worst_list.append(stats[2])
 			self.stddev_list.append(stats[3])
 			self.iteration_list.append(i)
+			self.best = self.population.getBest()
 
-			if datetime.now() > self.lastUpdate + timedelta(seconds=5):
+			if datetime.now() > self.lastUpdate + timedelta(seconds=2):
 				gobject.idle_add(self.plot)
 
 			i += 1
@@ -294,7 +295,7 @@ class BrachGUI:
 	def plot(self):
 		self.lastUpdate = datetime.now()
 
-		points = self.population.getBest().getPoints()
+		points = self.best.getPoints()
 
 		self.fig_best.clf()
 		self.fig_hist.clf()
