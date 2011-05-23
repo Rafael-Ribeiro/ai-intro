@@ -4,6 +4,7 @@
 import config
 import random
 import math
+from operator import itemgetter
 
 # physical constants
 G_ACC = 9.80655
@@ -201,14 +202,24 @@ class DynamicSpacing(Individual):
 
 		for i in xrange(1,len(self.points)-1):
 			if random.random() <= prob:
-				window = self.points[i+1][0] - self.points[i-1][0] - 2 * config.DX_MIN
-				self.points[i][0] = self.points[i-1][0] + config.DX_MIN + random.random() * window
+				# x coord deviation
+				xCoord = self.points[0][0] # guarantee that at least one random occurs
+				xs = map(lambda x: x[0],self.points) # only use x coords
 
+				while xCoord in xs:
+					dx = random.gauss(0, config.MUTATION_X_STDEV)
+					xCoord = max(config.A[0] + config.DX_MIN,min(self.points[i][0] + dx,config.B[0] - config.DX_MIN))
+
+				self.points[i][0] = xCoord
+
+				# y coord deviation
 				dy = random.gauss(0, config.MUTATION_Y_STDEV)
 				self.points[i][1] = min(self.points[i][1] + dy, config.A[1] - config.DY_MIN)
 
 				prob = config.MUTATION_PROB + config.MUTATION_BURST
 			else:
 				prob = config.MUTATION_PROB
+
+		self.points.sort(key = itemgetter(0))
 
 		self.fitness_val = None
