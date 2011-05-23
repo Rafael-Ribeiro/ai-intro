@@ -7,8 +7,11 @@ from individuals import *
 
 class Population:
 	@staticmethod
-	def new(nIndividuals):
-		individuals = [Individual.new(config.POINTS_INIT) for i in xrange(nIndividuals)]
+	def new(nIndividuals, representation):
+		if representation == "Even spacing":
+			individuals = [EvenSpacing.new(config.POINTS_INIT) for i in xrange(nIndividuals)]
+		else:
+			individuals = [DynamicSpacing.new(config.POINTS_INIT) for i in xrange(nIndividuals)]
 
 		return Population(individuals)
 
