@@ -65,7 +65,8 @@ class Population:
 			individual.mutate()
 
 		 # Elitism (config.ELITISM refers to the parents' percentage that survives);
-		 # len(individuals) guarantees that POPULATION_MAX is not exceeded, since we only generate the "remaining" childs after elitism
+		 # len(individuals) guarantees that POPULATION_MAX is not exceeded,
+		 # since we only generate the "remaining" childs after elitism
 		self.individuals = self.individuals[:nSurvivingParents] + individuals
 		self.individuals.sort(key = Individual.fitness) # guarantee that self.individuals are sorted for the next iteration
 
@@ -82,20 +83,20 @@ class Population:
 		avg_fitness = 0.0
 		for i in self.individuals:
 			avg_fitness += i.fitness()
-		avg_fitness /= config.POPULATION_MAX
+		avg_fitness /= config.POPULATION_SIZE
 
 		sqr_sum = 0.0
 		for i in self.individuals:
 			sqr_sum += (i.fitness() - avg_fitness)**2
 
-		dev_fitness = math.sqrt(sqr_sum/config.POPULATION_MAX)
+		dev_fitness = math.sqrt(sqr_sum/config.POPULATION_SIZE)
 		return max_fitness, avg_fitness, min_fitness, dev_fitness
 
 	def probabilities(self):
 		self.probability = [0.0 for i in self.individuals]
 		total = 0.0
 		for i in xrange(len(self.individuals)):
-			self.probability[i] = total + 1/self.individuals[i].getFitness()
+			self.probability[i] = total + 1/self.individuals[i].fitness()
 			total = self.probability[i]
 
 	def roulette(self):
@@ -109,3 +110,20 @@ class Population:
 
 		return self.individuals[a], self.individuals[b]
 
+	def tournament(self, tournamentSize):
+		tournamentSample = random.sample(self.individuals, tournamentSize * 2)
+
+		tournament1 = tournamentSample[:tournamentSize]
+		tournament2 = tournamentSample[tournamentSize:]
+
+		parent1 = tournament1[0]
+		parent2 = tournament2[0]
+
+		for i in xrange(1,tournamentSize):
+			if tournament1[i].fitness < parent1.fitness:
+				parent1 = tournament1[i]
+
+			if tournament2[i].fitness < parent2.fitness:
+				parent2 = tournament2[i]
+
+		return parent1,parent2
