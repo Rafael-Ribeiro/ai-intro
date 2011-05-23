@@ -266,8 +266,10 @@ class BrachGUI:
 	def evolve(self):
 		i = 0
 		while self.running:
+			print "EVOLVING"
 			self.population.evolve()
-	
+			print "EVOLVED"
+
 			stats = self.population.getStatistics()
 			print "Iteration", i, stats
 
@@ -278,6 +280,7 @@ class BrachGUI:
 			self.iteration_list.append(i)
 
 			if datetime.now() > self.lastUpdate + timedelta(seconds=5):
+				print "DRAWING"
 				self.lastUpdate = datetime.now()
 
 				points = self.population.getBest().getPoints()
@@ -295,7 +298,7 @@ class BrachGUI:
 
 				self.fig_best.canvas.draw()
 				self.fig_hist.canvas.draw()
-
+				print "DRAWN"
 			i += 1
 
 if __name__ == '__main__':

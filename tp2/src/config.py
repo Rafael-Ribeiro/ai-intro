@@ -26,4 +26,4 @@ CROSSOVER_LEN_MAX = 0.25			# 1 quarter of the individual is cut
 
 MUTATION_BURST = 0.0				# probability
 MUTATION_PROB = 0.10				# probability
-MUTATION_Y_STDEV = (A[1] - B[1])/2	# standard deviation
+MUTATION_Y_STDEV = (A[1] - B[1])/10	# standard deviation

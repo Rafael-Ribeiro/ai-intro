@@ -19,9 +19,9 @@ class Individual:
 
 		points = self.getPoints()
 	
-		for i in range(1, len(points)):
-			if points[i][1] > maxHeight or (points[i][1] == maxHeight and i != len(self.points)):
-				print "c", i, maxHeight, points[i][1]
+		for i in range(1, len(points[0])):
+			if points[1][i] > maxHeight or (points[1][i] == maxHeight and i != len(points[0])):
+				print "c", i, maxHeight, points[1][i]
 				return -1
 			
 			#Calculate acceleration based on segment slope. Open question - would be using cos() faster?
@@ -29,8 +29,10 @@ class Individual:
 			dx = points[0][i] - x_i
 			dy = points[1][i] - y_i
 			li = math.sqrt(dx*dx + dy*dy)
-			ai = -G_ACC*dy/float(li)
-			
+			try:
+				ai = -G_ACC*dy/float(li)
+			except:
+				print points		
 			#Energy conservation. You really needn't be reading this, but if you have doubts, tell me
 			v_j = math.sqrt(2*(-G_ACC*dy + v_i*v_i/2))
 			#If speed is less than 0, forget about it. This actually never happens thanks to our checks.
@@ -109,7 +111,7 @@ class DynamicSpacing(Individual):
 	@staticmethod
 	def new(nPoints):
 		genes = [[config.A[0] + config.DX*i/(nPoints-1), (random.random() - 0.5) * 2 * config.DY + config.B[1]] for i in xrange(1,nPoints-1)]
-		return Individual([config.A] + genes + [config.B])
+		return DynamicSpacing([config.A] + genes + [config.B])
 
 	# List of n points (2 sized arrays: [abs x, abs y])
 	def __init__(self, points):
@@ -130,17 +132,17 @@ class DynamicSpacing(Individual):
 		xIndex, splitNeeded = self._findXCoord(x)
 
 		if not splitNeeded:
-			return xIndex
+			return xIndex, splitNeeded
 
 		self.points.insert(xIndex,[x, self.points[xIndex][1]])
 
-		return xIndex
+		return xIndex, splitNeeded
 
 	def crossover(self, other):
 		crossoverMaxLen = random.random() * config.CROSSOVER_LEN_MAX * config.DX
 
 		xInit = random.random() * (config.DX - crossoverMaxLen)
-		xEnd = startingCrossoverPoint + crossoverMaxLen
+		xEnd = xInit + crossoverMaxLen
 
 		xi1, xj1 = self.crossoverSegment(xInit, xEnd)
 		xi2, xj2 = other.crossoverSegment(xInit, xEnd)
@@ -149,17 +151,50 @@ class DynamicSpacing(Individual):
 		other.points = other.points[:xi2] + self.points[xi1:xj1] + other.points[xj2:]
 		self.points = tempPoints
 
+		other.interpolate()
+		self.interpolate()
+
 		self.fitness_val = None
 		other.fitness_val = None
 	
 	def crossoverSegment(self, xInit, xEnd):
-		return self._splitXCoord(xInit), self._splitXCoord(xEnd) + 1
+		a, splita = self._splitXCoord(xInit)
+		b, splitb = self._splitXCoord(xEnd)
+
+		count = 0
+		if splita:
+			count += 1
+		if splitb:
+			count += 1
+
+		for k in xrange(count):
+			i = b
+			while (i == b or i == a):
+				i = random.randint(1, len(self.points)-2)
+
+			if i < a:
+				a -= 1
+			if i < b:
+				b -= 1
+
+			self.points.pop(i)
+
+		return a, b + 1
 
 	def getPoints(self):
 		x = [i[0] for i in self.points]
 		y = [i[1] for i in self.points]
 
 		return x, y
+
+	def interpolate(self):
+		needed = config.POINTS_INIT - len(self.points)
+
+		for i in xrange(needed):
+			k = random.choice(xrange(len(self.points)-1))
+			self.points.insert(k+1, [(self.points[k][0]+self.points[k+1][0])/2, (self.points[k][1]+self.points[k+1][1])/2])
+
+		print len(self.points)
 
 	def mutate(self):
 		prob = config.MUTATION_PROB
@@ -169,8 +204,8 @@ class DynamicSpacing(Individual):
 				window = self.points[i+1][0] - self.points[i-1][0] - 2 * config.DX_MIN
 				self.points[i][0] = self.points[i-1][0] + config.DX_MIN + random.random() * window
 
-				self.points[i][1] += (random.random() - 0.5) * 2 * config.MUTATION_Y * config.DY
-				self.points[i][1] = min(self.points[i][1], config.A[1] - config.DY_MIN)
+				dy = random.gauss(0, config.MUTATION_Y_STDEV)
+				self.points[i][1] = min(self.points[i][1] + dy, config.A[1] - config.DY_MIN)
 
 				prob = config.MUTATION_PROB + config.MUTATION_BURST
 			else:
