@@ -51,6 +51,7 @@ class BrachGUI:
 		selection_model = gtk.ListStore(str)
 		selection_model.append(["Tournament"])
 		selection_model.append(["Roulette"])
+		selection_model.append(["Rafael-Ribeiro"])
 
 		selection_box = self.builder.get_object("input_selection_type")
 		selection_box.set_model(selection_model)

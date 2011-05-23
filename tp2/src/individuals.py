@@ -108,6 +108,8 @@ class EvenSpacing(Individual):
 			else:
 				prob = config.MUTATION_PROB
 
+		self.fitness_val = None
+
 class DynamicSpacing(Individual):
 	@staticmethod
 	def new(nPoints):

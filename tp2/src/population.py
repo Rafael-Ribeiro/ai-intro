@@ -24,41 +24,93 @@ class Population:
 
 	def evolve(self):
 		individuals = [] # next population
+		
+		if config.SELECTION_TYPE != "Rafael-Ribeiro":
+			nSurvivingParents = int(config.ELITISM * len(self.individuals))
+			nSurvivingParents += nSurvivingParents % 2 # to make sure it's even
 
-		nSurvivingParents = int(config.ELITISM * len(self.individuals))
-		nSurvivingParents += nSurvivingParents % 2 # to make sure it's even
+			# tournament/roulette selection
+			for i in xrange((len(self.individuals) - nSurvivingParents) / 2):
+				if config.SELECTION_TYPE == "Tournament": # "Tournament"
+					individual1, individual2 = self.tournament(config.TOURNAMENT_SIZE)
+				else: # "Roulette"
+					individual1, individual2 = self.roulette()
 
-		# tournament/roulette selection
-		for i in xrange((len(self.individuals) - nSurvivingParents) / 2):
-			if config.SELECTION_TYPE == "Tournament": # "Tournament"
-				individual1, individual2 = self.tournament(config.TOURNAMENT_SIZE)
-			else: # "Roulette"
-				individual1, individual2 = self.roulette()
+				# they are always copies (even if no crossover occurs)
+				individual1 = copy.deepcopy(self.individuals[i*2])
+				individual2 = copy.deepcopy(self.individuals[(i*2)+1])
 
-			# they are always copies (even if no crossover occurs)
-			individual1 = copy.deepcopy(self.individuals[i*2])
-			individual2 = copy.deepcopy(self.individuals[(i*2)+1])
+				# reproduce (with/without cross-over)
+				prob = random.random()
+				if prob <= config.CROSSOVER: # crossover both individuals (else: clone them)
+					individual1.crossover(individual2)
 
-			# reproduce (with/without cross-over)
-			prob = random.random()
-			if prob <= config.CROSSOVER: # crossover both individuals (else: clone them)
-				individual1.crossover(individual2)
+				individuals.append(individual1)
+				individuals.append(individual2)
 
-			individuals.append(individual1)
-			individuals.append(individual2)
+			# mutate all childs (config.MUTATION_PROB applies to every gene)
+			for individual in individuals:
+				individual.mutate()
 
-		# mutate all childs (config.MUTATION_PROB applies to every gene)
-		for individual in individuals:
-			individual.mutate()
+			 # Elitism (config.ELITISM refers to the parents' percentage that survives);
+			 # len(individuals) guarantees that POPULATION_MAX is not exceeded,
+			 # since we only generate the "remaining" childs after elitism
+			self.individuals = self.individuals[:nSurvivingParents] + individuals
+			self.individuals.sort(key = Individual.fitness) # guarantee that self.individuals are sorted for the next iteration
 
-		 # Elitism (config.ELITISM refers to the parents' percentage that survives);
-		 # len(individuals) guarantees that POPULATION_MAX is not exceeded,
-		 # since we only generate the "remaining" childs after elitism
-		self.individuals = self.individuals[:nSurvivingParents] + individuals
-		self.individuals.sort(key = Individual.fitness) # guarantee that self.individuals are sorted for the next iteration
+			if config.SELECTION_TYPE == "Roulette":
+				self.probabilities()
 
-		if config.SELECTION_TYPE == "Roulette":
-			self.probabilities()
+		else: # Rafael-Ribeiro algorithm (pseudo-steady-state based on real-life events)
+			# reproduce (with cross-over)
+			random.shuffle(self.individuals)
+			for i in xrange(len(self.individuals)/2):
+				individual1 = copy.deepcopy(self.individuals[i*2])
+				individual2 = copy.deepcopy(self.individuals[(i*2)+1])
+
+				prob = random.random()
+				if prob <= config.CROSSOVER: # crossover both individuals (else: clone them)
+					individual1.crossover(individual2)
+
+				individuals.append(individual1)
+				individuals.append(individual2)
+
+			if len(self.individuals) % 2 != 0: # forever alone: survives without change
+				individuals.push(copy.deepcopy(self.individuals[-1]))
+
+			# mutate childs
+			for individual in individuals:
+				individual.mutate()
+
+			# join parents and childs
+			individuals += self.individuals
+			individuals.sort(key = Individual.fitness)
+
+			# elitism selection
+			cutoff = int(config.ELITISM * len(individuals))
+
+			self.individuals = individuals[cutoff:]
+
+			selected = []
+			needed = config.POPULATION_SIZE - cutoff
+			while needed > 1:
+				a,b = self.tournament(config.TOURNAMENT_SIZE)
+
+				self.individuals.remove(a)
+				self.individuals.remove(b)
+				selected.append(a)
+				selected.append(b)
+
+				needed -= 2
+
+			if needed == 1:
+				selected.append(random.choice(self.individuals))
+			
+			self.individuals = individuals[:cutoff] + selected	
+		
+			print "size: ", len(self.individuals)
+			self.individuals.sort(key = Individual.fitness) # guarantee that self.individuals are sorted for the next iteration
+
 
 	def getBest(self):
 		return self.individuals[0]
