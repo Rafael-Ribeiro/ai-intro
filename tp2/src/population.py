@@ -80,7 +80,7 @@ class Population:
 
 			# mutate childs
 			for individual in individuals:
-				individual.mutate()
+				individual.mutateRR()
 
 			# join parents and childs
 			individuals += self.individuals
