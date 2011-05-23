@@ -2,12 +2,20 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import config
 import random
 
 from population import Population
 from matplotlib.pyplot import figure
+
 SEEDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+
+if len(sys.argv) < 3:
+	return 0
+else
+	SEEDS = range(int(sys.argv[1]), int(sys.argv[2])+1)
+
 POINTS = [15, 30]
 REPRESENTATIONS = ["Dynamic spacing", "Even spacing"]
 
@@ -46,18 +54,24 @@ for representation in REPRESENTATIONS:
 	
 	repr_path = '../results/{0}'.format(representation.split()[0].lower())
 	make_dir(repr_path)
+	if os.path.isfile(repr_path + "/.done"):
+		continue
 
 	for points in POINTS:
 		config.POINTS_INIT = points
 		points_path = '{0}/{1}_points'.format(repr_path, points)
 
 		make_dir(points_path)
+		if os.path.isfile(points_path + "/.done"):
+			continue
 
 		for seed in SEEDS:
 			random.seed(seed)
 
 			seed_path = "{0}/{1}".format(points_path, seed)
 			make_dir(seed_path)
+			if os.path.isfile(points_path + "/.done"):
+				continue
 
 			best_list = []
 			avg_list = []
@@ -83,5 +97,9 @@ for representation in REPRESENTATIONS:
 					save_data(final_path, best, best_list, avg_list, worst_list, stddev_list, xrange(1, i+1))
 
 			print "finished test: ", seed_path
+
+			open(seed_path + "/.done", 'w').close()
+		open(points_path + "/.done", 'w').close()
+	open(repr_path + "/.done", 'w').close()
 
 print "FINISHED!"
