@@ -100,6 +100,7 @@ class BrachGUI:
 		if config.A[0] >= config.B[0]:
 			widget.set_value(config.A[0]-0.1)
 
+		self.on_update_points()
 		return True
 
 	def on_adjust_Ay_value_changed(self, widget, data=None):
@@ -107,6 +108,8 @@ class BrachGUI:
 
 		if config.A[1] < config.B[1]:
 			widget.set_value(config.A[1] + 0.1)
+
+		self.on_update_points()
 
 		return True
 
@@ -116,6 +119,7 @@ class BrachGUI:
 		if config.B[0] <= config.A[0]:
 			widget.set_value(config.B[0] + 0.1)
 
+		self.on_update_points()
 		return True
 
 	def on_adjust_By_value_changed(self, widget, data=None):
@@ -123,6 +127,8 @@ class BrachGUI:
 
 		if config.B[1] > config.A[1]:
 			widget.set_value(config.B[1] - 0.1)
+
+		self.on_update_points()
 
 		return True
 
@@ -257,6 +263,12 @@ class BrachGUI:
 
 		return True
 
+	def on_update_points(self):
+		config.DX = float(config.B[0] - config.A[0])
+		config.DY = float(config.B[1] - config.A[1])
+		config.MUTATION_X_STDEV = (config.A[0] - config.B[0])/10	# standard deviation
+		config.MUTATION_Y_STDEV = (config.A[1] - config.B[1])/10	# standard deviation
+
 	def on_window_main_destroy(self, widget, data=None):
 		app.running = False
 		if app.thread != None:
@@ -266,9 +278,7 @@ class BrachGUI:
 	def evolve(self):
 		i = 0
 		while self.running:
-			print "EVOLVING"
 			self.population.evolve()
-			print "EVOLVED"
 
 			stats = self.population.getStatistics()
 			print "Iteration", i, stats
@@ -280,7 +290,6 @@ class BrachGUI:
 			self.iteration_list.append(i)
 
 			if datetime.now() > self.lastUpdate + timedelta(seconds=5):
-				print "DRAWING"
 				self.lastUpdate = datetime.now()
 
 				points = self.population.getBest().getPoints()
@@ -298,7 +307,6 @@ class BrachGUI:
 
 				self.fig_best.canvas.draw()
 				self.fig_hist.canvas.draw()
-				print "DRAWN"
 			i += 1
 
 if __name__ == '__main__':

@@ -152,8 +152,8 @@ class DynamicSpacing(Individual):
 		other.points = other.points[:xi2] + self.points[xi1:xj1] + other.points[xj2:]
 		self.points = tempPoints
 
-		other.interpolate()
 		self.interpolate()
+		other.interpolate()
 
 		self.fitness_val = None
 		other.fitness_val = None
@@ -161,24 +161,6 @@ class DynamicSpacing(Individual):
 	def crossoverSegment(self, xInit, xEnd):
 		a, splita = self._splitXCoord(xInit)
 		b, splitb = self._splitXCoord(xEnd)
-
-		count = 0
-		if splita:
-			count += 1
-		if splitb:
-			count += 1
-
-		for k in xrange(count):
-			i = b
-			while (i == b or i == a):
-				i = random.randint(1, len(self.points)-2)
-
-			if i < a:
-				a -= 1
-			if i < b:
-				b -= 1
-
-			self.points.pop(i)
 
 		return a, b + 1
 
@@ -191,11 +173,13 @@ class DynamicSpacing(Individual):
 	def interpolate(self):
 		needed = config.POINTS_INIT - len(self.points)
 
-		for i in xrange(needed):
-			k = random.choice(xrange(len(self.points)-1))
-			self.points.insert(k+1, [(self.points[k][0]+self.points[k+1][0])/2, (self.points[k][1]+self.points[k+1][1])/2])
-
-		print len(self.points)
+		if needed > 0:
+			for i in xrange(needed):
+				k = random.choice(xrange(len(self.points)-1))
+				self.points.insert(k+1, [(self.points[k][0]+self.points[k+1][0])/2, (self.points[k][1]+self.points[k+1][1])/2])
+		elif needed < 0:
+			for k in xrange(-needed):
+				self.points.pop(random.randint(1, len(self.points)-2))
 
 	def mutate(self):
 		prob = config.MUTATION_PROB
