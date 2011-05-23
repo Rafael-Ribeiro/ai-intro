@@ -5,6 +5,20 @@ import math, random, copy, sys
 import config
 from individuals import *
 
+def binary_search(a, x, lo=0, hi=None):
+    if hi is None:
+        hi = len(a)
+    while lo < hi:
+        mid = (lo+hi)//2
+        midval = a[mid]
+        if midval < x:
+            lo = mid+1
+        elif midval > x: 
+            hi = mid
+        else:
+            return mid
+    return hi
+
 class Population:
 	@staticmethod
 	def new(nIndividuals, representation):
@@ -18,6 +32,8 @@ class Population:
 	def __init__(self, individuals):
 		self.individuals = individuals
 		self.individuals.sort(key = Individual.fitness) # guarantee they are sorted for the first iteration
+		if config.SELECTION_TYPE == "Roulette":
+			self.probabilities()
 
 	def evolve(self):
 		individuals = [] # next population
@@ -52,7 +68,10 @@ class Population:
 		 # len(individuals) guarantees that POPULATION_MAX is not exceeded, since we only generate the "remaining" childs after elitism
 		self.individuals = self.individuals[:nSurvivingParents] + individuals
 		self.individuals.sort(key = Individual.fitness) # guarantee that self.individuals are sorted for the next iteration
-		
+
+		if config.SELECTION_TYPE == "Roulette":
+			self.probabilities()
+
 	def getBest(self):
 		return self.individuals[0]
 
@@ -71,3 +90,22 @@ class Population:
 
 		dev_fitness = math.sqrt(sqr_sum/config.POPULATION_MAX)
 		return max_fitness, avg_fitness, min_fitness, dev_fitness
+
+	def probabilities(self):
+		self.probability = [0.0 for i in self.individuals]
+		total = 0.0
+		for i in xrange(len(self.individuals)):
+			self.probability[i] = total + 1/self.individuals[i].getFitness()
+			total = self.probability[i]
+
+	def roulette(self):
+		total = self.probability[-1];
+	
+		a = binary_search(self.probability, random.random()*total)
+		b = a
+
+		while (b == a):
+			b = binary_search(self.probability, random.random()*total)
+
+		return self.individuals[a], self.individuals[b]
+

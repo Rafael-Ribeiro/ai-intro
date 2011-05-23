@@ -36,7 +36,7 @@ class BrachGUI:
 		self.builder.get_object("input_Bx").set_value(config.B[0])
 		self.builder.get_object("input_By").set_value(config.B[1])
 
-		self.builder.get_object("input_population_size").set_value(config.POPULATION_MAX)
+		self.builder.get_object("input_population_size").set_value(config.POPULATION_SIZE)
 		self.builder.get_object("input_elitism").set_value(config.ELITISM*100)
 		self.builder.get_object("input_points").set_value(config.POINTS_INIT)
 		self.builder.get_object("input_crossover").set_value(config.CROSSOVER*100)
@@ -127,7 +127,7 @@ class BrachGUI:
 		return True
 
 	def on_input_population_size_value_changed(self, widget, data=None):
-		config.POPULATION_MAX = widget.get_value_as_int()
+		config.POPULATION_SIZE = widget.get_value_as_int()
 		return True
 
 	def on_input_elitism_value_changed(self, widget, data=None):
@@ -229,7 +229,7 @@ class BrachGUI:
 			
 			self.builder.get_object("button_save").set_sensitive(False)
 
-			self.population = Population.new(config.POPULATION_MAX, config.REPRESENTATION)
+			self.population = Population.new(config.POPULATION_SIZE, config.REPRESENTATION)
 
 			self.thread = Thread(target=self.evolve)
 			self.thread.start()

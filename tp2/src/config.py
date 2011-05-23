@@ -13,7 +13,7 @@ DX_MIN = 0.0001
 DY_MIN = DX_MIN
 
 POPULATION_MAX = 100				# size of population, must be pair
-SELECTION_TYPE = "Tournament"	 	# "Roulette"
+SELECTION_TYPE = "Roulette"	 		# "Roulette"
 REPRESENTATION = "Even spacing"		# "Dynamic spacing"
 
 POINTS_INIT = 30					# max number of points per individual
