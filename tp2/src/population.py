@@ -111,7 +111,6 @@ class Population:
 		
 			self.individuals.sort(key = Individual.fitness) # guarantee that self.individuals are sorted for the next iteration
 
-
 	def getBest(self):
 		return self.individuals[0]
 

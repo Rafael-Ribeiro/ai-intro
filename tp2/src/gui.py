@@ -9,8 +9,11 @@ from threading import Thread
 
 from datetime import datetime, timedelta
 
+import matplotlib
+matplotlib.use('GTK')
 from matplotlib.pyplot import figure
 from matplotlib.backends.backend_gtk import Figure, FigureCanvasGTK
+
 import gobject
 
 # program constants
@@ -175,7 +178,7 @@ class BrachGUI:
 
 		response = dialog.run()
 		if response == gtk.RESPONSE_OK:
-			points = self.population.getBest().getPoints()
+			points = self.best.getPoints()
 
 			f = open(dialog.get_filename() + '/data', 'w')
 			f.write(str(self.iteration_list[-1])+"\n")
@@ -186,10 +189,15 @@ class BrachGUI:
 			f.write(str(points)+"\n")
 			f.close()
 
-			figureBest = figure(figsize=(3.0,3.0), dpi=72)
-			graphBest = figureBest.add_axes([0, config.B[0], 0, config.A[1]])
+			figureBest = figure(figsize=(4.0, 4.0), dpi=72)
+			graphBest = figureBest.add_subplot(111)
 			graphBest.plot(points[0], points[1], 'r-*')
 			figureBest.savefig(dialog.get_filename() + '/best.png', format="png", transparent=True)
+
+			figureHist = figure(figsize=(10.0, 4.0), dpi=72)
+			graphHist = figureHist.add_subplot(111)
+			graphHist.plot(self.iteration_list, self.best_list, 'b', self.iteration_list, self.avg_list, 'g', self.iteration_list, self.worst_list, 'r')
+			figureHist.savefig(dialog.get_filename() + '/hist.png', format="png", transparent=True)
 
 		dialog.destroy()
 		return True
@@ -274,7 +282,7 @@ class BrachGUI:
 
 	def evolve(self):
 		i = 0
-		while self.running and i < 1001:
+		while self.running:
 			self.population.evolve()
 
 			stats = self.population.getStatistics()

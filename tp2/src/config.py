@@ -18,13 +18,13 @@ SELECTION_TYPE = "Tournament"	 	# "Roulette"
 REPRESENTATION = "Even spacing"		# "Dynamic spacing"
 TOURNAMENT_SIZE = 5					# Tournament size (absolute value)
 
-POINTS_INIT = 30					# max number of points per individual
-ELITISM = 0.1						# percentage
+POINTS_INIT = 15					# max number of points per individual
+ELITISM = 0.15						# percentage
 
-CROSSOVER = 0.05					# probability
-CROSSOVER_LEN_MAX = 0.25			# 1 quarter of the individual is cut
+CROSSOVER = 0.40					# probability
+CROSSOVER_LEN_MAX = 0.4				# 40% of the individual is cut
 
-MUTATION_BURST = 0.0				# probability
-MUTATION_PROB = 0.10				# probability
+MUTATION_BURST = 0.50				# probability
+MUTATION_PROB = 0.15				# probability
 MUTATION_X_STDEV = (A[0] - B[0])/10	# standard deviation
 MUTATION_Y_STDEV = (A[1] - B[1])/10	# standard deviation
