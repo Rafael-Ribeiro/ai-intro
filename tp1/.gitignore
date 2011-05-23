@@ -1,1 +1,4 @@
 CD/*
+report/*
+!report/report.tex
+*.pyc
