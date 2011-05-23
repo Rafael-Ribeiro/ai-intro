@@ -4,7 +4,7 @@
 DEBUG_MODE = False					# console prints
 
 A = [0.0, 3.0] 						# initial point
-B = [1.0, 2.0]						# end point
+B = [4.0, 2.0]						# end point
 
 DX = float(B[0] - A[0])
 DY = float(B[1] - A[1])
@@ -13,7 +13,7 @@ DX_MIN = 0.0001
 DY_MIN = DX_MIN
 
 POPULATION_SIZE = 100				# size of population, must be pair
-SELECTION_TYPE = "Roulette"	 		# "Roulette"
+SELECTION_TYPE = "Tournament"	 	# "Roulette"
 
 REPRESENTATION = "Even spacing"		# "Dynamic spacing"
 TOURNAMENT_SIZE = 5					# Tournament size (absolute value)

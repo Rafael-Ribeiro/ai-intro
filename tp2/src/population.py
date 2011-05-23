@@ -29,6 +29,9 @@ class Population:
 			nSurvivingParents = int(config.ELITISM * len(self.individuals))
 			nSurvivingParents += nSurvivingParents % 2 # to make sure it's even
 
+			if config.SELECTION_TYPE == "Roulette":
+				self.probabilities()
+
 			# tournament/roulette selection
 			for i in xrange((len(self.individuals) - nSurvivingParents) / 2):
 				if config.SELECTION_TYPE == "Tournament": # "Tournament"
@@ -57,9 +60,6 @@ class Population:
 			 # since we only generate the "remaining" childs after elitism
 			self.individuals = self.individuals[:nSurvivingParents] + individuals
 			self.individuals.sort(key = Individual.fitness) # guarantee that self.individuals are sorted for the next iteration
-
-			if config.SELECTION_TYPE == "Roulette":
-				self.probabilities()
 
 		else: # Rafael-Ribeiro algorithm (pseudo-steady-state based on real-life events)
 			# reproduce (with cross-over)

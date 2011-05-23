@@ -9,7 +9,9 @@ from threading import Thread
 
 from datetime import datetime, timedelta
 
+from matplotlib.pyplot import figure
 from matplotlib.backends.backend_gtk import Figure, FigureCanvasGTK
+import gobject
 
 # program constants
 GUI_FILENAME = "gui.xml"
@@ -98,39 +100,25 @@ class BrachGUI:
 	def on_adjust_Ax_value_changed(self, widget, data=None):
 		config.A[0] = widget.get_value()
 
-		if config.A[0] >= config.B[0]:
-			widget.set_value(config.A[0]-0.1)
-
 		self.on_update_points()
 		return True
 
 	def on_adjust_Ay_value_changed(self, widget, data=None):
 		config.A[1] = widget.get_value()
 
-		if config.A[1] < config.B[1]:
-			widget.set_value(config.A[1] + 0.1)
-
 		self.on_update_points()
-
 		return True
 
 	def on_adjust_Bx_value_changed(self, widget, data=None):
 		config.B[0] = widget.get_value()
 
-		if config.B[0] <= config.A[0]:
-			widget.set_value(config.B[0] + 0.1)
-
 		self.on_update_points()
 		return True
 
 	def on_adjust_By_value_changed(self, widget, data=None):
-		config.A[1] = widget.get_value()
-
-		if config.B[1] > config.A[1]:
-			widget.set_value(config.B[1] - 0.1)
+		config.B[1] = widget.get_value()
 
 		self.on_update_points()
-
 		return True
 
 	def on_input_population_size_value_changed(self, widget, data=None):
@@ -162,7 +150,7 @@ class BrachGUI:
 		return True
 
 	def on_input_mutation_value_changed(self, widget, data=None):
-		config.MUTATION_PROB = widget.get_value()/100
+		config.MUTATION_PROB = widget.get_value()/1005.0
 
 		burst = self.builder.get_object("input_mutation_burst")
 		m = 100-config.MUTATION_PROB*100
@@ -198,16 +186,22 @@ class BrachGUI:
 			f.write(str(points)+"\n")
 			f.close()
 
-			figureBest = Figure(figsize=(400,400), dpi=72)
-			graphBest = figureBest.add_subplot(111)
+			figureBest = figure(figsize=(3.0,3.0), dpi=72)
+			graphBest = figureBest.add_axes([0, config.B[0], 0, config.A[1]])
 			graphBest.plot(points[0], points[1], 'r-*')
-			graphBest.axis([0, config.B[0], 0, config.A[1]])
-			figureBest.savefig(dialog.get_filename() + '/best.png')
+			figureBest.savefig(dialog.get_filename() + '/best.png', format="png", transparent=True)
 
 		dialog.destroy()
 		return True
 
 	def on_button_start_stop_clicked(self, widget, data=None):
+		if not self.running and (config.A[1] <= config.B[1] or config.B[0] <= config.A[0]):
+			md = gtk.MessageDialog(self.builder.get_object('window_main'), gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_ERROR, gtk.BUTTONS_CLOSE, "Invalid start/end points!")
+			md.run()
+			md.destroy()
+
+			return True
+
 		self.running = not self.running
 		
 		if self.running:
@@ -227,6 +221,7 @@ class BrachGUI:
 			self.builder.get_object("input_population_size").set_sensitive(False)
 			self.builder.get_object("input_elitism").set_sensitive(False)
 			self.builder.get_object("input_selection_type").set_sensitive(False)
+			self.builder.get_object("input_representation").set_sensitive(False)
 
 			self.builder.get_object("input_points").set_sensitive(False)
 			self.builder.get_object("input_crossover").set_sensitive(False)
@@ -252,6 +247,7 @@ class BrachGUI:
 			self.builder.get_object("input_population_size").set_sensitive(True)
 			self.builder.get_object("input_elitism").set_sensitive(True)
 			self.builder.get_object("input_selection_type").set_sensitive(True)
+			self.builder.get_object("input_representation").set_sensitive(True)
 
 			self.builder.get_object("input_points").set_sensitive(True)
 			self.builder.get_object("input_crossover").set_sensitive(True)
@@ -291,24 +287,28 @@ class BrachGUI:
 			self.iteration_list.append(i)
 
 			if datetime.now() > self.lastUpdate + timedelta(seconds=5):
-				self.lastUpdate = datetime.now()
+				gobject.idle_add(self.plot)
 
-				points = self.population.getBest().getPoints()
-
-				self.fig_best.clf()
-				self.fig_hist.clf()
-
-				graph_best = self.fig_best.add_subplot(111)
-				graph_best.plot(points[0], points[1], 'r-*')
-				graph_best.axis([0, config.B[0], 0, config.A[1]])
-
-				graph_hist = self.fig_hist.add_subplot(111)
-				graph_hist.plot(self.iteration_list[-100:], self.best_list[-100:], 'b', self.iteration_list[-100:], self.avg_list[-100:], 'g', self.iteration_list[-100:], self.worst_list[-100:], 'r')
-				graph_hist.axis([max(0, self.iteration_list[-1]-100), self.iteration_list[-1], 0, 4.0])
-
-				self.fig_best.canvas.draw()
-				self.fig_hist.canvas.draw()
 			i += 1
+
+	def plot(self):
+		self.lastUpdate = datetime.now()
+
+		points = self.population.getBest().getPoints()
+
+		self.fig_best.clf()
+		self.fig_hist.clf()
+
+		graph_best = self.fig_best.add_subplot(111)
+		graph_best.plot(points[0], points[1], 'r-*')
+		graph_best.axis([0, config.B[0], 0, config.A[1]])
+
+		graph_hist = self.fig_hist.add_subplot(111)
+		graph_hist.plot(self.iteration_list[-100:], self.best_list[-100:], 'b', self.iteration_list[-100:], self.avg_list[-100:], 'g', self.iteration_list[-100:], self.worst_list[-100:], 'r')
+		graph_hist.axis([max(0, self.iteration_list[-1]-100), self.iteration_list[-1], 0, 4.0])
+
+		self.fig_best.canvas.draw()
+		self.fig_hist.canvas.draw()
 
 if __name__ == '__main__':
 	gtk.gdk.threads_init()
