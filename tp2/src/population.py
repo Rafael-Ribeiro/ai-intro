@@ -76,7 +76,7 @@ class Population:
 				individuals.append(individual2)
 
 			if len(self.individuals) % 2 != 0: # forever alone: survives without change
-				individuals.push(copy.deepcopy(self.individuals[-1]))
+				individuals.append(copy.deepcopy(self.individuals[-1]))
 
 			# mutate childs
 			for individual in individuals:
