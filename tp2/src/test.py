@@ -17,14 +17,15 @@ else:
 	SEEDS = range(int(sys.argv[1]), int(sys.argv[2])+1)
 
 # parameters to be tested
-CROSSOVER_PROBS = [0.0, 0.20, 0.40]										# probabilities
+CROSSOVER_PROBS = [0.0, 0.35]										# probabilities
 CROSSOVER_LEN_MAXS = [0.20, 0.40]										# % of the individual is cut
-ELITISMS = [0.05, 0.20, 0.50]
+ELITISMS = [0.05, 0.20]
 POINTS = [15, 30]
-POPULATION_SIZES = [50, 100, 200]
+POPULATION_SIZES = [25, 50, 100]
 REPRESENTATIONS = ["Dynamic spacing", "Even spacing"]
 SELECTION_TYPES = ["Tournament","Roulette","Rafael-Ribeiro"]
 MUTATION_PROBS = [0.05, 0.25]											# probability (percentage when using Rafael/Ribeiro)
+INITIAL_POINTS = [[[0.0,3.0],[4.0,2.0]], [[0.0,10.0],[10.0,4.0]]]
 
 MAX_ITERATIONS = 2000
 ITERATIONS = [20, 100, 1000, 2000]
@@ -61,105 +62,114 @@ def make_dir(path):
 
 
 if __name__ == '__main__':
-	for representation in REPRESENTATIONS:
-		config.REPRESENTATION = representation
-		
-		repr_path = '../results/{0}'.format(representation.split()[0].lower())
-		make_dir(repr_path)
+	for initial in xrange(len(INITIAL_POINTS)):
+		config.A = INITIAL_POINTS[initial][0]
+		config.B = INITIAL_POINTS[initial][1]
+	
+		initial_path = '../results/initial_{0}'.format(initial)
+		make_dir(initial_path)
 		#if os.path.isfile(repr_path + "/.done"):
 		#	continue
 
-		for selection_type in SELECTION_TYPES:
-			config.SELECTION_TYPE = selection_type
-
-			selection_types_path = "{0}/{1}".format(repr_path, selection_type.lower())
-			make_dir(selection_types_path)
-			#if os.path.isfile(selection_types_path + "/.done"):
+		for representation in REPRESENTATIONS:
+			config.REPRESENTATION = representation
+		
+			repr_path = '{0}/{1}'.format(initial_path, representation.split()[0].lower())
+			make_dir(repr_path)
+			#if os.path.isfile(repr_path + "/.done"):
 			#	continue
 
-			for points in POINTS:
-				config.POINTS_INIT = points
+			for selection_type in SELECTION_TYPES:
+				config.SELECTION_TYPE = selection_type
 
-				points_path = '{0}/{1}_points'.format(selection_types_path, points)
-				make_dir(points_path)
-				#if os.path.isfile(points_path + "/.done"):
+				selection_types_path = "{0}/{1}".format(repr_path, selection_type.lower())
+				make_dir(selection_types_path)
+				#if os.path.isfile(selection_types_path + "/.done"):
 				#	continue
 
-				for population_size in POPULATION_SIZES:
-					config.POPULATION_SIZE = population_size
+				for points in POINTS:
+					config.POINTS_INIT = points
 
-					population_sizes_path = "{0}/{1}_pop".format(points_path, population_size)
-					make_dir(population_sizes_path)
-					#if os.path.isfile(population_sizes_path + "/.done"):
+					points_path = '{0}/{1}_points'.format(selection_types_path, points)
+					make_dir(points_path)
+					#if os.path.isfile(points_path + "/.done"):
 					#	continue
 
-					for elitism in ELITISMS:
-						config.ELITISM = elitism
+					for population_size in POPULATION_SIZES:
+						config.POPULATION_SIZE = population_size
 
-						elitisms_path = "{0}/{1}_elite".format(population_sizes_path, elitism)
-						make_dir(elitisms_path)
-						#if os.path.isfile(elitisms_path + "/.done"):
+						population_sizes_path = "{0}/{1}_pop".format(points_path, population_size)
+						make_dir(population_sizes_path)
+						#if os.path.isfile(population_sizes_path + "/.done"):
 						#	continue
 
-						for crossover_prob in CROSSOVER_PROBS:
-							config.CROSSOVER_PROB = crossover_prob
+						for elitism in ELITISMS:
+							config.ELITISM = elitism
 
-							crossover_prob_path = "{0}/{1}_cross_prob".format(elitisms_path, crossover_prob)
-							make_dir(crossover_prob_path)
-							#if os.path.isfile(crossover_prob_path + "/.done"):
+							elitisms_path = "{0}/{1}_elite".format(population_sizes_path, elitism)
+							make_dir(elitisms_path)
+							#if os.path.isfile(elitisms_path + "/.done"):
 							#	continue
 
-							for crossover_len_max in CROSSOVER_LEN_MAXS:
-								config.CROSSOVER_LEN_MAX = crossover_len_max
+							for crossover_prob in CROSSOVER_PROBS:
+								config.CROSSOVER_PROB = crossover_prob
 
-								crossover_len_maxs_path = "{0}/{1}_cross_max_len".format(crossover_prob_path, crossover_len_max)
-								make_dir(crossover_len_maxs_path)
-								#if os.path.isfile(crossover_len_maxs_path + "/.done"):
+								crossover_prob_path = "{0}/{1}_cross_prob".format(elitisms_path, crossover_prob)
+								make_dir(crossover_prob_path)
+								#if os.path.isfile(crossover_prob_path + "/.done"):
 								#	continue
 
-								for mutation_prob in MUTATION_PROBS:
-									config.MUTATION_PROB = mutation_prob
+								for crossover_len_max in CROSSOVER_LEN_MAXS:
+									config.CROSSOVER_LEN_MAX = crossover_len_max
 
-									mutation_probs_path = "{0}/{1}_mut_prob".format(crossover_len_maxs_path, mutation_prob)
-									make_dir(mutation_probs_path)
-									#if os.path.isfile(mutation_probs_path + "/.done"):
+									crossover_len_maxs_path = "{0}/{1}_cross_max_len".format(crossover_prob_path, crossover_len_max)
+									make_dir(crossover_len_maxs_path)
+									#if os.path.isfile(crossover_len_maxs_path + "/.done"):
 									#	continue
 
-									for seed in SEEDS:
-										random.seed(seed)
+									for mutation_prob in MUTATION_PROBS:
+										config.MUTATION_PROB = mutation_prob
 
-										seed_path = "{0}/{1}".format(mutation_probs_path, seed)
-										make_dir(seed_path)
-										if os.path.isfile(seed_path + "/.done"):
-											continue
+										mutation_probs_path = "{0}/{1}_mut_prob".format(crossover_len_maxs_path, mutation_prob)
+										make_dir(mutation_probs_path)
+										#if os.path.isfile(mutation_probs_path + "/.done"):
+										#	continue
 
-										best_list = []
-										avg_list = []
-										worst_list = []
-										stddev_list = []
+										for seed in SEEDS:
+											random.seed(seed)
+
+											seed_path = "{0}/{1}".format(mutation_probs_path, seed)
+											make_dir(seed_path)
+											if os.path.isfile(seed_path + "/.done"):
+												continue
+
+											best_list = []
+											avg_list = []
+											worst_list = []
+											stddev_list = []
 										
-										start = time.time()
-										population = Population.new(config.POPULATION_SIZE, config.REPRESENTATION)
-										for i in xrange(1, MAX_ITERATIONS+1):
-											population.evolve()
+											start = time.time()
+											population = Population.new(config.POPULATION_SIZE, config.REPRESENTATION)
+											for i in xrange(1, MAX_ITERATIONS+1):
+												population.evolve()
 
-											stats = population.getStatistics()
+												stats = population.getStatistics()
 
-											best_list.append(stats[0])
-											avg_list.append(stats[1])
-											worst_list.append(stats[2])
-											stddev_list.append(stats[3])
+												best_list.append(stats[0])
+												avg_list.append(stats[1])
+												worst_list.append(stats[2])
+												stddev_list.append(stats[3])
 								
-											if i in ITERATIONS:
-												final_path = "{0}/{1}".format(seed_path, i)
-												best = population.getBest().getPoints()
+												if i in ITERATIONS:
+													final_path = "{0}/{1}".format(seed_path, i)
+													best = population.getBest().getPoints()
 
-												make_dir(final_path)
-												end = time.time()
-												save_data(final_path, best, best_list, avg_list, worst_list, stddev_list, xrange(1, i+1), end-start)
-										print "finished test: ", seed_path
+													make_dir(final_path)
+													end = time.time()
+													save_data(final_path, best, best_list, avg_list, worst_list, stddev_list, xrange(1, i+1), end-start)
+											print "finished test: ", seed_path
 
-										open(seed_path + "/.done", 'w').close()
+											open(seed_path + "/.done", 'w').close()
 	"""									open(mutation_probs_path + "/.done", 'w').close()
 									open(crossover_len_maxs_path + "/.done", 'w').close()
 								open(crossover_prob_path + "/.done", 'w').close()
