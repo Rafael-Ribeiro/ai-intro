@@ -24,7 +24,7 @@ ELITISM = 0.15						# percentage
 CROSSOVER_PROB = 0.40				# probability
 CROSSOVER_LEN_MAX = 0.4				# 40% of the individual is cut
 
-MUTATION_BURST = 0.50				# probability
+MUTATION_BURST = 0.0				# probability
 MUTATION_PROB = 0.15				# probability
 MUTATION_X_STDEV = (A[0] - B[0])/10	# standard deviation
 MUTATION_Y_STDEV = (A[1] - B[1])/10	# standard deviation

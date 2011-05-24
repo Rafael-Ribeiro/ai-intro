@@ -23,7 +23,6 @@ POINTS = [15, 30]
 POPULATION_SIZES = [100]
 REPRESENTATIONS = ["Dynamic spacing", "Even spacing"]
 SELECTION_TYPES = ["Tournament","Roulette","Rafael-Ribeiro"]
-MUTATION_BURSTS = [0.50]									# probability
 MUTATION_PROBS = [0.15]										# probability (percentage when using Rafael/Ribeiro)
 
 MAX_ITERATIONS = 2000
@@ -122,49 +121,40 @@ if __name__ == '__main__':
 									if os.path.isfile(mutation_probs_path + "/.done"):
 										continue
 
-									for mutation_burst in MUTATION_BURSTS:
-										config.MUTATION_BURST = mutation_burst
+									for seed in SEEDS:
+										random.seed(seed)
 
-										mutation_bursts_path = "{0}/{1}_mut_burst".format(mutation_probs_path, mutation_burst)
-										make_dir(mutation_bursts_path)
-										if os.path.isfile(mutation_bursts_path + "/.done"):
+										seed_path = "{0}/{1}".format(mutation_probs_path, seed)
+										make_dir(seed_path)
+										if os.path.isfile(seed_path + "/.done"):
 											continue
 
-										for seed in SEEDS:
-											random.seed(seed)
+										best_list = []
+										avg_list = []
+										worst_list = []
+										stddev_list = []
 
-											seed_path = "{0}/{1}".format(mutation_bursts_path, seed)
-											make_dir(seed_path)
-											if os.path.isfile(seed_path + "/.done"):
-												continue
+										population = Population.new(config.POPULATION_SIZE, config.REPRESENTATION)
+										for i in xrange(1, MAX_ITERATIONS+1):
+											population.evolve()
 
-											best_list = []
-											avg_list = []
-											worst_list = []
-											stddev_list = []
+											stats = population.getStatistics()
 
-											population = Population.new(config.POPULATION_SIZE, config.REPRESENTATION)
-											for i in xrange(1, MAX_ITERATIONS+1):
-												population.evolve()
+											best_list.append(stats[0])
+											avg_list.append(stats[1])
+											worst_list.append(stats[2])
+											stddev_list.append(stats[3])
+								
+											if i in ITERATIONS:
+												final_path = "{0}/{1}".format(seed_path, i)
+												best = population.getBest().getPoints()
 
-												stats = population.getStatistics()
+												make_dir(final_path)
+												save_data(final_path, best, best_list, avg_list, worst_list, stddev_list, xrange(1, i+1))
 
-												best_list.append(stats[0])
-												avg_list.append(stats[1])
-												worst_list.append(stats[2])
-												stddev_list.append(stats[3])
-									
-												if i in ITERATIONS:
-													final_path = "{0}/{1}".format(seed_path, i)
-													best = population.getBest().getPoints()
+										print "finished test: ", seed_path
 
-													make_dir(final_path)
-													save_data(final_path, best, best_list, avg_list, worst_list, stddev_list, xrange(1, i+1))
-
-											print "finished test: ", seed_path
-
-											open(seed_path + "/.done", 'w').close()
-										open(mutation_bursts_path + "/.done", 'w').close()
+										open(seed_path + "/.done", 'w').close()
 									open(mutation_probs_path + "/.done", 'w').close()
 								open(crossover_len_maxs_path + "/.done", 'w').close()
 							open(crossover_prob_path + "/.done", 'w').close()
