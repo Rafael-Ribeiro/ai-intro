@@ -44,7 +44,7 @@ class BrachGUI:
 		self.builder.get_object("input_population_size").set_value(config.POPULATION_SIZE)
 		self.builder.get_object("input_elitism").set_value(config.ELITISM*100)
 		self.builder.get_object("input_points").set_value(config.POINTS_INIT)
-		self.builder.get_object("input_crossover").set_value(config.CROSSOVER*100)
+		self.builder.get_object("input_crossover").set_value(config.CROSSOVER_PROB*100)
 		self.builder.get_object("input_crossover_len").set_value(config.CROSSOVER_LEN_MAX*100)
 		self.builder.get_object("input_mutation").set_value(config.MUTATION_PROB*100)
 		self.builder.get_object("input_mutation_burst").set_value(config.MUTATION_BURST*100)
@@ -145,7 +145,7 @@ class BrachGUI:
 		return True
 
 	def on_input_crossover_value_changed(self, widget, data=None):
-		config.CROSSOVER = widget.get_value()/100
+		config.CROSSOVER_PROB = widget.get_value()/100
 		return True
 
 	def on_input_crossover_len_value_changed(self, widget, data=None):
