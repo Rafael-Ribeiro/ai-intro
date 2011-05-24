@@ -45,7 +45,7 @@ class Population:
 
 				# reproduce (with/without cross-over)
 				prob = random.random()
-				if prob <= config.CROSSOVER: # crossover both individuals (else: clone them)
+				if prob <= config.CROSSOVER_PROB: # crossover both individuals (else: clone them)
 					individual1.crossover(individual2)
 
 				individuals.append(individual1)
@@ -69,7 +69,7 @@ class Population:
 				individual2 = copy.deepcopy(self.individuals[(i*2)+1])
 
 				prob = random.random()
-				if prob <= config.CROSSOVER: # crossover both individuals (else: clone them)
+				if prob <= config.CROSSOVER_PROB: # crossover both individuals (else: clone them)
 					individual1.crossover(individual2)
 
 				individuals.append(individual1)
