@@ -8,7 +8,6 @@ import random
 import time
 
 from population import Population
-from matplotlib.pyplot import figure
 
 if len(sys.argv) < 3:
 	print "Error: must provide seeds' range"

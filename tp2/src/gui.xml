@@ -292,11 +292,11 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label_crossover_size">
+                  <object class="GtkLabel" id="label_crossover_points">
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
                     <property name="xpad">10</property>
-                    <property name="label" translatable="yes">Max. crossover size (%)</property>
+                    <property name="label" translatable="yes">Crossover points</property>
                   </object>
                   <packing>
                     <property name="top_attach">7</property>
@@ -324,23 +324,6 @@
                     <property name="right_attach">2</property>
                     <property name="top_attach">4</property>
                     <property name="bottom_attach">5</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkHScale" id="input_crossover_len">
-                    <property name="width_request">200</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="adjustment">adjust_crossover_len</property>
-                    <property name="digits">3</property>
-                    <property name="value_pos">left</property>
-                    <signal name="value_changed" handler="on_input_crossover_len_value_changed"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="top_attach">7</property>
-                    <property name="bottom_attach">8</property>
                   </packing>
                 </child>
                 <child>
@@ -395,7 +378,6 @@
                     <property name="invisible_char">&#x25CF;</property>
                     <property name="adjustment">adjust_points</property>
                     <property name="climb_rate">0.10000000000000001</property>
-                    <property name="digits">1</property>
                     <property name="numeric">True</property>
                     <signal name="value_changed" handler="on_input_points_value_changed"/>
                   </object>
@@ -473,6 +455,24 @@
                     <property name="top_attach">3</property>
                     <property name="bottom_attach">4</property>
                     <property name="y_options"></property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinButton" id="input_crossover_points">
+                    <property name="width_request">200</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="adjustment">adjust_crossover_points</property>
+                    <property name="climb_rate">0.10000000000000001</property>
+                    <property name="numeric">True</property>
+                    <signal name="value_changed" handler="on_input_crossover_points_value_changed"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">7</property>
+                    <property name="bottom_attach">8</property>
                   </packing>
                 </child>
               </object>
@@ -584,5 +584,10 @@
     <property name="upper">100</property>
     <property name="step_increment">0.5</property>
     <signal name="value_changed" handler="on_adjust_By_value_changed"/>
+  </object>
+  <object class="GtkAdjustment" id="adjust_crossover_points">
+    <property name="lower">1</property>
+    <property name="upper">10</property>
+    <property name="step_increment">1</property>
   </object>
 </interface>
