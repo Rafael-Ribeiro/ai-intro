@@ -153,7 +153,7 @@ class BrachGUI:
 		return True
 
 	def on_input_mutation_value_changed(self, widget, data=None):
-		config.MUTATION_PROB = widget.get_value()/1005.0
+		config.MUTATION_PROB = widget.get_value()/100.0
 
 		burst = self.builder.get_object("input_mutation_burst")
 		m = 100-config.MUTATION_PROB*100
