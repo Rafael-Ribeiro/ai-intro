@@ -8,7 +8,6 @@ import random
 import time
 
 from population import Population
-from matplotlib.pyplot import figure
 
 if len(sys.argv) < 3:
 	print "Error: must provide seeds' range"
@@ -18,14 +17,14 @@ else:
 
 # parameters to be tested
 CROSSOVER_PROBS = [0.0, 0.35]										# probabilities
-CROSSOVER_LEN_MAXS = [0.20, 0.40]										# % of the individual is cut
+CROSSOVER_POINTS = [2, 5]											# number of points that are cut
 ELITISMS = [0.05, 0.20]
 POINTS = [15, 30]
 POPULATION_SIZES = [25, 50, 100]
 REPRESENTATIONS = ["Dynamic spacing", "Even spacing"]
 SELECTION_TYPES = ["Tournament","Roulette","Rafael-Ribeiro"]
 MUTATION_PROBS = [0.05, 0.25]											# probability (percentage when using Rafael/Ribeiro)
-INITIAL_POINTS = [[[0.0,3.0],[4.0,2.0]], [[0.0,10.0],[10.0,4.0]]]
+INITIAL_POINTS = [[[0.0,3.0],[4.0,2.0]], [[0.0,3.0],[4.0,2.8]]]
 
 MAX_ITERATIONS = 2000
 ITERATIONS = [20, 100, 1000, 2000]
@@ -119,18 +118,18 @@ if __name__ == '__main__':
 								#if os.path.isfile(crossover_prob_path + "/.done"):
 								#	continue
 
-								for crossover_len_max in CROSSOVER_LEN_MAXS:
-									config.CROSSOVER_LEN_MAX = crossover_len_max
+								for crossover_points in CROSSOVER_POINTS:
+									config.CROSSOVER_POINTS = crossover_points
 
-									crossover_len_maxs_path = "{0}/{1}_cross_max_len".format(crossover_prob_path, crossover_len_max)
-									make_dir(crossover_len_maxs_path)
+									crossover_points_path = "{0}/{1}_cross_points".format(crossover_prob_path, crossover_points)
+									make_dir(crossover_points_path)
 									#if os.path.isfile(crossover_len_maxs_path + "/.done"):
 									#	continue
 
 									for mutation_prob in MUTATION_PROBS:
 										config.MUTATION_PROB = mutation_prob
 
-										mutation_probs_path = "{0}/{1}_mut_prob".format(crossover_len_maxs_path, mutation_prob)
+										mutation_probs_path = "{0}/{1}_mut_prob".format(crossover_points_path, mutation_prob)
 										make_dir(mutation_probs_path)
 										#if os.path.isfile(mutation_probs_path + "/.done"):
 										#	continue

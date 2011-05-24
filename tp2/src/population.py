@@ -23,8 +23,6 @@ class Population:
 			self.probabilities()
 
 	def evolve(self):
-		individuals = [] # next population
-		
 		if config.SELECTION_TYPE != "Rafael-Ribeiro":
 			nSurvivingParents = int(config.ELITISM * len(self.individuals))
 			nSurvivingParents += nSurvivingParents % 2 # to make sure it's even
@@ -32,8 +30,11 @@ class Population:
 			if config.SELECTION_TYPE == "Roulette":
 				self.probabilities()
 
+			nchilds = len(self.individuals) - nSurvivingParents
+			individuals = [None for i in xrange(nchilds)] # next population
+			index = 0
 			# tournament/roulette selection
-			for i in xrange((len(self.individuals) - nSurvivingParents) / 2):
+			for i in xrange(nchilds / 2):
 				if config.SELECTION_TYPE == "Tournament": # "Tournament"
 					individual1, individual2 = self.tournament(config.TOURNAMENT_SIZE)
 				else: # "Roulette"
@@ -48,8 +49,15 @@ class Population:
 				if prob <= config.CROSSOVER_PROB: # crossover both individuals (else: clone them)
 					individual1.crossover(individual2)
 
-				individuals.append(individual1)
-				individuals.append(individual2)
+				individuals[index] = individual1
+				index += 1
+
+				individuals[index] = individual2
+				index += 1
+
+			if nchilds % 2 != 0: # forever alone: survives without change
+				individuals[index] = copy.deepcopy(random.choice(self.individuals))
+				index += 1
 
 			# mutate all childs (config.MUTATION_PROB applies to every gene)
 			for individual in individuals:
@@ -63,6 +71,9 @@ class Population:
 
 		else: # Rafael-Ribeiro algorithm (pseudo-steady-state based on real-life events)
 			# reproduce (with cross-over)
+			individuals = [None for i in xrange(2*len(self.individuals))] # childs
+			index = 0
+
 			random.shuffle(self.individuals)
 			for i in xrange(len(self.individuals)/2):
 				individual1 = copy.deepcopy(self.individuals[i*2])
@@ -72,18 +83,29 @@ class Population:
 				if prob <= config.CROSSOVER_PROB: # crossover both individuals (else: clone them)
 					individual1.crossover(individual2)
 
-				individuals.append(individual1)
-				individuals.append(individual2)
+				individuals[index] = individual1
+				index += 1
+
+				individuals[index] = individual2
+				index += 1
 
 			if len(self.individuals) % 2 != 0: # forever alone: survives without change
+<<<<<<< HEAD
 				individuals.append(copy.deepcopy(self.individuals[-1]))
+=======
+				individuals[index] = copy.deepcopy(random.choice(self.individuals))
+				index += 1
+>>>>>>> 8ce85a931933fc0b512c73799e1c4e972b099c1b
 
 			# mutate childs
-			for individual in individuals:
-				individual.mutateRR()
+			for indivIndex in xrange(index):
+				individuals[indivIndex].mutateRR()
 
 			# join parents and childs
-			individuals += self.individuals
+			for i in xrange(len(self.individuals)):
+				individuals[index] = self.individuals[i]
+				index += 1
+
 			individuals.sort(key = Individual.fitness)
 
 			# elitism selection
@@ -91,21 +113,24 @@ class Population:
 
 			self.individuals = individuals[cutoff:]
 
-			selected = []
 			needed = config.POPULATION_SIZE - cutoff
-
+			selected = [None for i in xrange(needed)]
+	
+			i = 0
 			while needed > 1:
 				a,b = self.tournament(config.TOURNAMENT_SIZE)
 
 				self.individuals.remove(a)
 				self.individuals.remove(b)
-				selected.append(a)
-				selected.append(b)
+				selected[i] = a
+				i += 1
 
+				selected[i] = b
+				i += 1
 				needed -= 2
 
 			if needed == 1:
-				selected.append(random.choice(self.individuals))
+				selected[i] = random.choice(self.individuals)
 			
 			self.individuals = individuals[:cutoff] + selected	
 		

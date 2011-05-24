@@ -22,7 +22,7 @@ POINTS_INIT = 15					# max number of points per individual
 ELITISM = 0.15						# percentage
 
 CROSSOVER_PROB = 0.40				# probability
-CROSSOVER_LEN_MAX = 0.4				# 40% of the individual is cut
+CROSSOVER_POINTS = 1				# 40% of the individual is cut
 
 MUTATION_BURST = 0.0				# probability
 MUTATION_PROB = 0.15				# probability

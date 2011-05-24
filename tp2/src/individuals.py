@@ -78,13 +78,21 @@ class EvenSpacing(Individual):
 		self.fitness_val = None
 
 	def crossover(self, other):
-		length = random.randint(1, int(self.n * config.CROSSOVER_LEN_MAX))
-		start = random.randint(0, self.n - length)
-		end = start + length
+		points = random.randint(1, config.CROSSOVER_POINTS)		
+		cross = [random.randint(1, self.n-2) for i in xrange(points)]
+		cross.sort()
 
-		tempPoints = self.points[:start] + other.points[start:end] + self.points[end:]
-		other.points = other.points[:start] + self.points[start:end] + other.points[end:]
-		self.points = tempPoints
+		swap = False
+		i = 0
+		for j in xrange(1, self.n-1):
+			while i < points and cross[i] == j:
+				swap = not swap
+				i += 1
+
+			if swap:
+				tmp = self.points[j]
+				self.points[j] = other.points[j]
+				other.points[j] = tmp
 
 		self.fitness_val = None
 		other.fitness_val = None
@@ -120,7 +128,6 @@ class EvenSpacing(Individual):
 
 		self.fitness_val = None
 
-
 class DynamicSpacing(Individual):
 	@staticmethod
 	def new(nPoints):
@@ -131,40 +138,63 @@ class DynamicSpacing(Individual):
 	def __init__(self, points):
 		self.points = points
 		self.fitness_val = None
+	"""
+		def _findXCoord(self, x): # returns a tuple (index, splitNeeded)
+			for i in xrange(len(self.points)):
+				if self.points[i][0] >= x:
+					return i, self.points[i][0] != x
 
-	def _findXCoord(self, x): # returns a tuple (index, splitNeeded)
-		for i in xrange(len(self.points)):
-			if self.points[i][0] >= x:
-				return i, self.points[i][0] != x
+			print "_findXCoord Error: {0} exceeds boundaries {1}".format(x, self.points[-1][0])
+			sys.exit(-1)
 
-		print "_findXCoord Error: {0} exceeds boundaries {1}".format(x, self.points[-1][0])
-		sys.exit(-1)
+			return -1
 
-		return -1
+		def _splitXCoord(self, x):
+			xIndex, splitNeeded = self._findXCoord(x)
 
-	def _splitXCoord(self, x):
-		xIndex, splitNeeded = self._findXCoord(x)
+			if splitNeeded:
+				self.points.insert(xIndex,[x, self.points[xIndex][1]])
 
-		if not splitNeeded:
-			return xIndex, splitNeeded
-
-		self.points.insert(xIndex,[x, self.points[xIndex][1]])
-
-		return xIndex, splitNeeded
-
+			return xIndex
+	"""
 	def crossover(self, other):
-		crossoverMaxLen = random.random() * config.CROSSOVER_LEN_MAX * config.DX
+		points = random.randint(1, config.CROSSOVER_POINTS)		
+		cross = [config.A[0]+config.DX_MIN + random.random()*(config.DX-2*config.DX_MIN) for i in xrange(points)]
+		cross.sort()
 
-		xInit = random.random() * (config.DX - crossoverMaxLen)
-		xEnd = xInit + crossoverMaxLen
+		lasta = a = 1
+		lastb = b = 1
+		swap = False
+		tmpA = [self.points[0]]
+		tmpB = [other.points[0]]
 
-		xi1, xj1 = self.crossoverSegment(xInit, xEnd)
-		xi2, xj2 = other.crossoverSegment(xInit, xEnd)
+		for x in cross:
+			while self.points[a][0] < x:
+				a += 1
+			while other.points[b][0] < x:
+				b += 1
 
-		tempPoints = self.points[:xi1] + other.points[xi2:xj2] + self.points[xj1:]
-		other.points = other.points[:xi2] + self.points[xi1:xj1] + other.points[xj2:]
-		self.points = tempPoints
+			if swap:
+				tmpA += other.points[lastb:b]
+				tmpB += self.points[lasta:a]
+			else:
+				tmpB += self.points[lasta:a]
+				tmpA += other.points[lastb:b]
 
+			swap = not swap
+			lasta = a
+			lastb = b
+
+		if swap:
+			tmpA += other.points[lastb:]
+			tmpB += self.points[lasta:]
+		else:
+			tmpB += self.points[lasta:]
+			tmpA += other.points[lastb:]
+
+		self.points = tmpA
+		other.points = tmpB
+		
 		self.interpolate()
 		other.interpolate()
 
@@ -172,8 +202,8 @@ class DynamicSpacing(Individual):
 		other.fitness_val = None
 	
 	def crossoverSegment(self, xInit, xEnd):
-		a, splita = self._splitXCoord(xInit)
-		b, splitb = self._splitXCoord(xEnd)
+		a = self._splitXCoord(xInit)
+		b = self._splitXCoord(xEnd)
 
 		return a, b + 1
 
