@@ -110,6 +110,17 @@ class EvenSpacing(Individual):
 
 		self.fitness_val = None
 
+	def mutateRR(self):
+		mutations = random.sample(range(1,len(self.points)-1),min(1,int(len(self.points) * config.MUTATION_PROB)))
+
+		for mutIndex in mutations:
+			# mutate this gene
+			dy = random.gauss(0, config.MUTATION_Y_STDEV)
+			self.points[mutIndex] = min(self.points[mutIndex] + dy, config.A[1] - config.DY_MIN)
+
+		self.fitness_val = None
+
+
 class DynamicSpacing(Individual):
 	@staticmethod
 	def new(nPoints):
@@ -205,6 +216,28 @@ class DynamicSpacing(Individual):
 				prob = config.MUTATION_PROB + config.MUTATION_BURST
 			else:
 				prob = config.MUTATION_PROB
+
+		self.points.sort(key = itemgetter(0))
+
+		self.fitness_val = None
+
+	def mutateRR(self):
+		mutations = random.sample(range(1,len(self.points)-1),min(1,int(len(self.points) * config.MUTATION_PROB)))
+
+		xs = map(lambda x: x[0],self.points) # only use x coords
+		for mutIndex in mutations:
+			# x coord deviation
+			xCoord = self.points[mutIndex][0]
+
+			while xCoord in xs:
+				dx = random.gauss(0, config.MUTATION_X_STDEV)
+				xCoord = max(config.A[0] + config.DX_MIN,min(self.points[mutIndex][0] + dx,config.B[0] - config.DX_MIN))
+
+			self.points[mutIndex][0] = xCoord
+
+			# y coord deviation
+			dy = random.gauss(0, config.MUTATION_Y_STDEV)
+			self.points[mutIndex][1] = min(self.points[mutIndex][1] + dy, config.A[1] - config.DY_MIN)
 
 		self.points.sort(key = itemgetter(0))
 
