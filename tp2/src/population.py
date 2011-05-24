@@ -92,7 +92,6 @@ class Population:
 			if len(self.individuals) % 2 != 0: # forever alone: survives without change
 				individuals[index] = copy.deepcopy(random.choice(self.individuals))
 				index += 1
->>>>>>> 8ce85a931933fc0b512c73799e1c4e972b099c1b
 
 			# mutate childs
 			for indivIndex in xrange(index):
