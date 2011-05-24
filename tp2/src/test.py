@@ -5,6 +5,7 @@ import os
 import sys
 import config
 import random
+import time
 
 from population import Population
 from matplotlib.pyplot import figure
@@ -16,19 +17,19 @@ else:
 	SEEDS = range(int(sys.argv[1]), int(sys.argv[2])+1)
 
 # parameters to be tested
-CROSSOVER_PROBS = [0.40]									# probabilities
-CROSSOVER_LEN_MAXS = [0.40]									# % of the individual is cut
-ELITISMS = [0.15]
+CROSSOVER_PROBS = [0.0, 0.20, 0.40]										# probabilities
+CROSSOVER_LEN_MAXS = [0.20, 0.40]										# % of the individual is cut
+ELITISMS = [0.05, 0.20, 0.50]
 POINTS = [15, 30]
-POPULATION_SIZES = [100]
+POPULATION_SIZES = [50, 100, 200]
 REPRESENTATIONS = ["Dynamic spacing", "Even spacing"]
 SELECTION_TYPES = ["Tournament","Roulette","Rafael-Ribeiro"]
-MUTATION_PROBS = [0.15]										# probability (percentage when using Rafael/Ribeiro)
+MUTATION_PROBS = [0.05, 0.25]											# probability (percentage when using Rafael/Ribeiro)
 
 MAX_ITERATIONS = 2000
 ITERATIONS = [20, 100, 1000, 2000]
 
-def save_data(path, best, best_list, acg_list, worst_list, stddev_list, iteration_list):
+def save_data(path, best, best_list, acg_list, worst_list, stddev_list, iteration_list, t):
 	f = open(path + '/data', 'w')
 	f.write(str(iteration_list[-1])+"\n")
 	f.write(str(best_list)+"\n")
@@ -36,8 +37,10 @@ def save_data(path, best, best_list, acg_list, worst_list, stddev_list, iteratio
 	f.write(str(worst_list)+"\n")
 	f.write(str(stddev_list)+"\n")
 	f.write(str(best)+"\n")
+	f.write(str(t)+"\n")
 	f.close()
 
+	"""
 	figureBest = figure(figsize=(4.0, 4.0), dpi=72)
 	graphBest = figureBest.add_subplot(111)
 	graphBest.plot(best[0], best[1], 'r-*')
@@ -47,6 +50,7 @@ def save_data(path, best, best_list, acg_list, worst_list, stddev_list, iteratio
 	graphHist = figureHist.add_subplot(111)
 	graphHist.plot(iteration_list, best_list, 'b', iteration_list,avg_list, 'g', iteration_list, worst_list, 'r')
 	figureHist.savefig(path + '/hist.png', format="png", transparent=True)
+	"""
 
 def make_dir(path):
 	try:
@@ -133,7 +137,8 @@ if __name__ == '__main__':
 										avg_list = []
 										worst_list = []
 										stddev_list = []
-
+										
+										start = time.time()
 										population = Population.new(config.POPULATION_SIZE, config.REPRESENTATION)
 										for i in xrange(1, MAX_ITERATIONS+1):
 											population.evolve()
@@ -150,8 +155,8 @@ if __name__ == '__main__':
 												best = population.getBest().getPoints()
 
 												make_dir(final_path)
-												save_data(final_path, best, best_list, avg_list, worst_list, stddev_list, xrange(1, i+1))
-
+												end = time.time()
+												save_data(final_path, best, best_list, avg_list, worst_list, stddev_list, xrange(1, i+1), end-start)
 										print "finished test: ", seed_path
 
 										open(seed_path + "/.done", 'w').close()

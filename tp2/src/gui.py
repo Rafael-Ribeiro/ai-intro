@@ -4,6 +4,7 @@
 import signal, os
 from population import *
 
+import time
 import sys
 from threading import Thread
 
@@ -187,6 +188,7 @@ class BrachGUI:
 			f.write(str(self.worst_list)+"\n")
 			f.write(str(self.stddev_list)+"\n")
 			f.write(str(points)+"\n")
+			f.write(str(time.time() - self.start)+"\n")
 			f.close()
 
 			figureBest = figure(figsize=(4.0, 4.0), dpi=72)
@@ -241,6 +243,7 @@ class BrachGUI:
 
 			self.population = Population.new(config.POPULATION_SIZE, config.REPRESENTATION)
 
+			self.start = time.time()
 			self.thread = Thread(target=self.evolve)
 			self.thread.start()
 
