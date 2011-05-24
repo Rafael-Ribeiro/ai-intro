@@ -1,2 +1,2 @@
 TODO:
-	Refactor on probability and percentage constants (such as MUTATION_PROB and MUTATION_PERC), including GUI refactors
+	GUI: select tournament size

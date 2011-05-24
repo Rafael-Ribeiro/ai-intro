@@ -84,7 +84,7 @@ class EvenSpacing(Individual):
 
 		swap = False
 		i = 0
-		for j in xrange(1, self.n-2):
+		for j in xrange(1, self.n-1):
 			while i < points and cross[i] == j:
 				swap = not swap
 				i += 1
