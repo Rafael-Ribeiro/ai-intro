@@ -4,6 +4,7 @@
 import config
 import random
 import math
+import sys
 from operator import itemgetter
 
 # physical constants
@@ -23,7 +24,7 @@ class Individual:
 		for i in range(1, len(points[0])):
 			if points[1][i] > maxHeight or (points[1][i] == maxHeight and i != len(points[0])):
 				print "c", i, maxHeight, points[1][i]
-				return -1
+				sys.exit(-1)
 			
 			#Calculate acceleration based on segment slope. Open question - would be using cos() faster?
 			#Since the angle had to be calculated beforehand, I don't think so
