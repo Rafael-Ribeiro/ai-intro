@@ -67,7 +67,7 @@ if __name__ == '__main__':
 		config.DX = float(config.B[0] - config.A[0])
 		config.DY = float(config.B[1] - config.A[1])
 
-		initial_path = '../results/initial_{0}'.format(initial)
+		initial_path = '../results/initial_%d' % (initial,)
 		make_dir(initial_path)
 		#if os.path.isfile(repr_path + "/.done"):
 		#	continue
@@ -75,7 +75,7 @@ if __name__ == '__main__':
 		for representation in REPRESENTATIONS:
 			config.REPRESENTATION = representation
 		
-			repr_path = '{0}/{1}'.format(initial_path, representation.split()[0].lower())
+			repr_path = '%s/%s' % (initial_path, representation.split()[0].lower())
 			make_dir(repr_path)
 			#if os.path.isfile(repr_path + "/.done"):
 			#	continue
@@ -83,7 +83,7 @@ if __name__ == '__main__':
 			for selection_type in SELECTION_TYPES:
 				config.SELECTION_TYPE = selection_type
 
-				selection_types_path = "{0}/{1}".format(repr_path, selection_type.lower())
+				selection_types_path = "%s/%s" % (repr_path, selection_type.lower())
 				make_dir(selection_types_path)
 				#if os.path.isfile(selection_types_path + "/.done"):
 				#	continue
@@ -91,7 +91,7 @@ if __name__ == '__main__':
 				for points in POINTS:
 					config.POINTS_INIT = points
 
-					points_path = '{0}/{1}_points'.format(selection_types_path, points)
+					points_path = '%s/%d_points' % (selection_types_path, points)
 					make_dir(points_path)
 					#if os.path.isfile(points_path + "/.done"):
 					#	continue
@@ -99,7 +99,7 @@ if __name__ == '__main__':
 					for population_size in POPULATION_SIZES:
 						config.POPULATION_SIZE = population_size
 
-						population_sizes_path = "{0}/{1}_pop".format(points_path, population_size)
+						population_sizes_path = "%s/%d_pop" %(points_path, population_size)
 						make_dir(population_sizes_path)
 						#if os.path.isfile(population_sizes_path + "/.done"):
 						#	continue
@@ -107,7 +107,7 @@ if __name__ == '__main__':
 						for elitism in ELITISMS:
 							config.ELITISM = elitism
 
-							elitisms_path = "{0}/{1}_elite".format(population_sizes_path, elitism)
+							elitisms_path = "%s/%.2f_elite" % (population_sizes_path, elitism)
 							make_dir(elitisms_path)
 							#if os.path.isfile(elitisms_path + "/.done"):
 							#	continue
@@ -115,7 +115,7 @@ if __name__ == '__main__':
 							for crossover_prob in CROSSOVER_PROBS:
 								config.CROSSOVER_PROB = crossover_prob
 
-								crossover_prob_path = "{0}/{1}_cross_prob".format(elitisms_path, crossover_prob)
+								crossover_prob_path = "%s/%.2f_cross_prob" % (elitisms_path, crossover_prob)
 								make_dir(crossover_prob_path)
 								#if os.path.isfile(crossover_prob_path + "/.done"):
 								#	continue
@@ -123,7 +123,7 @@ if __name__ == '__main__':
 								for crossover_points in CROSSOVER_POINTS:
 									config.CROSSOVER_POINTS = crossover_points
 
-									crossover_points_path = "{0}/{1}_cross_points".format(crossover_prob_path, crossover_points)
+									crossover_points_path = "%s/%d_cross_points" % (crossover_prob_path, crossover_points)
 									make_dir(crossover_points_path)
 									#if os.path.isfile(crossover_len_maxs_path + "/.done"):
 									#	continue
@@ -131,7 +131,7 @@ if __name__ == '__main__':
 									for mutation_prob in MUTATION_PROBS:
 										config.MUTATION_PROB = mutation_prob
 
-										mutation_probs_path = "{0}/{1}_mut_prob".format(crossover_points_path, mutation_prob)
+										mutation_probs_path = "%s/%.2f_mut_prob" % (crossover_points_path, mutation_prob)
 										make_dir(mutation_probs_path)
 										#if os.path.isfile(mutation_probs_path + "/.done"):
 										#	continue
@@ -139,7 +139,7 @@ if __name__ == '__main__':
 										for seed in SEEDS:
 											random.seed(seed)
 
-											seed_path = "{0}/{1}".format(mutation_probs_path, seed)
+											seed_path = "%s/%d" % (mutation_probs_path, seed)
 											make_dir(seed_path)
 											if os.path.isfile(seed_path + "/.done"):
 												continue
@@ -162,7 +162,7 @@ if __name__ == '__main__':
 												stddev_list.append(stats[3])
 								
 												if i in ITERATIONS:
-													final_path = "{0}/{1}".format(seed_path, i)
+													final_path = "%s/%d" % (seed_path, i)
 													best = population.getBest().getPoints()
 
 													make_dir(final_path)
