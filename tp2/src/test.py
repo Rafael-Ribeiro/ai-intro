@@ -64,7 +64,9 @@ if __name__ == '__main__':
 	for initial in xrange(len(INITIAL_POINTS)):
 		config.A = INITIAL_POINTS[initial][0]
 		config.B = INITIAL_POINTS[initial][1]
-	
+		config.DX = float(config.B[0] - config.A[0])
+		config.DY = float(config.B[1] - config.A[1])
+
 		initial_path = '../results/initial_{0}'.format(initial)
 		make_dir(initial_path)
 		#if os.path.isfile(repr_path + "/.done"):
