@@ -3,23 +3,18 @@
 
 import os
 import sys
-import config
 import random
 import time
+from math import *
+from matplotlib.pyplot import figure
 
-from population import Population
+SEEDS = range(1,31)
 
-if len(sys.argv) < 3:
-	print "Error: must provide seeds' range"
-	sys.exit(0)
-else:
-	SEEDS = range(int(sys.argv[1]), int(sys.argv[2])+1)
-
-def listsum(a, b)
+def listsum(a, b):
 	for i in xrange(len(a)):
 		a[i] += b[i]
 
-def listdiv(a, q)
+def listdiv(a, q):
 	for i in xrange(len(a)):
 		a[i] /= q
 
@@ -37,92 +32,41 @@ INITIAL_POINTS = [[[0.0,3.0],[4.0,2.0]], [[0.0,3.0],[4.0,2.8]]]
 MAX_ITERATIONS = 2000
 ITERATIONS = [20, 100, 1000, 2000]
 
-def save_data(path, best, best_list, acg_list, worst_list, stddev_list, iteration_list, t):
-	f = open(path + '/data', 'w')
-	f.write(str(iteration_list[-1])+"\n")
-	f.write(str(best_list)+"\n")
-	f.write(str(avg_list)+"\n")
-	f.write(str(worst_list)+"\n")
-	f.write(str(stddev_list)+"\n")
-	f.write(str(best)+"\n")
-	f.write(str(t)+"\n")
-	f.close()
-
-	"""
-	figureBest = figure(figsize=(4.0, 4.0), dpi=72)
-	graphBest = figureBest.add_subplot(111)
-	graphBest.plot(best[0], best[1], 'r-*')
-	figureBest.savefig(path + '/best.png', format="png", transparent=True)
-
-	figureHist = figure(figsize=(10.0, 4.0), dpi=72)
-	graphHist = figureHist.add_subplot(111)
-	graphHist.plot(iteration_list, best_list, 'b', iteration_list,avg_list, 'g', iteration_list, worst_list, 'r')
-	figureHist.savefig(path + '/hist.png', format="png", transparent=True)
-	"""
-
-def make_dir(path):
-	try:
-		os.mkdir(path)
-		return True
-	except:
-		return False	# already exists
-
-
 if __name__ == '__main__':
 	for initial in xrange(len(INITIAL_POINTS)):
-		config.A = INITIAL_POINTS[initial][0]
-		config.B = INITIAL_POINTS[initial][1]
-		config.DX = float(config.B[0] - config.A[0])
-		config.DY = float(config.B[1] - config.A[1])
-
 		initial_path = '../results/initial_%d' % (initial,)
 
 		for representation in REPRESENTATIONS:
-			config.REPRESENTATION = representation
-		
 			repr_path = '%s/%s' % (initial_path, representation.split()[0].lower())
 
 			for selection_type in SELECTION_TYPES:
-				config.SELECTION_TYPE = selection_type
-
 				selection_types_path = "%s/%s" % (repr_path, selection_type.lower())
 
 				for points in POINTS:
-					config.POINTS_INIT = points
-
 					points_path = '%s/%d_points' % (selection_types_path, points)
 
 					for population_size in POPULATION_SIZES:
-						config.POPULATION_SIZE = population_size
-
 						population_sizes_path = "%s/%d_pop" %(points_path, population_size)
 
 						for elitism in ELITISMS:
-							config.ELITISM = elitism
-
 							elitisms_path = "%s/%.2f_elite" % (population_sizes_path, elitism)
 
 							for crossover_prob in CROSSOVER_PROBS:
-								config.CROSSOVER_PROB = crossover_prob
-
 								crossover_prob_path = "%s/%.2f_cross_prob" % (elitisms_path, crossover_prob)
 
 								for crossover_points in CROSSOVER_POINTS:
-									config.CROSSOVER_POINTS = crossover_points
-
 									crossover_points_path = "%s/%d_cross_points" % (crossover_prob_path, crossover_points)
 
 									for mutation_prob in MUTATION_PROBS:
-										config.MUTATION_PROB = mutation_prob
-
 										mutation_probs_path = "%s/%.2f_mut_prob" % (crossover_points_path, mutation_prob)
 
 										# TODO:
 										# render average graphs for each of the population sizes
 										# render the best individual for all seeds for the population size
 										bests = [-1 for i in xrange(MAX_ITERATIONS)]
-										best_val [float("inf") for i in xrange(MAX_ITERATIONS)]
+										best_val = [float("inf") for i in xrange(MAX_ITERATIONS)]
 
+										total_best = [[0.0 for i in SEEDS] for j in ITERATIONS]
 										best_list = [0.0 for i in xrange(MAX_ITERATIONS)]
 										avg_list = [0.0 for i in xrange(MAX_ITERATIONS)]
 										worst_list = [0.0 for i in xrange(MAX_ITERATIONS)]
@@ -136,11 +80,14 @@ if __name__ == '__main__':
 
 											this_best = eval(f.readline())
 											for i in xrange(len(this_best)):
-												if this_best[i] > best_val[i]:
+												if this_best[i] < best_val[i]:
 													bests[i] = seed
 													best_val[i] = this_best[i]
 
 											listsum(best_list, this_best)
+
+											for i in xrange(len(ITERATIONS)):
+												total_best[i][seed-1] = this_best[ITERATIONS[i]-1]
 
 											this_avg = eval(f.readline())
 											listsum(avg_list, this_avg)
@@ -159,14 +106,38 @@ if __name__ == '__main__':
 										listdiv(worst_list, 30.0)
 										listdiv(stddev_list, 30.0)
 
-										for i in ITERATIONS:
-											seed_path = "%s/%d/%d/data" % (mutation_probs_path, seed, bests[i-1])
+										for i in xrange(len(ITERATIONS)):
+											seed_path = "%s/%d/%d/data" % (mutation_probs_path, bests[ITERATIONS[i]-1], ITERATIONS[i])
 											f = open(seed_path, 'r')
 											lines = f.readlines()
+
+											total_best_avg = 0.0
+											for x in xrange(len(SEEDS)):
+												total_best_avg += total_best[i][x]
+											total_best_avg /= len(SEEDS)
+
+											sum_total_diffs = 0.0
+											for x in xrange(len(SEEDS)):
+												sum_total_diffs += (total_best[i][x]-total_best_avg)**2
+											total_best_std = sqrt(sum_total_diffs/len(SEEDS))
 
 											points = eval(lines[5]) # points
 											# best_val[i-1] --> fitness
 											# plot this
+											iteration_list = [a for a in xrange(1, ITERATIONS[i]+1)]
+											figureHist = figure(figsize=(12.0, 6.0), dpi=72)
+											graphHist = figureHist.add_subplot(111)
+											graphHist.plot(iteration_list, best_list[:ITERATIONS[i]], 'b', iteration_list, avg_list[:ITERATIONS[i]], 'g', iteration_list, worst_list[:ITERATIONS[i]], 'r') # TODO: stddev -> candlesticks
+											graphHist.legend( ('Best fitness', 'Average fitness', 'Worst fitness'), loc='upper right')
+											figureHist.savefig('%s/hist_%d.png' % (mutation_probs_path, ITERATIONS[i]), format="png", transparent=True)
+
+											figureBest = figure(figsize=(8.0, 8.0), dpi=72)
+											graphBest = figureBest.add_subplot(111)
+											graphBest.plot(points[0], points[1], 'r-*')
+											graphBest.text(0.5, 0.9, 'Fitness stddev (x100) %.3f' % (total_best_std*100, ), fontsize=18, horizontalalignment='center', verticalalignment='center', transform = graphBest.transAxes)
+
+											figureBest.savefig('%s/best_%d.png' % (mutation_probs_path, ITERATIONS[i]) , format="png", transparent=True)
+
 
 										print "finished graphs: ", mutation_probs_path 
 	print "FINISHED!"
