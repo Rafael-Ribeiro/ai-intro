@@ -25,6 +25,7 @@ ELITISMS = [0.05, 0.20]
 POINTS = [15, 30]
 POPULATION_SIZES = [25, 50, 100]
 REPRESENTATIONS = ["Dynamic spacing", "Even spacing"]
+REPRESENTATIONS_DIC = {"Dynamic spacing" : "Dynamic", "Even spacing" : "Even"}
 SELECTION_TYPES = ["Tournament","Roulette","Rafael-Ribeiro"]
 MUTATION_PROBS = [0.05, 0.25]											# probability (percentage when using Rafael/Ribeiro)
 INITIAL_POINTS = [[[0.0,3.0],[4.0,2.0]], [[0.0,3.0],[4.0,2.8]]]
@@ -74,7 +75,7 @@ if __name__ == '__main__':
 										
 										for seed in SEEDS:
 											seed_path = "%s/%d/%d/data" % (mutation_probs_path, seed, MAX_ITERATIONS)
-											
+
 											f = open(seed_path, 'r')
 											f.readline() # nr of iterations 
 
@@ -121,23 +122,7 @@ if __name__ == '__main__':
 												sum_total_diffs += (total_best[i][x]-total_best_avg)**2
 											total_best_std = sqrt(sum_total_diffs/len(SEEDS))
 
-											points = eval(lines[5]) # points
-											# best_val[i-1] --> fitness
-											# plot this
-											iteration_list = [a for a in xrange(1, ITERATIONS[i]+1)]
-											figureHist = figure(figsize=(12.0, 6.0), dpi=72)
-											graphHist = figureHist.add_subplot(111)
-											graphHist.plot(iteration_list, best_list[:ITERATIONS[i]], 'b', iteration_list, avg_list[:ITERATIONS[i]], 'g', iteration_list, worst_list[:ITERATIONS[i]], 'r') # TODO: stddev -> candlesticks
-											graphHist.legend( ('Best fitness', 'Average fitness', 'Worst fitness'), loc='upper right')
-											figureHist.savefig('%s/hist_%d.png' % (mutation_probs_path, ITERATIONS[i]), format="png", transparent=True)
+										print "\t\t%d\t&\t%s\t&\t%s\t&\t%d\t&\t%d\t&\t%.2f\t&\t%.2f\t&\t%d\t&\t%.2f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f \\\\\n\t\t\\hline" % (initial + 1,REPRESENTATIONS_DIC[representation],selection_type,points,population_size,elitism*100,crossover_prob*100,crossover_points,mutation_prob*100,best_list[19],best_list[99],best_list[999],best_list[1999],avg_list[1999],worst_list[1999],stddev_list[1999],total_best_std*100)
 
-											figureBest = figure(figsize=(8.0, 8.0), dpi=72)
-											graphBest = figureBest.add_subplot(111)
-											graphBest.plot(points[0], points[1], 'r-*')
-											graphBest.text(0.5, 0.9, 'Fitness stddev (x100) %.3f' % (total_best_std*100, ), fontsize=18, horizontalalignment='center', verticalalignment='center', transform = graphBest.transAxes)
-
-											figureBest.savefig('%s/best_%d.png' % (mutation_probs_path, ITERATIONS[i]) , format="png", transparent=True)
-
-
-										print "finished graphs: ", mutation_probs_path 
-	print "FINISHED!"
+										#print "finished graphs: ", mutation_probs_path 
+	#print "FINISHED!"
