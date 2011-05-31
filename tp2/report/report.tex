@@ -43,13 +43,88 @@
 \setlength{\parskip}{0.3cm}
 
 \section{Introduction}
-\indent \indent ...
+\indent \indent Este projecto está inserido no âmbito da disciplina de Introdução à Inteligência Artificial,
+mais concretamente no seguimento do primeiro projecto, uma vez que implementamos outro tipo de Agentes: Agentes Adaptativos.
 
-...
+Ao contrário dos agentes já estudados (Reactivos), estes baseiam-se fundamentalmente em conceitos da Biologia, nomeadamente a teoria da Selecção Natural de Darwin aplicada à Genética.
+Estes agentes representam populações que, ao longo do tempo (iterações da aplicação), evoluem ao sofrer mutações e recombinações entre indivíduos (e os seus genes) e posterior selecção dos mais aptos.
+Desta forma, pretende-se que a aptidão da população melhore, convergindo para o óptimo global.
+
+\subsection{Brachistochrone curve}
+
+\indent \indent O problema da curva braquistócrona é um clássico da disciplina de cálculo:
+
+\emph{Tendo dois pontos distintos, A e B, o objectivo é conhecer a trajectória que minimiza o tempo que um ponto material demora a deslocar-se entre eles, quando sujeito apenas à força da gravidade (com atrito desprezável).}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.5]{images/Brachistochrone.png}
+	\caption{Curva Braquistócrona}
+	\label{fig:brachistochrone}
+\end{figure}
+
+\indent Este problema apenas é válido quando se consideram pares de pontos com a altura de B inferior à de A, pois caso contrário o corpo não consegue efectuar o percurso.
+
+Leibniz, L'Hospital, Newton, e os irmãos Bernoulli apresentaram soluções analíticas.
+No entanto o estudo deste problema, segundo o paradigma de agentes adaptativos, é interessante pois permite calcular uma aproximação da curva
+não necessitando de ferramentas matemáticas complexas.
+
+\indent Para cada instância do problema, um indivíduo representa uma trajectória possível. Estes individuos são avaliados segundo uma
+função de aptidão que mede o tempo correspondente: quanto menor, mais apto ele é considerado.
+
+\indent De forma a definir o o formato da trajectória, cada indivíduo é caracterizado por um conjunto de genes. Estes representam os vários
+factores que contribuem para a forma da trajectória, como por exemplo coordenadas, declives, curvaturas, etc. Assim, para alterar as características
+de um determinado indivíduo (fenótipo) é necessário efectuar alterações ao seu conjunto genético (genótipo). Estas alterações podem se categorizar
+fundamentalmente em dois tipos:
+
+\begin{description}
+	\item[Mutation] \hfill \\ 
+		Alteração ou substituição de um gene por outro de origem primáriamente estocástica.
+	\item[Cross-Over] \hfill \\ 
+		Aplicação de permutações no código genético de dois ou mais indivíduos, trocando a informação genética de um para outro.
+\end{description}
 
 \cleardoublepage
-\section{Implementação}
-\indent \indent ...
+\section{Implementation}
+\indent \indent À semelhança de outros problemas\footnote[1]{Aplicação do método do trapézio para o cálculo do integral de uma curva.}, a discretização do espaço contínuo em amostras
+distintas facilita a computação numérica dos resultados. Desta forma escolhemos implementar duas formas de representação:
+
+\begin{description}
+	\item[Fixed] \hfill \\ 
+		Onde a curva é aproximada por um conjunto sucessivo de segmentos de recta, definidos por pares de pontos equidistantes.
+	\item[Dynamic] \hfill \\ 
+		Uma representação da mesma natureza que a anterior, apenas retirando a restrição da distância entre pontos.
+\end{description}
+
+\indent Estas duas representações foram escolhidas por serem compactas, i.e.: para cada gene apenas é necessário guardar a informação das suas coordenadas.
+Note-se que no caso da representação fixa a absissa é conhecida \emph{a priori}, reduzindo assim o espaço de procura exponencialmente (em relação à dinâmica).
+
+\indent Para além destas duas representações considerámos ainda uma terceira: 
+
+\begin{description}
+	\item[NURBS] \hfill \\ 
+		A curva aproximada é definida à custa dos pontos de controlo de uma NURBS\footnote[2]{Non-uniform rational basis spline.}. 
+		\begin{figure}[ht]
+			\centering
+			\includegraphics[scale=0.50]{images/NURBstatic.png}
+			\caption{Exemplo de uma NURBS}
+			\label{fig:nurbs}
+		\end{figure}
+\end{description}
+
+\indent A principal vantagem desta representação é o facto de se basear em polinómios de grau superior a um, o que permite aproximar a curva desejada
+com igual rigor utilizando um conjunto de pontos inferior. Desta forma o espaço de procura é mais reduzido, pelo que a convergência do algoritmo
+seria esperadamente mais rápida.
+
+\indent No entanto esta representação também apresenta os seus problemas: a avaliação da aptidão de um indivíduo depende do cálculo da derivada
+desta curva, o que representa por si só um problema merecedor de uma análise profunda. 
+
+\cleardoublepage
+\subsection{Fixed Representation}
+
+\cleardoublepage
+
+\subsection{Dynamic Representation}
 
 \cleardoublepage
 
@@ -82,7 +157,8 @@
 \indent \indent ...
 
 \cleardoublepage
-\section{Experimentação}
+
+\section{Experiments}
 \indent \indent ...
 
 \cleardoublepage
@@ -91,7 +167,8 @@
 \indent \indent ...
 
 \cleardoublepage
-\section{Validação}
+
+\section{Validation}
 \indent \indent Para validar o comportamento do Agente, cada combinação de parâmetros foi executada 30 vezes com seeds diferentes;
 tal garante que a natureza estocástica do algoritmo fica evidenciada ao garantir que os testes são, de facto, diferentes.
 
@@ -107,7 +184,8 @@ Tal como se pode verificar na última coluna da tabela de resultados (Secção \
 \indent \indent ...
 
 \cleardoublepage
-\section{Análise de resultados}
+
+\section{Result Analysis}
 \indent \indent ...
 
 \cleardoublepage
@@ -116,7 +194,7 @@ Tal como se pode verificar na última coluna da tabela de resultados (Secção \
 \indent \indent ...
 
 \cleardoublepage
-\section{Conclusão}
+\section{Conclusion}
 \indent \indent ...
 
 \cleardoublepage
