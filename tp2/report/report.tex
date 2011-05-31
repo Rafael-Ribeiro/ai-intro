@@ -78,13 +78,53 @@ de um determinado indivíduo (fenótipo) é necessário efectuar alterações ao
 fundamentalmente em dois tipos:
 
 \begin{description}
-	\item[Mutação] Alteração ou substituição de um gene por outro de origem primáriamente estocástica.
-	\item[Recombinação] Aplicação de permutações no código genético de dois ou mais indivíduos, trocando a informação genética de um para outro.
+	\item[Mutation] \hfill \\ 
+		Alteração ou substituição de um gene por outro de origem primáriamente estocástica.
+	\item[Cross-Over] \hfill \\ 
+		Aplicação de permutações no código genético de dois ou mais indivíduos, trocando a informação genética de um para outro.
 \end{description}
 
 \cleardoublepage
-\section{Implementação}
-\indent \indent ...
+\section{Implementation}
+\indent \indent À semelhança de outros problemas\footnote[1]{Aplicação do método do trapézio para o cálculo do integral de uma curva.}, a discretização do espaço contínuo em amostras
+distintas facilita a computação numérica dos resultados. Desta forma escolhemos implementar duas formas de representação:
+
+\begin{description}
+	\item[Fixed] \hfill \\ 
+		Onde a curva é aproximada por um conjunto sucessivo de segmentos de recta, definidos por pares de pontos equidistantes.
+	\item[Dynamic] \hfill \\ 
+		Uma representação da mesma natureza que a anterior, apenas retirando a restrição da distância entre pontos.
+\end{description}
+
+\indent Estas duas representações foram escolhidas por serem compactas, i.e.: para cada gene apenas é necessário guardar a informação das suas coordenadas.
+Note-se que no caso da representação fixa a absissa é conhecida \emph{a priori}, reduzindo assim o espaço de procura exponencialmente (em relação à dinâmica).
+
+\indent Para além destas duas representações considerámos ainda uma terceira: 
+
+\begin{description}
+	\item[NURBS] \hfill \\ 
+		A curva aproximada é definida à custa dos pontos de controlo de uma NURBS\footnote[2]{Non-uniform rational basis spline.}. 
+		\begin{figure}[ht]
+			\centering
+			\includegraphics[scale=0.50]{images/NURBstatic.png}
+			\caption{Exemplo de uma NURBS}
+			\label{fig:nurbs}
+		\end{figure}
+\end{description}
+
+\indent A principal vantagem desta representação é o facto de se basear em polinómios de grau superior a um, o que permite aproximar a curva desejada
+com igual rigor utilizando um conjunto de pontos inferior. Desta forma o espaço de procura é mais reduzido, pelo que a convergência do algoritmo
+seria esperadamente mais rápida.
+
+\indent No entanto esta representação também apresenta os seus problemas: a avaliação da aptidão de um indivíduo depende do cálculo da derivada
+desta curva, o que representa por si só um problema merecedor de uma análise profunda. 
+
+\cleardoublepage
+\subsection{Fixed Representation}
+
+\cleardoublepage
+
+\subsection{Dynamic Representation}
 
 \cleardoublepage
 
@@ -117,7 +157,7 @@ fundamentalmente em dois tipos:
 \indent \indent ...
 
 \cleardoublepage
-\section{Validação}
+\section{Validation}
 \indent \indent ...
 
 \cleardoublepage
@@ -126,7 +166,7 @@ fundamentalmente em dois tipos:
 \indent \indent ...
 
 \cleardoublepage
-\section{Experimentação}
+\section{Experiments}
 \indent \indent ...
 
 \cleardoublepage
@@ -135,7 +175,7 @@ fundamentalmente em dois tipos:
 \indent \indent ...
 
 \cleardoublepage
-\section{Análise de resultados}
+\section{Result Analysis}
 \indent \indent ...
 
 \cleardoublepage
@@ -144,7 +184,7 @@ fundamentalmente em dois tipos:
 \indent \indent ...
 
 \cleardoublepage
-\section{Conclusão}
+\section{Conclusion}
 \indent \indent ...
 
 \cleardoublepage
