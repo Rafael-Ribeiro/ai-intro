@@ -46,24 +46,41 @@
 \indent \indent Este projecto está inserido no âmbito da disciplina de Introdução à Inteligência Artificial,
 mais concretamente no seguimento do primeiro projecto, uma vez que implementamos outro tipo de Agentes: Agentes Adaptativos.
 
-Ao contrário dos agentes já estudados (Reactivos), estes baseiam-se fundamentalmente em conceitos da Biologia, nomeadamente a teoria da Selecção Natural de Darwin aplicada à genética.
-Estes agentes representam populações, que ao longo do tempo (iterações da aplicação), evoluem ao sofrer mutações e recombinações entre individos (e os seus genes) e posterior selecção dos mais aptos.
-Desta forma pretende-se que a aptidão da população melhore, convergindo para o óptimo global.
+Ao contrário dos agentes já estudados (Reactivos), estes baseiam-se fundamentalmente em conceitos da Biologia, nomeadamente a teoria da Selecção Natural de Darwin aplicada à Genética.
+Estes agentes representam populações que, ao longo do tempo (iterações da aplicação), evoluem ao sofrer mutações e recombinações entre indivíduos (e os seus genes) e posterior selecção dos mais aptos.
+Desta forma, pretende-se que a aptidão da população melhore, convergindo para o óptimo global.
 
 \subsection{Brachistochrone curve}
-\indent \indent O problema da curva braquistócrona é um clásico da disciplina de cálculo:
+
+\indent \indent O problema da curva braquistócrona é um clássico da disciplina de cálculo:
 
 \emph{Tendo dois pontos distintos, A e B, o objectivo é conhecer a trajectória que minimiza o tempo que um ponto material demora a deslocar-se entre eles, quando sujeito apenas à força da gravidade (com atrito desprezável).}
 
-\indent Este problema apenas é válido quando se consideram pares de pontos com a altura de B inferior à de A, pois em caso contrário o corpo não consegue efectuar o percurso.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.5]{images/Brachistochrone.png}
+	\caption{Curva Braquistócrona}
+	\label{fig:brachistochrone}
+\end{figure}
+
+\indent Este problema apenas é válido quando se consideram pares de pontos com a altura de B inferior à de A, pois caso contrário o corpo não consegue efectuar o percurso.
 
 Leibniz, L'Hospital, Newton, e os irmãos Bernoulli apresentaram soluções analíticas.
-No entanto, o estudo deste problema segundo o paradigma de agentes adaptativos é interessante pois permite calcular uma aproximação da curva
+No entanto o estudo deste problema, segundo o paradigma de agentes adaptativos, é interessante pois permite calcular uma aproximação da curva
 não necessitando de ferramentas matemáticas complexas.
 
-\indent Para cada instância do problema, um individuo representa uma trajectória possível. Cada um deles é caracterizado por um conjunto de genes
-que dependendo do modelo utilizado, representam os varios factores que contribuem para a forma da trajectória. Estes individuos são avaliados segundo uma
-função de aptidão que mede o tempo necessário. Como o objectivo é a minimização, quanto menor o tempo correspondente a esse indivíduo mais apto ele é considerado. 
+\indent Para cada instância do problema, um indivíduo representa uma trajectória possível. Estes individuos são avaliados segundo uma
+função de aptidão que mede o tempo correspondente: quanto menor, mais apto ele é considerado.
+
+De forma a definir o o formato da trajectória, cada indivíduo é caracterizado por um conjunto de genes. Estes representam os vários
+factores que contribuem para a forma da trajectória, como por exemplo coordenadas, declives, curvaturas, etc. Assim, para alterar as características
+de um determinado indivíduo (fenótipo) é necessário efectuar alterações ao seu conjunto genético (genótipo). Estas alterações podem se categorizar
+fundamentalmente em dois tipos:
+
+\begin{description}
+	\item[Mutação] Alteração ou substituição de um gene por outro de origem primáriamente estocástica.
+	\item[Recombinação] Aplicação de permutações no código genético de dois ou mais indivíduos, trocando a informação genética de um para outro.
+\end{description}
 
 \cleardoublepage
 \section{Implementação}
