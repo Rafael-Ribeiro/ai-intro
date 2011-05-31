@@ -98,7 +98,7 @@ tal garante que a natureza estocástica do algoritmo fica evidenciada ao garanti
 Após a conclusão dos testes, foi calculado o desvio-padrão entre as 30 simulações,
 para averiguar se os resultados obtidos não representavam apenas um caso de sorte.
 
-Tal como se pode verificar na última coluna da tabela de resultados, o desvio-padrão entre as 30 simulações para cada combinação de parâmetros
+Tal como se pode verificar na última coluna da tabela de resultados (Secção \ref{tab:results}), o desvio-padrão entre as 30 simulações para cada combinação de parâmetros
 é bastante reduzido, o que comprova a sua consistência e robustez.
 
 \cleardoublepage
@@ -123,6 +123,25 @@ Tal como se pode verificar na última coluna da tabela de resultados, o desvio-p
 
 \subsection{...}
 \indent \indent ...
+
+\eject \pdfpagewidth=594.0mm \pdfpageheight=420.0mm
+
+\cleardoublepage
+\section{Anexos}
+\subsection{Tabela de Resultados}
+\begin{center}
+	\begin{tabular}{ | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | }
+		\hline
+		\textbf{Points set}	&	\textbf{Representation}	&	\textbf{Selection Type}	&	\textbf{No. pts.}	&	\textbf{Pop. size}	&	\textbf{Elitism  (\%)}	&	\textbf{Crossover Prob. (\%)}	&	\textbf{No. pts. Crossover}	&	\textbf{Prob. Mutation (\%)}	&	\textbf{Best (20)}	&	\textbf{Best (100)}	&	\textbf{Best (1000)}	&	\textbf{Best (2000)}	&	\textbf{Average (2000)}	&	\textbf{Worst (2000)}	&	\textbf{Std. Dev. (2000, Pop.)}	&	\textbf{Std. Dev. x100 (2000, 30 runs)} \\
+		\hline
+		\hline
+		1	&	Dynamic	&	Tournment	&	30	&	100	&	10	&	10	&	3	&	10	&	3.0031230	&	3.0031230	&	3.0031230	&	3.0031230	&	3.0031230	&	3.0031230	&	0.0031230	&	0.0031230 \\
+		\hline
+		2	&	Dynamic	&	Tournment	&	15	&	50	&	10	&	10	&	3	&	10	&	2.0023430	&	5.2323430	&	3.2331230	&	3.0031230	&	3.0031230	&	3.0031230	&	0.0031230	&	0.0031230 \\
+		\hline
+	\end{tabular}
+	\label{tab:results}
+\end{center}
 
 
 \end{document}
