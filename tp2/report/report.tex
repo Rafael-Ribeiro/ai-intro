@@ -43,9 +43,20 @@
 \setlength{\parskip}{0.3cm}
 
 \section{Introduction}
-\indent \indent ...
+\indent \indent Este projecto está inserido no âmbito da disciplina de Introdução à Inteligência Artificial,
+mais concretamente no seguimento do primeiro projecto, uma vez que implementamos outro tipo de Agentes: Agentes Adaptativos.
+Ao contrário dos já estudados (Agentes Reactivos), estes baseiam-se fundamentalmente em conceitos da Biologia, nomeadamente a teoria da selecção natural de Darwin aplicada à genética.
+Este agente representa uma população, que ao longo do tempo (iterações da aplicação), evolui ao sofrer mutações, recombinações entre individos (e os seus genes) e posterior selecção dos mais aptos.
+Desta forma pretende-se que a aptidão da população evolua, convergindo para o óptimo global.
 
-...
+\subsection{Brachistochrone curve}
+\indent \indent O problema da curva braquistócrona é um clásico da disciplina de cálculo:
+
+\emph{Tendo dois pontos distintos, A e B, o objectivo é conhecer a trajectória que minimiza o tempo que uma esfera demora a deslocar-se entre eles, quando sujeita apenas à força da gravidade (com atrito desprezável).}
+
+\indent Este problema apenas é válido quando se consideram pares de pontos com a altura de B inferior à de A, pois em caso contrário a esfera não consegue efectuar o percurso.
+Soluções analíticas existem formuladas em separado por Leibniz, L'Hospital, Newton, e Bernoulli. No entanto, o estudo deste problema segundo o paradigma de agentes adaptativos continua interessante pois permite calcular uma aproximação da curva
+não necessitando de ferramentas matemáticas complexas.
 
 \cleardoublepage
 \section{Implementação}
