@@ -123,13 +123,35 @@ desta curva, o que representa por si só um problema merecedor de uma análise p
 
 \cleardoublepage
 \subsection{Mutation Operators}
+\indent \indent Um dos principais factores que contribuem para a performance de um algoritmo genético é a diversidade genética presente na população.
+Desta forma, desenvolver os operadores de mutação adequados para cada problema torna-se uma tarefa crucial.
+Estes actuam ao nível de cada gene e são portanto distintos para cada representação. 
+
 \subsubsection{Fixed Representation}
-\indent \indent O operador de mutação
+\indent \indent Nesta representação o único parâmetro que se altera são as coordenadas \emph{yy} de cada gene.
+Para sortear o novo valor a atribuir foi utilizada uma distribuição gausseana (ao invés de uniforme), com o intuito 
+de garantir que a evolução progenitor-filho é efectuada de forma gradual (i.e.: que o filho preserva algumas caracteristicas dos
+seus antecessores).
 
 \subsubsection{Dynamic Representation}
-\indent \indent Nesta representação é necessária, para além da alteração da coordenada
+\indent \indent Ao contrário da representação anterior, o operador de mutação para a representação dinâmica necessíta de considerar
+tanto as coordenadas \emph{yy} como as \emph{xx}. Pelas razões já enunciadas, a distribuição utilizada foi novamente a gausseana.
+No entanto, uma vez que esta permite alterar a posição relativa dos pontos, é necessário efectuar um ordenamento posterior.
 
+\indent Como estes operadores se aplicam a genes individualmente, é necessário escolher quais genes sofrem mutação.
+O operador tradicional aplica uma igual probabilidade a cada gene. No entanto, segundo o paradigma biológico,
+a probabilidade de erros consecutivos é mais elevada (pois a anomalia que levou à criação do primeiro erro pode ainda verificar-se).
+Como achamos que esta abordagem poderia ser vantajosa para o problema em questão, decidimos implementar dois modelos de mutações adicionais:
 
+\begin{description}
+	\item[Burst] \hfill \\ 
+		Onde indicamos a probabilidade de um gene ser mutado após o seu antecessor também o ser.
+
+	\item[Range] \hfill \\ 
+		Onde por cada indivíduo é apenas selecionado uma secção de genes que sofre mutação.
+		Este tipo de mutação é apenas aplicado para o tipo de selecção \emph{Rafael-Ribeiro}.
+\end{description}
+ 
 \cleardoublepage
 \subsection{Crossover Operators}
 \subsubsection{Fixed Representation}
