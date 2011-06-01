@@ -80,12 +80,14 @@ fundamentalmente em dois tipos:
 \begin{description}
 	\item[Mutation] \hfill \\ 
 		Alteração ou substituição de um gene por outro de origem primáriamente estocástica.
-	\item[Cross-Over] \hfill \\ 
+	\item[Crossover] \hfill \\ 
 		Aplicação de permutações no código genético de dois ou mais indivíduos, trocando a informação genética de um para outro.
 \end{description}
 
 \cleardoublepage
 \section{Implementation}
+
+\subsection{Representation}
 \indent \indent À semelhança de outros problemas\footnote[1]{Aplicação do método do trapézio para o cálculo do integral de uma curva.}, a discretização do espaço contínuo em amostras
 distintas facilita a computação numérica dos resultados. Desta forma escolhemos implementar duas formas de representação:
 
@@ -99,7 +101,7 @@ distintas facilita a computação numérica dos resultados. Desta forma escolhem
 \indent Estas duas representações foram escolhidas por serem compactas, i.e.: para cada gene apenas é necessário guardar a informação das suas coordenadas.
 Note-se que no caso da representação fixa a absissa é conhecida \emph{a priori}, reduzindo assim o espaço de procura exponencialmente (em relação à dinâmica).
 
-\indent Para além destas duas representações considerámos ainda uma terceira: 
+\indent Para além destas duas representações considerámos ainda uma terceira:
 
 \begin{description}
 	\item[NURBS] \hfill \\ 
@@ -120,12 +122,26 @@ seria esperadamente mais rápida.
 desta curva, o que representa por si só um problema merecedor de uma análise profunda. 
 
 \cleardoublepage
-\subsection{Fixed Representation}
+\subsection{Mutation Operators}
+\subsubsection{Fixed Representation}
+\indent \indent O operador de mutação
+
+\subsubsection{Dynamic Representation}
+\indent \indent Nesta representação é necessária, para além da alteração da coordenada
+
 
 \cleardoublepage
+\subsection{Crossover Operators}
+\subsubsection{Fixed Representation}
+\indent \indent 
 
-\subsection{Dynamic Representation}
+\subsubsection{Dynamic Representation}
+\indent \indent 
 
+\indent \indent 
+
+
+% TODO sinonimo(à semelhança) da representação fixa, implementamos o operador de mutação gausseana, no entanto mutação dy tmb
 \cleardoublepage
 
 \subsection{...}
