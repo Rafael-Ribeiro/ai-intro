@@ -35,7 +35,7 @@ ITERATIONS = [20, 100, 1000, 2000]
 
 if __name__ == '__main__':
 	tabular = open("../results/tabular.tbl","a")
-	tabular.write("%% CONTINUED\n")
+	tabular.write("\n%% CONTINUED\n")
 
 	for initial in xrange(len(INITIAL_POINTS)):
 		initial_path = '../results/initial_%d' % (initial,)
@@ -88,6 +88,7 @@ if __name__ == '__main__':
 											f = open(seed_path, 'r')
 											f.readline() # nr of iterations 
 
+											print seed_path
 											this_best = eval(f.readline().rstrip())
 											for i in xrange(len(this_best)):
 												if this_best[i] < best_val[i]:
@@ -140,6 +141,7 @@ if __name__ == '__main__':
 											graphHist.plot(iteration_list, best_list[:ITERATIONS[i]], 'b', iteration_list, avg_list[:ITERATIONS[i]], 'g', iteration_list, worst_list[:ITERATIONS[i]], 'r') # TODO: stddev -> candlesticks
 											graphHist.legend( ('Best fitness', 'Average fitness', 'Worst fitness'), loc='upper right')
 											figureHist.savefig('%s/hist_%d.png' % (mutation_probs_path, ITERATIONS[i]), format="png", transparent=True)
+											figureHist.clf()
 
 											figureBest = figure(figsize=(8.0, 8.0), dpi=72)
 											graphBest = figureBest.add_subplot(111)
@@ -147,10 +149,12 @@ if __name__ == '__main__':
 											graphBest.text(0.5, 0.9, 'Fitness stddev (x100) %.3f' % (total_best_std*100, ), fontsize=18, horizontalalignment='center', verticalalignment='center', transform = graphBest.transAxes)
 
 											figureBest.savefig('%s/best_%d.png' % (mutation_probs_path, ITERATIONS[i]) , format="png", transparent=True)
+											figureBest.clf()
 
 										cr_points = str(crossover_points) if crossover_prob != 0.0 else "NA"
 
 										tabular.write("\t\t%d\t&\t%s\t&\t%s\t&\t%d\t&\t%d\t&\t%.2f\t&\t%.2f\t&\t%s\t&\t%.2f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f \\\\\n\t\t\\hline\n" % (initial + 1,REPRESENTATIONS_DIC[representation],selection_type,points,population_size,elitism*100,crossover_prob*100,cr_points,mutation_prob*100,best_list[19],best_list[99],best_list[999],best_list[1999],avg_list[1999],worst_list[1999],stddev_list[1999],total_best_std*100))
+										tabular.flush()
 
 										open(mutation_probs_path + "/.doneGraphs", 'w').close()
 
