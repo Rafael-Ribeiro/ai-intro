@@ -1,20 +1,8 @@
 #!/usr/bin/python
 
-filters = [
-	None,	# point
-	None,	# representation
-	None,	# selection
-	None,	# individual size
-	None,	# population size
-	None,	# elitism
-	35,	# crossover
-	None,	# crossover points
-	None	# mutation size
-]
-
-def apply_filter(item):
-	for i in xrange(len(filters)):
-		if filters[i] != None and filters[i] != item[i]:
+def apply_filter(item, f):
+	for i in xrange(len(f)):
+		if f[i] != None and f[i] != item[i]:
 			return False
 
 	return True
@@ -34,6 +22,7 @@ def min_col(data, col):
 items = [
 	"Best (20)",
 	"Best (100)", 
+
 	"Best (1000)",
 	"Best (2000)",
 	"Average (2000)",
@@ -47,7 +36,18 @@ if __name__ == '__main__':
 	data = eval(f.read())
 	f.close()
 
-	data = filter(apply_filter, data)
+	filters = [
+		2,		# point
+		"Dynamic",	# representation
+		None,	# selection
+		None,	# individual size
+		None,	# population size
+		None,	# elitism
+		None,	# crossover
+		None,	# crossover points
+		None	# mutation size
+	]
+	data = filter(lambda x: apply_filter(x, filters), data)
 
 	for i in xrange(len(items)):
 		col = i + 9
