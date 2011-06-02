@@ -88,6 +88,10 @@ fundamentalmente em dois tipos:
 
 \cleardoublepage
 \section{Implementation}
+\indent \indent Durante a implementação deste projecto foram surgindo abordagens alternativas,
+introduzidas tanto por erros conceptuais, como por \emph{bugs}. Estas abordagens, apesar de não estarem de acordo com
+o considerado comum na àrea de Inteligência Artificial, foram demonstrando capacidade de gerar soluções adequadas ao problema.
+Assim, decidimos que seria interessante efectuar uma comparação entre os resultados obtidos segundo o método tradicional, e aquele a que apelidámos \emph{Rafael-Ribeiro}. 
 
 \subsection{Representation}
 \indent \indent À semelhança de outros problemas\footnote[1]{Aplicação do método do trapézio para o cálculo do integral de uma curva.}, a discretização do espaço contínuo em amostras
@@ -181,17 +185,17 @@ Desta forma é possível garantir que o tamanho da população continua computac
 
 	\item[Roulette] \hfill \\
 		Os indivíduos são selecionados de forma aleatória, dando maior probabilidade aos indivíduos com maior fitness.
-		Para garantir esta propriedade a função de probabilidade para um individuo $i$ é:
+		Para garantir esta propriedade a função de probabilidade para um indivíduo $i$ é:
 
 		\[
-			p_{i} = \frac{f_{i}}{\sum\limits_{j \in \text{Pop.}} f_{j}} \quad \text{onde} \quad f_i = \frac{1}{T_{i}} \quad (T_{i} \leftarrow \text{Tempo correspondente ao indivíduo i})
+			p_{i} = \frac{f_{i}}{\sum\limits_{j \in \text{Pop.}} f_{j}} \quad \text{onde} \quad f_i = \frac{1}{T_{i}} \quad (T_{i} \leftarrow \text{Tempo correspondente ao indivíduo } i)
 		\]
 
 		Neste algoritmo o mesmo elemento pode ser escolhido várias vezes,
 		simulando a capacidade de um ser mais apto se conseguir reproduzir com maior frequência.
 
 	\item[Tournament] \hfill \\ 
-		Para este tipo de selecção são escolhidos aleatoriamente N indivídous, dos quais apenas o mais apto é escolhido.
+		Para este tipo de selecção são escolhidos aleatoriamente N indivíduos, dos quais apenas o mais apto é escolhido.
 		Após esta selecção todos os elementos participantes no torneiao são devolvidos à população.
 
 	\item[Rafael-Ribeiro] \hfill \\ 
