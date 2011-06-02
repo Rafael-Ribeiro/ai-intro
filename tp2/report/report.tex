@@ -27,7 +27,7 @@
 \usepackage{lscape}
 \usepackage[pdftex]{graphicx}
 \usepackage{longtable}
-
+\usepackage{multirow}
 
 \marginsize{3.5cm}{3.5cm}{3cm}{3cm}
 
@@ -171,13 +171,18 @@ do algoritmo.
 sorteia as coordenadas em que tais pontos de recombinação se vão aplicar, efectuando as trocas correspondentes.
 
 \subsubsection{Dynamic Representation}
-\indent \indent 
+\indent \indent Dada a natureza da representação, as coordenadas sorteadas para pontos de recombinação não \emph{têm} que necessariamente existir no indivíduo.
+Como tal, as coordenadas entre cada ponto de recombinação são trocadas entre si, independentemente deste processo recombinar mais ou menos genes.
+Após este processo, é aplicado sobre os indivíduos com maior número de pontos (que o valor pré-definido) o operador de remoção de genes; sobre os indivíduos com menor
+número de pontos é aplicado o operador de interpolação de pontos, por forma a perfazer o total de pontos do indivíduo.
 
 \cleardoublepage
 \subsection{Selection}
 \label{subsec:selection}
 \indent \indent Após a criação de novos descendentes é necessário efectuar uma redução no número de indivíduos.
 Desta forma é possível garantir que o tamanho da população continua computacionalmente tratável e que o algoritmo convirja tendencialmente para o óptimo global.
+
+\indent De notar que o elitismo é usualmente utilizado (excepto na selecção Rafael-Ribeiro) simultaneamente com selecção por roleta ou torneio.
 
 \begin{description}
 	\item[Elitism] \hfill \\
@@ -196,12 +201,12 @@ Desta forma é possível garantir que o tamanho da população continua computac
 
 	\item[Tournament] \hfill \\ 
 		Para este tipo de selecção são escolhidos aleatoriamente N indivíduos, dos quais apenas o mais apto é escolhido.
-		Após esta selecção todos os elementos participantes no torneiao são devolvidos à população.
+		Após esta selecção todos os elementos participantes no torneio são devolvidos à população.
 
-	\item[Rafael-Ribeiro] \hfill \\ 
+	\item[Rafael-Ribeiro] \hfill \\
 		Nesta abordagem implementa-se em conjunto a selecção por elitismo e por torneio, mas ao contrário da abordagem tradicional
 		esta é aplicada não só para selecionar os progenitores, mas também para selecionar que indivíduos da população inteira (pais e filhos)
-		sobrevivem para a próxima iteração. Do ponto de vista em que apenas alguns indivíduos são alterados este tipo de selecção pode ser considerada \emph{Steady-State}.
+		sobrevivem para a próxima iteração. Do ponto de vista que apenas alguns indivíduos são alterados, este tipo de selecção pode ser considerada \emph{Steady-State}.
 
 \end{description}
 
@@ -297,6 +302,5 @@ Tal como se pode verificar na última coluna da tabela de resultados (Secção \
 \begin{center}
 	\input{tables/results}
 \end{center}
-
 
 \end{document}
