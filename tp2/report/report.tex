@@ -81,7 +81,7 @@ fundamentalmente em dois tipos:
 
 \begin{description}
 	\item[Mutation] \hfill \\ 
-		Alteração ou substituição de um gene por outro de origem primáriamente estocástica.
+		Alteração ou substituição de um gene por outro de origem primariamente estocástica.
 	\item[Crossover] \hfill \\ 
 		Aplicação de permutações no código genético de dois ou mais indivíduos, trocando a informação genética de um para outro.
 \end{description}
@@ -131,13 +131,13 @@ Estes actuam ao nível de cada gene e são portanto distintos para cada represen
 
 \subsubsection{Fixed Representation}
 \indent \indent Nesta representação o único parâmetro que se altera são as coordenadas \emph{yy} de cada gene.
-Para sortear o novo valor a atribuir foi utilizada uma distribuição gausseana (ao invés de uniforme), com o intuito 
-de garantir que a evolução progenitor-filho é efectuada de forma gradual (i.e.: que o filho preserva algumas caracteristicas dos
+Para sortear o novo valor a atribuir foi utilizada uma distribuição gaussiana (ao invés de uniforme), com o intuito 
+de garantir que a evolução progenitor-filho é efectuada de forma gradual (i.e.: que o filho preserva algumas características dos
 seus antecessores).
 
 \subsubsection{Dynamic Representation}
 \indent \indent Ao contrário da representação anterior, o operador de mutação para a representação dinâmica necessíta de considerar
-tanto as coordenadas \emph{yy} como as \emph{xx}. Pelas razões já enunciadas, a distribuição utilizada foi novamente a gausseana.
+tanto as coordenadas \emph{yy} como as \emph{xx}. Pelas razões já enunciadas, a distribuição utilizada foi novamente a gaussiana.
 No entanto, uma vez que esta permite alterar a posição relativa dos pontos, é necessário efectuar um ordenamento posterior.
 
 \indent Como estes operadores se aplicam a genes individualmente, é necessário escolher quais genes sofrem mutação.
@@ -155,7 +155,13 @@ Como achamos que esta abordagem poderia ser vantajosa para o problema em questã
 \end{description}
  
 \cleardoublepage
-\subsection{Crossover Operators}
+\subsection{Crossover Operator}
+\indent \indent O operador de recombinação distingue-se do operador de mutação na forma como tem impacto no material genético da população.
+Enquanto que o operador de mutação actua sobre um único indivíduo (o que introduz novo material genético na população),
+o operador de recombinação reorganiza o material genético já existente, conseguindo propagar as características entre indivíduos.
+Este operador aliado a um tipo de selecção adequado (ver \begin{comment} TODO reference to Selection \end{comment}) permite uma melhor convergência
+do algoritmo.
+
 \subsubsection{Fixed Representation}
 \indent \indent 
 
@@ -165,7 +171,6 @@ Como achamos que esta abordagem poderia ser vantajosa para o problema em questã
 \indent \indent 
 
 
-% TODO sinonimo(à semelhança) da representação fixa, implementamos o operador de mutação gausseana, no entanto mutação dy tmb
 \cleardoublepage
 
 \subsection{...}
