@@ -168,6 +168,37 @@ do algoritmo.
 \subsubsection{Dynamic Representation}
 \indent \indent 
 
+\cleardoublepage
+\subsection{Selection}
+\indent \indent Após a criação de novos descendentes é necessário efectuar uma redução no número de indivíduos.
+Desta forma é possível garantir que o tamanho da população continua computacionalmente tratável e que o algoritmo convirja tendencialmente para o óptimo global.
+
+\begin{description}
+	\item[Elitism] \hfill \\
+		Abordagem gananciosa que seleciona os melhores indivíduos da população como descendetes.
+
+	\item[Roulette] \hfill \\
+		Os indivíduos são selecionados de forma aleatória, dando maior probabilidade aos indivíduos com maior fitness.
+		Para garantir esta propriedade a função de probabilidade para um individuo $i$ é:
+
+		\[
+			p_{i} = \frac{f_{i}}{\sum\limits_{j \in \text{Pop.}} f_{j}} \quad \text{onde} \quad f_i = \frac{1}{T_{i}} \quad (T_{i} \leftarrow \text{Tempo correspondente ao indivíduo i})
+		\]
+
+		Neste algoritmo o mesmo elemento pode ser escolhido várias vezes,
+		simulando a capacidade de um ser mais apto se conseguir reproduzir com maior frequência.
+
+	\item[Tournament] \hfill \\ 
+		Para este tipo de selecção são escolhidos aleatoriamente N indivídous, dos quais apenas o mais apto é escolhido.
+		Após esta selecção todos os elementos participantes no torneiao são devolvidos à população.
+
+	\item[Rafael-Ribeiro] \hfill \\ 
+		Nesta abordagem implementa-se em conjunto a selecção por elitismo e por torneio, mas ao contrário da abordagem tradicional
+		esta é aplicada não só para selecionar os progenitores, mas também para selecionar que indivíduos da população inteira (pais e filhos)
+		sobrevivem para a próxima iteração. Do ponto de vista em que apenas alguns indivíduos são alterados este tipo de selecção pode ser considerada \emph{Steady-State}.
+
+\end{description}
+
 \indent \indent 
 
 
