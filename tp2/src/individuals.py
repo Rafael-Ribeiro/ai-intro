@@ -229,17 +229,18 @@ class DynamicSpacing(Individual):
 	def mutate(self):
 		prob = config.MUTATION_PROB
 
+		xs = map(lambda x: x[0],self.points) # only use x coords
 		for i in xrange(1,len(self.points)-1):
 			if random.random() <= prob:
 				# x coord deviation
 				xCoord = self.points[0][0] # guarantee that at least one random occurs
-				xs = map(lambda x: x[0],self.points) # only use x coords
 
 				while xCoord in xs:
 					dx = random.gauss(0, config.MUTATION_X_STDEV)
 					xCoord = max(config.A[0] + config.DX_MIN,min(self.points[i][0] + dx,config.B[0] - config.DX_MIN))
 
 				self.points[i][0] = xCoord
+				xs[i] = xCoord
 
 				# y coord deviation
 				dy = random.gauss(0, config.MUTATION_Y_STDEV)
@@ -256,15 +257,16 @@ class DynamicSpacing(Individual):
 	def mutateRR(self):
 		mutations = random.sample(range(1,len(self.points)-1),max(1,int(len(self.points) * config.MUTATION_PROB)))
 
+		xs = map(lambda x: x[0],self.points) # only use x coords
 		for mutIndex in mutations:
-			xs = map(lambda x: x[0],self.points) # only use x coords
-
 			# x coord deviation
 			xCoord = self.points[mutIndex][0]
 
 			while xCoord in xs:
 				dx = random.gauss(0, config.MUTATION_X_STDEV)
 				xCoord = max(config.A[0] + config.DX_MIN,min(self.points[mutIndex][0] + dx,config.B[0] - config.DX_MIN))
+
+			xs[mutIndex] = xCoord
 
 			self.points[mutIndex][0] = xCoord
 
