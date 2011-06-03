@@ -1,12 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+
 import os
 import sys
-import config
 import random
 import time
 
+sys.path.append("../") 
+
+import config
 from population import Population
 
 if len(sys.argv) < 3:
