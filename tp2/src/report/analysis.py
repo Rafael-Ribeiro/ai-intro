@@ -39,7 +39,7 @@ if __name__ == '__main__':
 	filters = [
 		2,		# point
 		"Even",	# representation
-		"Roulette",	# selection
+		None,	# selection
 		None,	# individual size
 		None,	# population size
 		None,	# elitism
@@ -49,7 +49,9 @@ if __name__ == '__main__':
 	]
 	data = filter(lambda x: apply_filter(x, filters), data)
 
-	for i in xrange(len(items)):
+	print str(filters)+"\n"
+	for i in xrange(4): # len(items)
 		col = i + 9
 
-		print "%s: max: %.7f avg: %.7f min: %.7f" % (items[i], max_col(data, col), avg_col(data, col), min_col(data, col))
+		#print "%s: max: %.7f avg: %.7f min: %.7f" % (items[i], max_col(data, col), avg_col(data, col), min_col(data, col))
+		print "%.7f" % (avg_col(data, col))
