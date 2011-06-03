@@ -67,7 +67,7 @@ if __name__ == '__main__':
 		config.DX = float(config.B[0] - config.A[0])
 		config.DY = float(config.B[1] - config.A[1])
 
-		initial_path = '../results/initial_%d' % (initial,)
+		initial_path = '../../results/initial_%d' % (initial,)
 		make_dir(initial_path)
 		#if os.path.isfile(repr_path + "/.done"):
 		#	continue
