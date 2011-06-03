@@ -127,6 +127,9 @@ if __name__ == '__main__':
 									config.CROSSOVER_POINTS = crossover_points
 
 									crossover_points_path = "%s/%d_cross_points" % (crossover_prob_path, crossover_points)
+									if crossover_prob == 0.0 and crossover_points != CROSSOVER_POINTS[0]:
+										continue
+
 									make_dir(crossover_points_path)
 									#if os.path.isfile(crossover_len_maxs_path + "/.done"):
 									#	continue
