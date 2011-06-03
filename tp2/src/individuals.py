@@ -35,6 +35,7 @@ class Individual:
 				ai = -G_ACC*dy/float(li)
 			except:
 				print points		
+				sys.exit(-1)
 			#Energy conservation. You really needn't be reading this, but if you have doubts, tell me
 			v_j = math.sqrt(2*(-G_ACC*dy + v_i*v_i/2))
 			#If speed is less than 0, forget about it. This actually never happens thanks to our checks.
@@ -120,7 +121,7 @@ class EvenSpacing(Individual):
 		self.fitness_val = None
 
 	def mutateRR(self):
-		mutations = random.sample(range(1,len(self.points)-1),min(1,int(len(self.points) * config.MUTATION_PROB)))
+		mutations = random.sample(range(1,len(self.points)-1),max(1,int(len(self.points) * config.MUTATION_PROB)))
 
 		for mutIndex in mutations:
 			# mutate this gene
@@ -253,10 +254,11 @@ class DynamicSpacing(Individual):
 		self.fitness_val = None
 
 	def mutateRR(self):
-		mutations = random.sample(range(1,len(self.points)-1),min(1,int(len(self.points) * config.MUTATION_PROB)))
+		mutations = random.sample(range(1,len(self.points)-1),max(1,int(len(self.points) * config.MUTATION_PROB)))
 
-		xs = map(lambda x: x[0],self.points) # only use x coords
 		for mutIndex in mutations:
+			xs = map(lambda x: x[0],self.points) # only use x coords
+
 			# x coord deviation
 			xCoord = self.points[mutIndex][0]
 
