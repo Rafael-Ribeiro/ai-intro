@@ -37,9 +37,9 @@ if __name__ == '__main__':
 	f.close()
 
 	filters = [
-		1,		# point
+		2,		# point
 		"Dynamic",	# representation
-		"Roulette",	# selection
+		"Rafael-Ribeiro",	# selection
 		None,	# individual size
 		None,	# population size
 		None,	# elitism
