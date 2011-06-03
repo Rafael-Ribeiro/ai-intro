@@ -38,8 +38,8 @@ if __name__ == '__main__':
 
 	filters = [
 		2,		# point
-		"Dynamic",	# representation
-		None,	# selection
+		"Even",	# representation
+		"Roulette",	# selection
 		None,	# individual size
 		None,	# population size
 		None,	# elitism
