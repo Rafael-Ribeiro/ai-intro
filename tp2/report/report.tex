@@ -95,13 +95,16 @@ o considerado comum na àrea de Inteligência Artificial, foram demonstrando cap
 Assim, decidimos que seria interessante efectuar uma comparação entre os resultados obtidos segundo o método tradicional, e aquele a que apelidámos \emph{Rafael-Ribeiro}. 
 
 \subsection{Representation}
+\label{subsec:representation}
 \indent \indent À semelhança de outros problemas\footnote[1]{Aplicação do método do trapézio para o cálculo do integral de uma curva.}, a discretização do espaço contínuo em amostras
 distintas facilita a computação numérica dos resultados. Desta forma escolhemos implementar duas formas de representação:
 
 \begin{description}
-	\item[Fixed] \hfill \\ 
+	\item[Fixed] \hfill \\
+	\label{it:fixed_representation}
 		Onde a curva é aproximada por um conjunto sucessivo de segmentos de recta, definidos por pares de pontos equidistantes.
-	\item[Dynamic] \hfill \\ 
+	\item[Dynamic] \hfill \\
+	\label{it:dynamic_representation}
 		Uma representação da mesma natureza que a anterior, apenas retirando a restrição da distância entre pontos.
 \end{description}
 
@@ -247,7 +250,21 @@ Desta forma é possível garantir que o tamanho da população continua computac
 \cleardoublepage
 
 \section{Experiments}
-\indent \indent 
+\indent \indent Os resultados obtidos com o algoritmo genético dependem intrinsecamente dos parâmetros com os quais é executado
+(representação, modo de selecção, percentagem de elitismo, ...). Assim, para uma correcta análise do seu comportamento
+torna-se necessário variá-los e analisar as variadas combinações. Como tal, cada parâmetro foi variado 2/3 vezes.
+Enumeram-se de seguida as variações.
+
+\begin{description}
+	\item [Points set] Foram utilizados dois conjuntos de pontos (inicial e final) para averiguar a correcta convergência em diferentes casos.
+		Estes são P$_{init} = (0.0, 3.0)$, P$_{final} = (4.0, 2.0)$ e P$_{init} = (0.0, 3.0)$, P$_{final} = (4.0, 2.8)$.
+	\item [Representation] Foram testados os tipos de representação já mencionados em \ref{subsec:representation}.
+	\item [Selection] Foram testados os tipos de selecção já mencionados em \ref{subsec:selection}. No entanto, o elitismo foi variado em simultâneo com
+		as representações Fixa e Dinâmica, uma vez que são aplicadas em fases diferentes do algoritmo.
+	\begin{description}
+		\item [Elitismo] ...
+	\end{description}
+\end{description}
 
 \cleardoublepage
 
