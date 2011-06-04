@@ -247,7 +247,7 @@ Desta forma é possível garantir que o tamanho da população continua computac
 \cleardoublepage
 
 \section{Experiments}
-\indent \indent ...
+\indent \indent 
 
 \cleardoublepage
 
@@ -264,7 +264,8 @@ Após a conclusão dos testes, foi calculado o desvio-padrão entre as 30 simula
 para averiguar se os resultados obtidos não representavam apenas um caso de sorte.
 
 Tal como se pode verificar na última coluna da tabela de resultados (Secção \ref{tab:results}), o desvio-padrão entre as 30 simulações para cada combinação de parâmetros
-é bastante reduzido, o que comprova a sua consistência e robustez.
+é bastante reduzido\footnote[1]{São excepção os testes onde a probabilidade de recombinação é 0.00\%, pois a ausência deste operador torna a evolução individual,
+não tomando partido das soluções obtidas pelos outros indivíduos da população.}, o que comprova a sua consistência e robustez.
 
 \cleardoublepage
 
@@ -281,6 +282,8 @@ Tal como se pode verificar na última coluna da tabela de resultados (Secção \
 \begin{center}
 	\input{tables/representation_evolution}
 \end{center}
+
+\cleardoublepage
 
 \subsection{Selection}
 \begin{center}
