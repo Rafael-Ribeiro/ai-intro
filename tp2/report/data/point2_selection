@@ -1,0 +1,42 @@
+[2, 'Even', 'Tournament', None, None, None, None, None, None]
+
+Best (20): max: 2.7924176 avg: 2.2044574 min: 1.6924473
+Best (100): max: 2.5169841 avg: 1.8496719 min: 1.4471459
+Best (1000): max: 1.9076218 avg: 1.5668211 min: 1.4208745
+Best (2000): max: 1.8057152 avg: 1.5322085 min: 1.4195882
+
+[2, 'Even', 'Roulette', None, None, None, None, None, None]
+
+Best (20): max: 2.7835802 avg: 2.2046092 min: 1.6813473
+Best (100): max: 2.4912062 avg: 1.8502629 min: 1.4464484
+Best (1000): max: 1.9415272 avg: 1.5687835 min: 1.4209846
+Best (2000): max: 1.7985853 avg: 1.5333797 min: 1.4198324
+
+[2, 'Even', 'Rafael-Ribeiro', None, None, None, None, None, None]
+
+Best (20): max: 2.6773338 avg: 2.1823877 min: 1.8119261
+Best (100): max: 2.3467111 avg: 1.8230053 min: 1.4959512
+Best (1000): max: 1.8580916 avg: 1.5409138 min: 1.4177439
+Best (2000): max: 1.7802141 avg: 1.5047007 min: 1.4166930
+
+[2, 'Dynamic', 'Tournament', None, None, None, None, None, None]
+
+Best (20): max: 2.6415651 avg: 2.1948890 min: 1.7981805
+Best (100): max: 2.3388541 avg: 1.8435026 min: 1.5140132
+Best (1000): max: 1.9029098 avg: 1.5646693 min: 1.4094479
+Best (2000): max: 1.8199111 avg: 1.5226141 min: 1.4074098
+
+[2, 'Dynamic', 'Roulette', None, None, None, None, None, None]
+
+Best (20): max: 2.6502116 avg: 2.2007685 min: 1.8119160
+Best (100): max: 2.3148573 avg: 1.8432013 min: 1.5103336
+Best (1000): max: 1.8901133 avg: 1.5637325 min: 1.4093918
+Best (2000): max: 1.8111341 avg: 1.5219615 min: 1.4074232
+
+[2, 'Dynamic', 'Rafael-Ribeiro', None, None, None, None, None, None]
+
+Best (20): max: 2.7172663 avg: 2.2355455 min: 1.8417157
+Best (100): max: 2.4920734 avg: 1.8948020 min: 1.5278036
+Best (1000): max: 2.0406704 avg: 1.5760138 min: 1.4088078
+Best (2000): max: 1.9340787 avg: 1.5290204 min: 1.4074721
+
