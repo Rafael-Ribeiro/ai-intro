@@ -214,62 +214,46 @@ Desta forma é possível garantir que o tamanho da população continua computac
 
 \end{description}
 
-\indent \indent 
-
-
-\cleardoublepage
-
-\subsection{...}
-\indent \indent ...
-
-\subsection{...}
-\indent \indent ...
-
-\subsubsection{...}
-\indent \indent ...
-
-\subsubsection{...}
-\indent \indent ...
-
-...
-
-\cleardoublepage
-\subsection{...}
-\indent \indent ...
-
-...
-
-\subsection{...}
-\indent \indent ...
-
-...
-
-\subsection{...}
-\indent \indent ...
-
 \cleardoublepage
 
 \section{Experiments}
-\indent \indent Os resultados obtidos com o algoritmo genético dependem intrinsecamente dos parâmetros com os quais é executado
+\indent \indent Os resultados obtidos com algoritmos genéticos dependem intrinsecamente dos parâmetros com os quais são executados
 (representação, modo de selecção, percentagem de elitismo, ...). Assim, para uma correcta análise do seu comportamento
-torna-se necessário variá-los e analisar as variadas combinações. Como tal, cada parâmetro foi variado 2/3 vezes.
+torna-se necessário analisar as várias combinações. Como tal, para cada parâmetro foram escolhidos 2 ou 3 valores.
 Enumeram-se de seguida as variações.
 
 \begin{description}
-	\item [Points set] Foram utilizados dois conjuntos de pontos (inicial e final) para averiguar a correcta convergência em diferentes casos.
-		Estes são P$_{init} = (0.0, 3.0)$, P$_{final} = (4.0, 2.0)$ e P$_{init} = (0.0, 3.0)$, P$_{final} = (4.0, 2.8)$.
-	\item [Representation] Foram testados os tipos de representação já mencionados em \ref{subsec:representation}.
-	\item [Selection] Foram testados os tipos de selecção já mencionados em \ref{subsec:selection}. No entanto, o elitismo foi variado em simultâneo com
-		as representações Fixa e Dinâmica, uma vez que são aplicadas em fases diferentes do algoritmo.
+	\item [Points set] \hfill \\
+		\indent Foram utilizados dois conjuntos de pontos (inicial e final) para averiguar a correcta convergência em diferentes casos.
+			\begin{description}
+				\item \[ P_{init} = (0.0, 3.0),\quad P_{final} = (4.0, 2.0) \]
+				\item \[ P_{init} = (0.0, 3.0),\quad P_{final} = (4.0, 2.8) \]
+			\end{description}
+	\item [Representation] \hfill \\
+		\indent Foram testados os tipos de representação já mencionados em \ref{subsec:representation}.
+	\item [Selection] \hfill \\
+		\indent Foram testados os tipos de selecção já mencionados em \ref{subsec:selection}. No entanto, o elitismo foi variado em simultâneo com
+		as selecções Torneio, Roleta e Rafael-Ribeiro, uma vez que são aplicadas em fases diferentes do algoritmo.
 	\begin{description}
-		\item [Elitismo] ...
+		\item [Elitismo] \hfill \\
+			\indent Os valores utilizados foram 5\% e 20\%. Pensamos que 5\% é um valor adequado dado o contexto do problema; 20\%
+			foi escolhido para averiguar se a convergência do algoritmo para um óptimo global ainda se manteria.
 	\end{description}
+	\item [No. of points] \hfill \\
+		\indent Os valores utilizados para o número de pontos foram 15 e 30; estes valores foram escolhidos após experimentação, dado que concluímos
+		que um maior número de pontos torna o espaço de procura demasiado extenso.
+	\item [Population size] \hfill \\
+		\indent Para os tamanhos de população foram utilizados os valores de 25, 50 e 100 indivíduos. %TODO Justificar como sendo valores adequados (após experimentação)?
+	\item [Crossover probability] \hfill \\
+		\indent Para a probabilidade de ocorrência de recombinação foram escolhidos os valores de 0\% e 35\%. A escolha do valor de 35\% ocorreu após
+		experimentação; já o valor de 0\% foi escolhido para testar os resultados em que a única variação/propagação do material genético da população se deve
+		a mutações aliadas a métodos de selecção. De notar que quando a probabilidade de recombinação é 0\% o parâmetro relativo ao número de pontos de recombinação
+		não é aplicado.
+	\item [Crossover points] \hfill \\
+		\indent Os dois valores de pontos de recombinação utilizados foram 2 e 5. %TODO Existe justificação?
+	\item [Mutation probability] \hfill \\
+		\indent Os valores utilizados para a probabilidade de mutação foram 5\% e 25\%. %TODO Existe justificação?
 \end{description}
-
-\cleardoublepage
-
-\subsection{...}
-\indent \indent ...
 
 \cleardoublepage
 
@@ -283,11 +267,6 @@ para averiguar se os resultados obtidos não representavam apenas um caso de sor
 Tal como se pode verificar na última coluna da tabela de resultados (Secção \ref{tab:results}), o desvio-padrão entre as 30 simulações para cada combinação de parâmetros
 é bastante reduzido\footnote[1]{São excepção os testes onde a probabilidade de recombinação é 0.00\%, pois a ausência deste operador torna a evolução individual,
 não tomando partido das soluções obtidas pelos outros indivíduos da população.}, o que comprova a sua consistência e robustez.
-
-\cleardoublepage
-
-\subsection{...}
-\indent \indent ...
 
 \cleardoublepage
 
@@ -315,7 +294,7 @@ não tomando partido das soluções obtidas pelos outros indivíduos da populaç
 \indent \indent ...
 
 \cleardoublepage
-\section{Conclusion}
+\section{Conclusions}
 \indent \indent ...
 
 \cleardoublepage
