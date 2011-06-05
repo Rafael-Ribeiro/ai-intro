@@ -34,11 +34,11 @@ MAX_ITERATIONS = 2000
 ITERATIONS = [20, 100, 1000, 2000]
 
 if __name__ == '__main__':
-	tabular = open("../results/tabular.tbl","a")
+	tabular = open("../../results/tabular.tbl","a")
 	tabular.write("\n%% CONTINUED\n")
 
 	for initial in xrange(len(INITIAL_POINTS)):
-		initial_path = '../results/initial_%d' % (initial,)
+		initial_path = '../../results/initial_%d' % (initial,)
 
 		for representation in REPRESENTATIONS:
 			repr_path = '%s/%s' % (initial_path, representation.split()[0].lower())
@@ -88,7 +88,6 @@ if __name__ == '__main__':
 											f = open(seed_path, 'r')
 											f.readline() # nr of iterations 
 
-											print seed_path
 											this_best = eval(f.readline().rstrip())
 											for i in xrange(len(this_best)):
 												if this_best[i] < best_val[i]:

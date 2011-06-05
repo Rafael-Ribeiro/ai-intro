@@ -37,10 +37,10 @@ if __name__ == '__main__':
 	f.close()
 
 	filters = [
-		2,		# point
-		"Even",	# representation
-		"Rafael-Ribeiro",	# selection
-		15,	# individual size
+		1,		# point
+		"Dynamic",	# representation
+		None,	# selection
+		None,	# individual size
 		None,	# population size
 		None,	# elitism
 		None,	# crossover

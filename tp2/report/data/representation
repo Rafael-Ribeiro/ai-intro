@@ -1,0 +1,28 @@
+[1, 'Even', None, None, None, None, None, None, None]
+
+Best (20): max: 3.6277862 avg: 2.0281445 min: 1.2943594
+Best (100): max: 2.8742070 avg: 1.4861452 min: 1.2323244
+Best (1000): max: 1.4445193 avg: 1.2820714 min: 1.2220753
+Best (2000): max: 1.3964123 avg: 1.2685988 min: 1.2216504
+
+[1, 'Dynamic', None, None, None, None, None, None, None]
+
+Best (20): max: 3.3848274 avg: 2.2345551 min: 1.4232276
+Best (100): max: 2.8686874 avg: 1.7393440 min: 1.2447508
+Best (1000): max: 2.2264351 avg: 1.3750536 min: 1.2149932
+Best (2000): max: 2.0277856 avg: 1.3238336 min: 1.2140057
+
+[2, 'Even', None, None, None, None, None, None, None]
+
+Best (20): max: 2.7924176 avg: 2.1971514 min: 1.6813473
+Best (100): max: 2.5169841 avg: 1.8409800 min: 1.4464484
+Best (1000): max: 1.9415272 avg: 1.5588395 min: 1.4177439
+Best (2000): max: 1.8057152 avg: 1.5234296 min: 1.4166930
+
+[2, 'Dynamic', None, None, None, None, None, None, None]
+
+Best (20): max: 2.7172663 avg: 2.2104010 min: 1.7981805
+Best (100): max: 2.4920734 avg: 1.8605020 min: 1.5103336
+Best (1000): max: 2.0406704 avg: 1.5681385 min: 1.4088078
+Best (2000): max: 1.9340787 avg: 1.5245320 min: 1.4074098
+
