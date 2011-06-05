@@ -279,6 +279,28 @@ não tomando partido das soluções obtidas pelos outros indivíduos da populaç
 	\input{tables/representation_evolution}
 \end{center}
 
+\indent \indent Como é possível observar pelo gráfico, a representação fixa converge mais rapidamente para o óptimo global
+(permitido por esta) do que a representação dinâmica. Esta propriedade justifica-se pelo facto do espaço de procura ser
+mais reduzido. No entanto, por essa mesma razão, o valor final de aptidão obtido é inferior ao obtido com a representação dinâmica.
+Verifica-se experimentalmente que o número de iterações a partir do qual compensa utilizar uma representação dinâmica
+depende do número de pontos utilizado, bem como dos pontos iniciais e finais.  
+
+\begin{center}
+	\begin{tabular}{ccc|c|}
+																				\cline{3-4}
+		\multicolumn{2}{c}{\multirow{2}{*}{}}									& \multicolumn{2}{| c |}{Initial Points}\\
+																				\cline{3-4}
+																	&			& \multicolumn{1}{|c|}{P$_{1}$}	& \multicolumn{1}{c|}{P$_{2}$}	\\
+		\hline
+		\multicolumn{1}{|c|}{\multirow{2}{*}{Number of Points}} 	& 15		& \multicolumn{1}{|c|}{NA}	& NA							\\
+																	\cline{2-4}
+		\multicolumn{1}{|c|}{}										& 30 		& \multicolumn{1}{|c|}{NA}	& NA							\\
+		\hline
+	\end{tabular}
+	\captionof{table}{Representation break points}
+	\label{tab:representation_break_points}
+\end{center}
+
 \cleardoublepage
 
 \subsection{Selection}
@@ -294,18 +316,14 @@ não tomando partido das soluções obtidas pelos outros indivíduos da populaç
 \indent \indent ...
 
 \cleardoublepage
-\section{Conclusions}
-\indent \indent ...
-
-\cleardoublepage
 
 \subsection{...}
 \indent \indent ...
 
 \cleardoublepage
-\section{Anexos}
 
 \eject \pdfpagewidth=594.0mm \pdfpageheight=420.0mm
+\section{Anexos}
 
 \subsection{Tabela de Resultados}
 \begin{center}

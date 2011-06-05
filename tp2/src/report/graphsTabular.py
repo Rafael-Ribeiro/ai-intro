@@ -153,6 +153,11 @@ if __name__ == '__main__':
 
 										cr_points = str(crossover_points) if crossover_prob != 0.0 else "NA"
 
+										data = open(mutation_probs_path + "/data", 'w')
+										data.write(str(best_list) + "\n" + str(avg_list) + "\n" + str(worst_list)+"\n")
+										data.flush()
+										data.close()
+
 										tabular.write("\t\t%d\t&\t%s\t&\t%s\t&\t%d\t&\t%d\t&\t%.2f\t&\t%.2f\t&\t%s\t&\t%.2f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f\t&\t%.7f \\\\\n\t\t\\hline\n" % (initial + 1,REPRESENTATIONS_DIC[representation],selection_type,points,population_size,elitism*100,crossover_prob*100,cr_points,mutation_prob*100,best_list[19],best_list[99],best_list[999],best_list[1999],avg_list[1999],worst_list[1999],stddev_list[1999],total_best_std*100))
 										tabular.flush()
 
