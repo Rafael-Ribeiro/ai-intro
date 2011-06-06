@@ -26,7 +26,7 @@ POINTS = [15]
 POPULATION_SIZES = [100]
 REPRESENTATIONS = ["Even spacing"] 								# ["Dynamic spacing", "Even spacing"]
 SELECTION_TYPES = ["Tournament"]
-MUTATION_PROBS = [0.025]											# probability (percentage when using Rafael/Ribeiro)
+MUTATION_PROBS = [0.10]											# probability (percentage when using Rafael/Ribeiro)
 INITIAL_POINTS = [[[0.0,3.0],[4.0,2.0]]]
 
 MAX_ITERATIONS = 2000

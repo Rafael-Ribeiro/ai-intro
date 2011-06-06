@@ -364,6 +364,16 @@ uma pior solução.
 do que aconteçe na natureza, aumenta a probabilidade de dois genes consecutivos serem mutados. Desta forma é probabilisticamente
 mais fácil obter boas soluções, fora do óptimo local. 
 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=1]{images/burst.png}
+	\caption{Burst inpact on evolution; Even implementation uses tournament selection since Rafael-Ribeiro doesn't allow bursts.}
+	\label{fig:gui}
+\end{figure}
+
+\indent A introdução de mutações em rajada mostrou-se benéfica para a representação fixa. Já para a representação
+dinâmica mostrou ser contra productiva, provávelmente, pois mutações neste conjunto de genes tornam-se demasiado destructivas .
+
 \cleardoublepage
 
 \eject \pdfpagewidth=594.0mm \pdfpageheight=420.0mm
@@ -406,8 +416,5 @@ mais fácil obter boas soluções, fora do óptimo local.
 \label{sec:mutation}
 \input{tables/mutation_probability}
 
-\subsection{Fitness by Mutation Burst}
-\label{sec:mutation_burst}
-\input{tables/mutation_burst}
 
 \end{document}
