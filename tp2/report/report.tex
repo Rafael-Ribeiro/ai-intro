@@ -217,6 +217,7 @@ Desta forma é possível garantir que o tamanho da população continua computac
 \cleardoublepage
 
 \section{Experiments}
+\label{sec:experiments}
 \indent \indent Os resultados obtidos com algoritmos genéticos dependem intrinsecamente dos parâmetros com os quais são executados
 (representação, modo de selecção, percentagem de elitismo, ...). Assim, para uma correcta análise do seu comportamento
 torna-se necessário analisar as várias combinações. Como tal, para cada parâmetro foram escolhidos 2 ou 3 valores.
@@ -306,7 +307,10 @@ o que nos indica que esta é mais consistente (i.e.: menos sensível a ajustes d
 
 \cleardoublepage
 \subsection{Crossover}
-%TODO
+\indent \indent Tal como indicado na secção \ref{sec:experiments} o parâmetro de recombinação a 0\% foi experimentado com o
+intuito de verificar o impacto do operador de recombinação. Esta situação foi comprovada experimentalmente e pode ser observada em \ref{sec:crossover_on_off}.
+
+\indent Por outro lado o número de pontos de recombinação utilizados demonstrou ser um factor irrelevante à performance do algoritmo.
 
 \cleardoublepage
 \subsection{Population Size}
@@ -352,5 +356,13 @@ mesma razão a resistência a óptimos locais é inferior.
 \subsection{Fitness by population size}
 \label{sec:fitness_by_population_size}
 \input{tables/fitness_by_population_size}
+
+\subsection{With and Without Crossover}
+\label{sec:crossover_on_off}
+\input{tables/crossover_on_off}
+
+\subsection{Crossover points}
+\label{sec:crossover_points}
+\input{tables/crossover_points}
 
 \end{document}

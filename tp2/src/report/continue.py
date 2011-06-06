@@ -22,10 +22,10 @@ else:
 CROSSOVER_PROBS = [0.35]										# probabilities
 CROSSOVER_POINTS = [5]											# number of points that are cut
 ELITISMS = [0.20]
-POINTS = [15]
+POINTS = [15, 30]
 POPULATION_SIZES = [100]
-REPRESENTATIONS = ["Dynamic spacing", "Even spacing"]
-SELECTION_TYPES = ["Rafael-Ribeiro"]
+REPRESENTATIONS = ["Dynamic spacing"]
+SELECTION_TYPES = ["Roulette"]
 MUTATION_PROBS = [0.05]											# probability (percentage when using Rafael/Ribeiro)
 INITIAL_POINTS = [[[0.0,3.0],[4.0,2.0]]]
 
