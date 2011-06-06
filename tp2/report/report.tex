@@ -62,7 +62,7 @@ Desta forma, pretende-se que a aptidão da população melhore, convergindo para
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=0.5]{images/Brachistochrone.png}
-	\caption{Curva Braquistócrona}
+	\caption{Brachistochrone Curve}
 	\label{fig:brachistochrone}
 \end{figure}
 
@@ -96,9 +96,9 @@ fundamentalmente em dois tipos:
 	\label{fig:gui}
 \end{figure}
 
-\indent \indent Durante a implementação deste projecto foram surgindo abordagens alternativas,
+\indent Durante a implementação deste projecto foram surgindo abordagens alternativas,
 introduzidas tanto por erros conceptuais, como por \emph{bugs}. Estas abordagens, apesar de não estarem de acordo com
-o considerado comum na àrea de Inteligência Artificial, foram demonstrando capacidade de gerar soluções adequadas ao problema.
+o considerado comum na área de Inteligência Artificial, foram demonstrando capacidade de gerar soluções adequadas ao problema.
 Assim, decidimos que seria interessante efectuar uma comparação entre os resultados obtidos segundo o método tradicional, e aquele a que apelidámos \emph{Rafael-Ribeiro}. 
 
 \cleardoublepage
@@ -127,7 +127,7 @@ Note-se que no caso da representação fixa a absissa é conhecida \emph{a prior
 		\begin{figure}[ht]
 			\centering
 			\includegraphics[scale=0.50]{images/NURBstatic.png}
-			\caption{Exemplo de uma NURBS}
+			\caption{NURBS example}
 			\label{fig:nurbs}
 		\end{figure}
 \end{description}
@@ -140,7 +140,7 @@ seria esperadamente mais rápida.
 desta curva, o que representa por si só um problema merecedor de uma análise profunda. 
 
 \cleardoublepage
-\subsection{Mutation Operators}
+\subsection{Mutation Operator}
 \indent \indent Um dos principais factores que contribuem para a performance de um algoritmo genético é a diversidade genética presente na população.
 Desta forma, desenvolver os operadores de mutação adequados para cada problema torna-se uma tarefa crucial.
 Estes actuam ao nível de cada gene e são portanto distintos para cada representação. 
@@ -152,7 +152,7 @@ de garantir que a evolução progenitor-filho é efectuada de forma gradual (i.e
 seus antecessores).
 
 \subsubsection{Dynamic Representation}
-\indent \indent Ao contrário da representação anterior, o operador de mutação para a representação dinâmica necessíta de considerar
+\indent \indent Ao contrário da representação anterior, o operador de mutação para a representação dinâmica necessita de considerar
 tanto as coordenadas \emph{yy} como as \emph{xx}. Pelas razões já enunciadas, a distribuição utilizada foi novamente a gaussiana.
 No entanto, uma vez que esta permite alterar a posição relativa dos pontos, é necessário efectuar um ordenamento posterior.
 
@@ -275,7 +275,7 @@ Após a conclusão dos testes, foi calculado o desvio-padrão entre as 30 simula
 para averiguar se os resultados obtidos não representavam apenas um caso de sorte.
 
 Tal como se pode verificar na última coluna da tabela de resultados (Secção \ref{tab:results}), o desvio-padrão entre as 30 simulações para cada combinação de parâmetros
-é bastante reduzido\footnote[1]{São excepção os testes onde a probabilidade de recombinação é 0.00\%, pois a ausência deste operador torna a evolução individual,
+é bastante reduzido\footnote[1]{São excepções os testes onde a probabilidade de recombinação é 0.00\%, pois a ausência deste operador torna a evolução individual,
 não tomando partido das soluções obtidas pelos outros indivíduos da população.}, o que comprova a sua consistência e robustez.
 
 \cleardoublepage
@@ -290,7 +290,7 @@ não tomando partido das soluções obtidas pelos outros indivíduos da populaç
 	\caption{Fitness evolution}
 \end{figure}
 
-\indent \indent Como é possível observar pelos gráficos (ou constatar nas tabelas da secção \ref{sec:fitness_by_representation}), a representação fixa converge mais rapidamente para o óptimo global
+\indent Como é possível observar pelos gráficos (ou constatar nas tabelas da secção \ref{sec:fitness_by_representation}), a representação fixa converge mais rapidamente para o óptimo global
 (permitido por esta) do que a representação dinâmica. Esta propriedade justifica-se pelo facto do espaço de procura ser
 mais reduzido. No entanto, por essa mesma razão, o valor final de aptidão obtido é inferior ao obtido com a representação dinâmica.
 O número de iterações a partir do qual compensa utilizar uma representação dinâmica depende do número de pontos utilizado, bem como dos pontos iniciais e finais.
@@ -335,7 +335,7 @@ intuito de verificar o impacto do operador de recombinação. Esta situação fo
 \cleardoublepage
 \subsection{Population Size}
 \indent \indent Os dados presentes na tabela \ref{sec:results} indicam, tal como esperado, que quanto maior a população melhores
-os resultados. No entanto, uma vez que aumentar o tamanho da população aumenta necessáriamente
+os resultados. No entanto, uma vez que aumentar o tamanho da população aumenta necessariamente
 o tempo de computação de cada iteração, torna-se interessante analisar mais detalhadamente este \emph{trade-off}.
 
 \indent Como é possível observar na tabela \ref{sec:fitness_by_population_size}, os resultados obtidos com uma
@@ -366,13 +366,13 @@ mais fácil obter boas soluções, fora do óptimo local.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=1]{images/burst.png}
+	\includegraphics[scale=0.7]{images/burst.png}
 	\caption{Burst inpact on evolution; Even implementation uses tournament selection since Rafael-Ribeiro doesn't allow bursts.}
 	\label{fig:gui}
 \end{figure}
 
 \indent A introdução de mutações em rajada mostrou-se benéfica para a representação fixa. Já para a representação
-dinâmica mostrou ser contra productiva, provavelmente, pois mutações consecutivas neste conjunto de genes tornam-se demasiado destructivas .
+dinâmica mostrou ser contra-producente, provavelmente por mutações consecutivas neste conjunto de genes se tornarem demasiado destructivas.
 
 \cleardoublepage
 
