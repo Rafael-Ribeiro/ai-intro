@@ -298,7 +298,7 @@ o que nos indica que esta é mais consistente (i.e.: menos sensível a ajustes d
 \subsection{Selection}
 \indent \indent Como é possível verificar na tabela da secção \ref{sec:fitness_by_selection}, a "selecção"\footnote[1]{De relembrar o leitor de que o algoritmo Rafael-Ribeiro
 apresenta um funcionamento diferente ao nível das mutações, não sendo assim classificável como puramente um método de selecção.} Rafael-Ribeiro é claramente
-superior na representação de pontos igualmente espaçados. Tal deve-se à sua abordagem ser Estado Estável, isto é, estocasticamente a percentagem de
+superior na representação de pontos igualmente espaçados. Tal deve-se à sua abordagem semelhante a Estado Estável, isto é, estocasticamente a percentagem de
 indivíduos de elevada aptidão que permanece na geração seguinte é superior; este facto favorece o tipo de mutação utilizado (ver secção \ref{it:partial_mutation}),
 o que força uma melhor convergência do algoritmo ao permitir fugas de óptimos locais.
 
@@ -307,6 +307,7 @@ Tal se deve ao facto de o seu espaço de procura ser exponencialmente maior do q
 genética permite uma melhor exploração do espaço de procura ao permitir que indivíduos menos bons permaneçam nas gerações seguintes.
 
 \cleardoublepage
+
 \subsection{Crossover}
 \indent \indent Tal como indicado na secção \ref{sec:experiments} o parâmetro de recombinação a 0\% foi experimentado com o
 intuito de verificar o impacto do operador de recombinação. Esta situação foi comprovada experimentalmente e pode ser observada em \ref{sec:crossover_on_off}.
