@@ -275,15 +275,11 @@ não tomando partido das soluções obtidas pelos outros indivíduos da populaç
 
 \cleardoublepage
 \subsection{Representation}
-\begin{center}
-	\input{tables/representation_evolution}
-\end{center}
-
-\indent \indent Como é possível observar pelo gráfico, a representação fixa converge mais rapidamente para o óptimo global
+\indent Como é possível observar pelo gráfico (ou constatar nas tabelas da secção \ref{sec:fitness_by_representation}), a representação fixa converge mais rapidamente para o óptimo global
 (permitido por esta) do que a representação dinâmica. Esta propriedade justifica-se pelo facto do espaço de procura ser
 mais reduzido. No entanto, por essa mesma razão, o valor final de aptidão obtido é inferior ao obtido com a representação dinâmica.
 Verifica-se experimentalmente que o número de iterações a partir do qual compensa utilizar uma representação dinâmica
-depende do número de pontos utilizado, bem como dos pontos iniciais e finais.  
+depende do número de pontos utilizado, bem como dos pontos iniciais e finais.
 
 \begin{center}
 	\begin{tabular}{ccc|c|}
@@ -304,9 +300,7 @@ depende do número de pontos utilizado, bem como dos pontos iniciais e finais.
 \cleardoublepage
 
 \subsection{Selection}
-\begin{center}
-	\input{tables/selection_evolution}
-\end{center}
+\indent TODO (secção \ref{sec:fitness_by_selection}) % FIXME % TODO
 
 \cleardoublepage
 \subsection{Crossover}
@@ -326,11 +320,21 @@ depende do número de pontos utilizado, bem como dos pontos iniciais e finais.
 \paperwidth=594.0mm
 \paperheight=420.0mm
 
-\section{Anexos}
+\section{Attachments}
 
-\subsection{Tabela de Resultados}
+\subsection{Results' Table}
 \begin{center}
 	\input{tables/results}
 \end{center}
+
+\eject \pdfpagewidth=210.0mm \pdfpageheight=297.0mm
+
+\subsection{Fitness by representation}
+\label{sec:fitness_by_representation}
+\input{tables/fitness_by_representation}
+
+\subsection{Fitness by selection}
+\label{sec:fitness_by_selection}
+\input{tables/fitness_by_selection}
 
 \end{document}
