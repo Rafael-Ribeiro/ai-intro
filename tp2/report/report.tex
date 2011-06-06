@@ -347,9 +347,14 @@ mesma razão a resistência a óptimos locais é inferior.
 \cleardoublepage
 
 \subsection{Mutation Probability}
-\indent \indent 
+\indent \indent Observando a tabela na secção \ref{tab:mutation_prob_type_1_best_avg} é possível concluir que uma elevada probabilidade de mutação favorece sempre
+a representação igualmente espaçada; isto porque o espaço de procura é unidimensional, pelo que as mutações mais facilmente promovem a exploração desse espaço.
+A excepção é a selecção a Rafael-Ribeiro, dado que a probabilidade se traduz na percentagem de indivíduo a mutar, o que se torna demasiado quando esta é 25\%.
 
-\subsubsection{Mutation burst}
+Na representação dinâmica ocorre o oposto: a mutação de um menor número de genes/percentagem do indivíduo favorece a evolução da população. Isto porque a dimensão
+do espaço de procura não permite tirar partido de um grande número de mutações, dado que estas tenderão a piorar a solução nas últimas iterações.
+
+\subsubsection{Mutation Burst}
 \indent \indent Um dos problemas obtidos na resolução de problemas por métodos evolucionários é o algoritmo
 convergir para um óptimo local, não conseguindo atingir o óptimo global. Esta situação ocorre frequentemente
 quando o indivíduo a ser mutado apresenta uma solução de boa qualidade, e qualquer mutação irá provávelmente originar
@@ -410,5 +415,6 @@ dinâmica mostrou ser contra productiva, provavelmente, pois mutações consecut
 \subsection{Fitness by Mutation Probability}
 \label{sec:mutation}
 \input{tables/mutation_probability}
+
 
 \end{document}
