@@ -21,12 +21,12 @@ else:
 # parameters to be tested
 CROSSOVER_PROBS = [0.35]										# probabilities
 CROSSOVER_POINTS = [5]											# number of points that are cut
-ELITISMS = [0.05]
+ELITISMS = [0.20]
 POINTS = [15]
 POPULATION_SIZES = [100]
-REPRESENTATIONS = ["Dynamic spacing"] 								# ["Dynamic spacing", "Even spacing"]
-SELECTION_TYPES = ["Roulette"]
-MUTATION_PROBS = [0.05]											# probability (percentage when using Rafael/Ribeiro)
+REPRESENTATIONS = ["Even spacing"] 								# ["Dynamic spacing", "Even spacing"]
+SELECTION_TYPES = ["Tournament"]
+MUTATION_PROBS = [0.025]											# probability (percentage when using Rafael/Ribeiro)
 INITIAL_POINTS = [[[0.0,3.0],[4.0,2.0]]]
 
 MAX_ITERATIONS = 2000

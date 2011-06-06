@@ -89,11 +89,19 @@ fundamentalmente em dois tipos:
 
 \cleardoublepage
 \section{Implementation}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.50]{images/GUI.png}
+	\caption{Graphical User Interface}
+	\label{fig:gui}
+\end{figure}
+
 \indent \indent Durante a implementação deste projecto foram surgindo abordagens alternativas,
 introduzidas tanto por erros conceptuais, como por \emph{bugs}. Estas abordagens, apesar de não estarem de acordo com
 o considerado comum na àrea de Inteligência Artificial, foram demonstrando capacidade de gerar soluções adequadas ao problema.
 Assim, decidimos que seria interessante efectuar uma comparação entre os resultados obtidos segundo o método tradicional, e aquele a que apelidámos \emph{Rafael-Ribeiro}. 
 
+\cleardoublepage
 \subsection{Representation}
 \label{subsec:representation}
 \indent \indent À semelhança de outros problemas\footnote[1]{Aplicação do método do trapézio para o cálculo do integral de uma curva.}, a discretização do espaço contínuo em amostras
@@ -273,7 +281,6 @@ não tomando partido das soluções obtidas pelos outros indivíduos da populaç
 \cleardoublepage
 \section{Result Analysis}
 
-\cleardoublepage
 \subsection{Representation}
 \begin{figure}[ht]
 	\centering
@@ -295,12 +302,24 @@ o que nos indica que esta é mais consistente (i.e.: menos sensível a ajustes d
 \cleardoublepage
 
 \subsection{Selection}
-\indent \indent Como é possível verificar na tabela da secção \ref{sec:fitness_by_selection}, a "selecção"\footnote[1]{De relembrar o leitor de que o algoritmo Rafael-Ribeiro
+\begin{figure}[ht]
+	\centering
+	\subfloat[Fixed - 100 iterations]{\includegraphics[width=0.5\textwidth]{images/evolution_selection_even_100.png}}
+	\subfloat[Fixed - 2000 iterations]{\includegraphics[width=0.5\textwidth]{images/evolution_selection_even_2000.png}}
+	\caption{Selection methods for fixed representation}
+\end{figure}
+\indent Como é possível observar nos gráficos (e na tabela da secção \ref{sec:fitness_by_selection}), a "selecção"\footnote[1]{De relembrar o leitor de que o algoritmo Rafael-Ribeiro
 apresenta um funcionamento diferente ao nível das mutações, não sendo assim classificável como puramente um método de selecção.} Rafael-Ribeiro é claramente
-superior na representação de pontos igualmente espaçados. Tal deve-se à sua abordagem semelhante a Estado Estável, isto é, estocasticamente a percentagem de
-indivíduos de elevada aptidão que permanece na geração seguinte é superior; este facto favorece o tipo de mutação utilizado (ver secção \ref{it:partial_mutation}),
-o que força uma melhor convergência do algoritmo ao permitir fugas de óptimos locais.
+superior na representação de pontos igualmente espaçados apartir das 250 iterações. Tal deve-se à sua abordagem semelhante a Estado Estável, isto é, estocasticamente a percentagem de
+indivíduos de elevada aptidão que permanece na geração seguinte é superior; este facto força a uma convergência mais gradual e contínua do algoritmo e permite fugas de óptimos locais.
 
+\begin{figure}[ht]
+	\centering
+	\subfloat[Dynamic - 100 iterations]{\includegraphics[width=0.33\textwidth]{images/evolution_selection_dynamic_100.png}}
+	\subfloat[Dynamic - 500 iterations]{\includegraphics[width=0.33\textwidth]{images/evolution_selection_dynamic_500.png}}
+	\subfloat[Dynamic - 2000 iterations]{\includegraphics[width=0.33\textwidth]{images/evolution_selection_dynamic_2000.png}}
+	\caption{Selection methods for dynamic representation}
+\end{figure}
 \indent Na mesma tabela da secção \ref{sec:fitness_by_selection} é possível observar que a representação dinamicamente espaçada obtém melhores resultados com a Roleta.
 Tal se deve ao facto de o seu espaço de procura ser exponencialmente maior do que o da representação igualmente espaçada. Assim, a Roleta ao favorecer a diversidade
 genética permite uma melhor exploração do espaço de procura ao permitir que indivíduos menos bons permaneçam nas gerações seguintes.
@@ -331,7 +350,14 @@ mesma razão a resistência a óptimos locais é inferior.
 \indent \indent 
 
 \subsubsection{Mutation burst}
-\indent \indent TODO % TODO FIXME
+\indent \indent Um dos problemas obtidos na resolução de problemas por métodos evolucionários é o algoritmo
+convergir para um óptimo local, não conseguindo atingir o óptimo global. Esta situação ocorre frequentemente
+quando o indivíduo a ser mutado apresenta uma solução de boa qualidade, e qualquer mutação irá provávelmente originar
+uma pior solução.
+
+\indent Para contornar esta situação foi implementado um mecanismo de mutação em rajada. Este mecanismo, à semelhança
+do que aconteçe na natureza, aumenta a probabilidade de dois genes consecutivos serem mutados. Desta forma é probabilisticamente
+mais fácil obter boas soluções, fora do óptimo local. 
 
 \cleardoublepage
 
