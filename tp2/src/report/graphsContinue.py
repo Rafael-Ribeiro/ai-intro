@@ -19,19 +19,19 @@ def listdiv(a, q):
 		a[i] /= q
 
 # parameters to be tested
-CROSSOVER_PROBS = [0.35]										# probabilities
-CROSSOVER_POINTS = [5]											# number of points that are cut
+CROSSOVER_PROBS = [0.0]										# probabilities
+CROSSOVER_POINTS = [2]											# number of points that are cut
 ELITISMS = [0.20]
 POINTS = [15]
 POPULATION_SIZES = [100]
-REPRESENTATIONS = ["Dynamic spacing", "Even spacing"]
+REPRESENTATIONS = ["Even spacing"]
 REPRESENTATIONS_DIC = {"Dynamic spacing" : "Dynamic", "Even spacing" : "Even"}
 SELECTION_TYPES = ["Rafael-Ribeiro"]
 MUTATION_PROBS = [0.05,]											# probability (percentage when using Rafael/Ribeiro)
 INITIAL_POINTS = [[[0.0,3.0],[4.0,2.0]]]
 
-MAX_ITERATIONS = 5000
-ITERATIONS = [20, 100, 1000, 2000, 5000]
+MAX_ITERATIONS = 2000
+ITERATIONS = [20, 100, 1000, 2000]
 
 if __name__ == '__main__':
 	for initial in xrange(len(INITIAL_POINTS)):
