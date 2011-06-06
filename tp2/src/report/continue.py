@@ -22,11 +22,7 @@ else:
 CROSSOVER_PROBS = [0.35]										# probabilities
 CROSSOVER_POINTS = [5]											# number of points that are cut
 ELITISMS = [0.20]
-<<<<<<< HEAD
 POINTS = [15,30]
-=======
-POINTS = [15, 30]
->>>>>>> fdd7d2960f4c432532441c2ecfdad64685e28055
 POPULATION_SIZES = [100]
 REPRESENTATIONS = ["Dynamic spacing"]
 SELECTION_TYPES = ["Roulette"]
