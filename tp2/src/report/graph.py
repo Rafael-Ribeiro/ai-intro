@@ -2,17 +2,17 @@
 
 from math import *
 from matplotlib.pyplot import figure
-
-data1 = ['Even - 15 points', 'red', []]
-data2 = ['Even - 30 points', 'green', []]
-data3 = ['Dynamic - 15 points', 'blue', []]
-data4 = ['Dynamic - 30 points', 'black', []]
+START = 200
 MAX_ITER = 2000
-iterations = range(1, MAX_ITER+1)
+iterations = range(START+1, MAX_ITER+1)
 
-figureHist = figure(figsize=(12.0, 6.0), dpi=72)
+f = open('graphlines.py', 'r')
+data = eval(f.read())
+f.close()
+
+figureHist = figure(figsize=(6.0, 4.0), dpi=72)
 graphHist = figureHist.add_subplot(111)
-graphHist.plot(iterations, data1[2][:MAX_ITER+1], data1[1], iterations, data2[2][:MAX_ITER+1], data2[1], iterations, data3[2][:MAX_ITER+1], data3[1], iterations, data4[2][:MAX_ITER+1], data4[1])
-graphHist.legend( (data1[0], data2[0], data3[0], data4[0]), loc='upper right')
+graphHist.plot(iterations, data[0][2][START:MAX_ITER], data[0][1], iterations, data[1][2][START:MAX_ITER], data[1][1], iterations, data[2][2][START:MAX_ITER], data[2][1], iterations, data[3][2][START:MAX_ITER], data[3][1])
+graphHist.legend( (data[0][0], data[1][0], data[2][0], data[3][0]), loc='upper right')
 figureHist.savefig('evolution.png' , format="png", transparent=True)
 figureHist.clf()

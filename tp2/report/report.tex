@@ -275,7 +275,7 @@ não tomando partido das soluções obtidas pelos outros indivíduos da populaç
 
 \cleardoublepage
 \subsection{Representation}
-\indent Como é possível observar pelo gráfico (ou constatar nas tabelas da secção \ref{sec:fitness_by_representation}), a representação fixa converge mais rapidamente para o óptimo global
+\indent Como é possível observar pelos gráficos (ou constatar nas tabelas da secção \ref{sec:fitness_by_representation}), a representação fixa converge mais rapidamente para o óptimo global
 (permitido por esta) do que a representação dinâmica. Esta propriedade justifica-se pelo facto do espaço de procura ser
 mais reduzido. No entanto, por essa mesma razão, o valor final de aptidão obtido é inferior ao obtido com a representação dinâmica.
 Verifica-se experimentalmente que o número de iterações a partir do qual compensa utilizar uma representação dinâmica
@@ -297,6 +297,10 @@ depende do número de pontos utilizado, bem como dos pontos iniciais e finais.
 	\label{tab:representation_break_points}
 \end{center}
 
+\indent Outra propriedade merecedora de análise é a média das aptidões dos melhores indíviduos para cada representação.
+Como podemos observar na tabela correspondente\ref{sec:fitness_by_representation}, a média é inferior para a representação igualmente espaçada,
+o que nos indica que esta é mais consistente (i.e.: menos sensível a ajustes de parâmetros). 
+
 \cleardoublepage
 
 \subsection{Selection}
@@ -306,7 +310,19 @@ depende do número de pontos utilizado, bem como dos pontos iniciais e finais.
 \subsection{Crossover}
 %TODO
 
-\subsection{...}
+\cleardoublepage
+\subsection{Population Size}
+\begin{center}
+	\begin{tabular}{rr!{\vrule width 1.5pt}c|c!{\vrule width 1.5pt}c|c}
+		\multicolumn{1}{r}{\multirow{2}{*}{}} 				& Population size 	& 25 	& 50	& 50 	& 100 	\\
+															& Iteration 		& 2000	& 1000	& 2000 	& 1000 	\\
+		\hline		
+		\multicolumn{1}{r}{\multirow{2}{*}{Representation}} & Fixed									& 33 	& 34	& 35 	& 36 	\\
+															& Dynamic								& 43 	& 44	& 45 	& 46 	\\
+	\end{tabular}
+	\captionof{table}{Comparison between population sizes}
+	\label{tab:}
+\end{center}
 \indent \indent ...
 
 \cleardoublepage
