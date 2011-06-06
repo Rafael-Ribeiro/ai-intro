@@ -269,9 +269,7 @@ Tal como se pode verificar na última coluna da tabela de resultados (Secção \
 não tomando partido das soluções obtidas pelos outros indivíduos da população.}, o que comprova a sua consistência e robustez.
 
 \cleardoublepage
-
 \section{Result Analysis}
-\indent \indent ...
 
 \cleardoublepage
 \subsection{Representation}
@@ -298,7 +296,7 @@ depende do número de pontos utilizado, bem como dos pontos iniciais e finais.
 \end{center}
 
 \indent Outra propriedade merecedora de análise é a média das aptidões dos melhores indíviduos para cada representação.
-Como podemos observar na tabela correspondente\ref{sec:fitness_by_representation}, a média é inferior para a representação igualmente espaçada,
+Como podemos observar na tabela correspondente \ref{sec:fitness_by_representation}, a média é inferior para a representação igualmente espaçada,
 o que nos indica que esta é mais consistente (i.e.: menos sensível a ajustes de parâmetros). 
 
 \cleardoublepage
@@ -312,8 +310,16 @@ o que nos indica que esta é mais consistente (i.e.: menos sensível a ajustes d
 
 \cleardoublepage
 \subsection{Population Size}
-\indent \indent ... (secção \ref{sec:fitness_by_population_size})
+\indent \indent Os dados presentes na tabela \ref{sec:results} indicam, tal como esperado, que quanto maior a população melhores
+os resultados. No entanto, uma vez que aumentar o tamanho da população aumenta necessáriamente
+o tempo de computação de cada iteração, torna-se interessante analisar mais detalhadamente este \emph{trade-off}.
 
+\indent Como é possível observar na tabela \ref{sec:fitness_by_population_size}, os resultados obtidos com uma
+população de \emph{n} indivíduos em \emph{m} iterações são ligeiramente melhores que os obtidos
+com uma população com o dobro do tamanho em metade do tempo. Esta convergência mais rápida justifica-se
+pelo facto de existirem menos indivíduos a seguirem caminhos evolucionários semelhantes. No entanto, por esta
+mesma razão a resistência a óptimos locais é inferior.
+ 
 \cleardoublepage
 
 \subsection{...}
@@ -328,6 +334,7 @@ o que nos indica que esta é mais consistente (i.e.: menos sensível a ajustes d
 \section{Attachments}
 
 \subsection{Results' Table}
+\label{sec:results}
 \begin{center}
 	\input{tables/results}
 \end{center}
