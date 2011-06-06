@@ -39,13 +39,13 @@ if __name__ == '__main__':
 	filters = [
 		1,		# point
 		"Dynamic",	# representation
-		None,	# selection
-		30,		# individual size
-		None,	# population size
-		None,	# elitism
-		None,	# crossover
-		None,	# crossover points
-		None	# mutation size
+		"Roulette",	# selection
+		15,		# individual size
+		25,	# population size
+		20.0,	# elitism
+		35.0,	# crossover
+		5,		# crossover points
+		5.0		# mutation size
 	]
 	data = filter(lambda x: apply_filter(x, filters), data)
 
