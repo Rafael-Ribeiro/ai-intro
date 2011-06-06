@@ -157,8 +157,9 @@ Como achamos que esta abordagem poderia ser vantajosa para o problema em questã
 	\item[Burst] \hfill \\ 
 		Onde indicamos a probabilidade de um gene ser mutado após o seu antecessor também o ser.
 
-	\item[Range] \hfill \\ 
-		Onde por cada indivíduo é apenas selecionado uma secção de genes que sofre mutação.
+	\item[Partial] \hfill \\
+		\label{it:partial_mutation}
+		Onde por cada indivíduo são selecionados um número fixo de genes para sofer mutação.
 		Este tipo de mutação é apenas aplicado para o tipo de selecção \emph{Rafael-Ribeiro}.
 \end{description}
  
@@ -302,7 +303,15 @@ o que nos indica que esta é mais consistente (i.e.: menos sensível a ajustes d
 \cleardoublepage
 
 \subsection{Selection}
-\indent TODO (secção \ref{sec:fitness_by_selection}) % FIXME % TODO
+\indent \indent Como é possível verificar na tabela da secção \ref{sec:fitness_by_selection}, a "selecção"\footnote[1]{De relembrar o leitor de que o algoritmo Rafael-Ribeiro
+apresenta um funcionamento diferente ao nível das mutações, não sendo assim classificável como puramente um método de selecção.} Rafael-Ribeiro é claramente
+superior na representação de pontos igualmente espaçados. Tal deve-se à sua abordagem ser Estado Estável, isto é, estocasticamente a percentagem de
+indivíduos de elevada aptidão que permanece na geração seguinte é superior; este facto favorece o tipo de mutação utilizado (ver secção \ref{it:partial_mutation}),
+o que força uma melhor convergência do algoritmo ao permitir fugas de óptimos locais.
+
+\indent Na mesma tabela da secção \ref{sec:fitness_by_selection} é possível observar que a representação dinamicamente espaçada obtém melhores resultados com a Roleta.
+Tal se deve ao facto de o seu espaço de procura ser exponencialmente maior do que o da representação igualmente espaçada. Assim, a Roleta ao favorecer a diversidade
+genética permite uma melhor exploração do espaço de procura ao permitir que indivíduos menos bons permaneçam nas gerações seguintes.
 
 \cleardoublepage
 \subsection{Crossover}
