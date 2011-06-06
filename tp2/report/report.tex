@@ -218,6 +218,7 @@ Desta forma é possível garantir que o tamanho da população continua computac
 \cleardoublepage
 
 \section{Experiments}
+\label{sec:experiments}
 \indent \indent Os resultados obtidos com algoritmos genéticos dependem intrinsecamente dos parâmetros com os quais são executados
 (representação, modo de selecção, percentagem de elitismo, ...). Assim, para uma correcta análise do seu comportamento
 torna-se necessário analisar as várias combinações. Como tal, para cada parâmetro foram escolhidos 2 ou 3 valores.
@@ -274,27 +275,19 @@ não tomando partido das soluções obtidas pelos outros indivíduos da populaç
 
 \cleardoublepage
 \subsection{Representation}
-\indent Como é possível observar pelos gráficos (ou constatar nas tabelas da secção \ref{sec:fitness_by_representation}), a representação fixa converge mais rapidamente para o óptimo global
+\begin{figure}[ht]
+	\centering
+	\subfloat[200 iterations]{\includegraphics[width=0.3\textwidth]{images/evolution_200.png}}
+	\subfloat[2000 iterations]{\includegraphics[width=0.3\textwidth]{images/evolution_2000.png}}
+	\subfloat[5000 iterations]{\includegraphics[width=0.3\textwidth]{images/evolution_5000.png}}
+	\caption{Fitness evolution}
+\end{figure}
+
+\indent \indent Como é possível observar pelos gráficos (ou constatar nas tabelas da secção \ref{sec:fitness_by_representation}), a representação fixa converge mais rapidamente para o óptimo global
 (permitido por esta) do que a representação dinâmica. Esta propriedade justifica-se pelo facto do espaço de procura ser
 mais reduzido. No entanto, por essa mesma razão, o valor final de aptidão obtido é inferior ao obtido com a representação dinâmica.
 Verifica-se experimentalmente que o número de iterações a partir do qual compensa utilizar uma representação dinâmica
 depende do número de pontos utilizado, bem como dos pontos iniciais e finais.
-
-\begin{center}
-	\begin{tabular}{ccc|c|}
-																				\cline{3-4}
-		\multicolumn{2}{c}{\multirow{2}{*}{}}									& \multicolumn{2}{| c |}{Initial Points}\\
-																				\cline{3-4}
-																	&			& \multicolumn{1}{|c|}{P$_{1}$}	& \multicolumn{1}{c|}{P$_{2}$}	\\
-		\hline
-		\multicolumn{1}{|c|}{\multirow{2}{*}{Number of Points}} 	& 15		& \multicolumn{1}{|c|}{NA}	& NA							\\
-																	\cline{2-4}
-		\multicolumn{1}{|c|}{}										& 30 		& \multicolumn{1}{|c|}{NA}	& NA							\\
-		\hline
-	\end{tabular}
-	\captionof{table}{Representation break points}
-	\label{tab:representation_break_points}
-\end{center}
 
 \indent Outra propriedade merecedora de análise é a média das aptidões dos melhores indíviduos para cada representação.
 Como podemos observar na tabela correspondente \ref{sec:fitness_by_representation}, a média é inferior para a representação igualmente espaçada,
@@ -315,7 +308,10 @@ genética permite uma melhor exploração do espaço de procura ao permitir que 
 
 \cleardoublepage
 \subsection{Crossover}
-%TODO
+\indent \indent Tal como indicado na secção \ref{sec:experiments} o parâmetro de recombinação a 0\% foi experimentado com o
+intuito de verificar o impacto do operador de recombinação. Esta situação foi comprovada experimentalmente e pode ser observada em \ref{sec:crossover_on_off}.
+
+\indent Por outro lado o número de pontos de recombinação utilizados demonstrou ser um factor irrelevante à performance do algoritmo.
 
 \cleardoublepage
 \subsection{Population Size}
@@ -361,5 +357,13 @@ mesma razão a resistência a óptimos locais é inferior.
 \subsection{Fitness by population size}
 \label{sec:fitness_by_population_size}
 \input{tables/fitness_by_population_size}
+
+\subsection{With and Without Crossover}
+\label{sec:crossover_on_off}
+\input{tables/crossover_on_off}
+
+\subsection{Crossover points}
+\label{sec:crossover_points}
+\input{tables/crossover_points}
 
 \end{document}

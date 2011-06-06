@@ -40,11 +40,11 @@ if __name__ == '__main__':
 		1,		# point
 		"Dynamic",	# representation
 		None,	# selection
-		15,		# individual size
-		25,		# population size
+		None,		# individual size
+		None,		# population size
 		None,	# elitism
 		35.0,	# crossover
-		5,		# crossover points
+		None,		# crossover points
 		None	# mutation size
 	]
 	data = filter(lambda x: apply_filter(x, filters), data)
